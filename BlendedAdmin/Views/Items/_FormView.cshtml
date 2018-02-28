@@ -1,0 +1,23 @@
+@model BlendedAdmin.Models.Items.FormViewModel
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+
+@if (string.IsNullOrEmpty(Model.Title) == false)
+{
+    <h6>@Model.Title</h6>
+}
+<form class="form-horizontal" method="@(Model.Method)" action="@urlService.GetUrl()">
+    @foreach (var row in Model.Parameters)
+    {
+        <div class="form-row">
+        @foreach (var parameter in row)
+        {
+        <div class="form-group col-md-@(12/row.Length)">
+            @Html.Partial("_FormParameter", parameter)
+        </div>
+        }
+        </div>
+    }
+    <div class="form-group">
+        <button type="submit" class="btn">Run</button>
+    </div>
+</form>

@@ -1,0 +1,46 @@
+﻿@inject BlendedAdmin.Services.ISiteMenuService siteMenuService
+
+<nav class="col-md-2 d-none d-md-block bg-light sidebar">
+    <div class="sidebar-sticky">
+        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <a class="text-secondary" asp-controller="Home" asp-action="Index">Dashboard</a>
+            <a class="d-flex align-items-center text-muted" asp-controller="Items" asp-action="Create">
+                <span data-feather="plus-circle"></span>
+            </a>
+        </h6>
+        @{ 
+            var items = await siteMenuService.GetMenuItems();
+            var itemsWithoutCategory = items.Where(x => x.Children.Count == 0).ToList();
+            var itemsWithCategory = items.Where(x => x.Children.Count > 0).ToList();
+        }
+        @if (itemsWithoutCategory.Count > 0)
+        {
+            <ul class="nav flex-column">
+            @foreach (var item in itemsWithoutCategory)
+            {
+                <li class="nav-item">
+                    <a class="nav-link @(item.IsActive ? "active" : "")" asp-controller="Items" asp-action="Run" asp-route-id="@item.Id">
+                        <span data-feather="file-text"></span>@item.Name
+                    </a>
+                </li>
+            }
+            </ul>
+        }
+        @foreach (var item in itemsWithCategory)
+        {
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+                <span>@item.Name</span>
+            </h6>
+            <ul class="nav flex-column">
+                @foreach (var subItem in item.Children)
+                {
+                    <li class="nav-item">
+                        <a class="nav-link @(subItem.IsActive ? "active" : "")" asp-controller="Items" asp-action="Run" asp-route-id="@subItem.Id">
+                            <span data-feather="file-text"></span>@subItem.Name
+                        </a>
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+</nav>

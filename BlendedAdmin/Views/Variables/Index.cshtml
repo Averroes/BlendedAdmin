@@ -1,0 +1,62 @@
+@model List<BlendedAdmin.Models.Variables.VariableModel>
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Variables</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="Variables" asp-action="Create">
+            <span data-feather="edit"></span>
+            Create variable
+        </a>
+    </div>
+</div>
+
+@if (Model.Count > 0)
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th class="border-top-0">Name</th>
+                    <th class="border-top-0">Value</th>
+                    <th class="border-top-0"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (BlendedAdmin.Models.Variables.VariableModel variable in Model)
+                {
+                    <tr>
+                        <td><a asp-action="Edit" asp-route-id="@variable.Id">@variable.Name</a></td>
+                        <td>
+                            @for (int i = 0; i < variable.Values.Count; i++)
+                    {
+
+                                @if (@variable.Values[i].EnvironmentId > 0)
+                        {
+                                    <div>
+                                        <span style="color: @variable.Values[i].Color">@variable.Values[i].Environment</span> <br />
+                                        <span style="color: @variable.Values[i].Color">@variable.Values[i].Value</span>
+                                    </div>
+                                }
+                                else
+                                {
+                                    if (string.IsNullOrEmpty(@variable.Values[i].Value) == false)
+                                    {
+                                        <span>@variable.Values[i].Value</span>
+                                    }
+                                }
+                            }
+                        </td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@variable.Id" class="text-secondary"><span class="fa fa-pencil-square-o"></span>Edit</a>
+                            <a asp-action="Delete" asp-route-id="@variable.Id"  class="text-secondary"><span class="fa fa-trash-o"></span>Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <div style="margin-left:10px;" class="text-muted">No viariable exists yet.</div>
+}

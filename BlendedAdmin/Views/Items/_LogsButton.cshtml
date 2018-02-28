@@ -1,0 +1,20 @@
+@using BlendedAdmin.Js
+@inject BlendedAdmin.Services.IUrlServicecs urlServicecs
+
+<div class="btn btn-sm btn-outline-secondary" style="margin-right: 20px;">
+    <div class="custom-control custom-checkbox">
+        <input type="checkbox" class="custom-control-input" id="showLogs">
+        <label class="custom-control-label" for="showLogs">Show Logs</label>
+    </div>
+</div>
+<script>
+    var showLogsButton = document.getElementById("showLogs");
+    showLogsButton.checked = localStorage.getItem('@urlServicecs.GetItemId()_logsVisible') == 'true';
+    showLogsButton.onchange = function () {
+        localStorage.setItem('@urlServicecs.GetItemId()_logsVisible', showLogsButton.checked);
+        if (showLogs) {
+            showLogs(showLogsButton.checked);
+        }
+
+    }
+</script>

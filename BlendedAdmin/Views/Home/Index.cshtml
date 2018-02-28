@@ -1,0 +1,39 @@
+﻿@model BlendedAdmin.Models.Home.HomeModel
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Dashboard</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="Items" asp-action="Create">
+            <span data-feather="edit"></span>
+            Create item
+        </a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                <th class="border-top-0">#</th>
+                <th class="border-top-0">Name</th>
+                <th class="border-top-0">Category</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Items)
+            {
+            <tr>
+                <td>@item.Id</td>
+                <td><a asp-controller="Items" asp-action="Run" asp-route-id="@item.Id">@item.Name</a></td>
+                <td>@item.Category</td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+
+ 

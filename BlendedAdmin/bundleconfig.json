@@ -1,0 +1,45 @@
+﻿// Configure bundling and minification for the project.
+// More info at https://go.microsoft.com/fwlink/?LinkId=808241
+[
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    // An array of relative input file paths. Globbing patterns supported
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/js/site.min.js",
+    "inputFiles": [
+      "wwwroot/js/site.js"
+    ],
+    // Optionally specify minification options
+    "minify": {
+      "enabled": true,
+      "renameLocals": true
+    },
+    // Optionally generate .map file
+    "sourceMap": false
+  },
+
+  {
+    "outputFileName": "wwwroot/lib/codemirror/codemirror.bundle.js",
+    "inputFiles": [
+      "wwwroot/lib/codemirror/lib/codemirror.js",
+      "wwwroot/lib/codemirror/mode/javascript/javascript.js",
+      "wwwroot/lib/codemirror/mode/javascript/javascript.js",
+      "wwwroot/lib/codemirror/addon/hint/show-hint.js",
+      "wwwroot/lib/codemirror/addon/hint/javascript-hint.js",
+      "wwwroot/lib/jquery-ui/jquery-ui.js"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/lib/codemirror/codemirror.bundle.css",
+    "inputFiles": [
+      "wwwroot/lib/codemirror/lib/codemirror.css",
+      "wwwroot/lib/codemirror/addon/hint/show-hint.css",
+      "wwwroot/lib/jquery-ui/jquery-ui.css"
+    ]
+  }
+
+]

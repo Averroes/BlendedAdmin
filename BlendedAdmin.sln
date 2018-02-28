@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2005
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlendedAdmin", "BlendedAdmin\BlendedAdmin.csproj", "{88BF47AF-A2E8-462E-AD7F-A660B307B04A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlendedAdmin.Tests", "BlendedAdmin.Tests\BlendedAdmin.Tests.csproj", "{DF54CFA2-5D39-4ECD-B3AC-85BBAF9FC6FA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{88BF47AF-A2E8-462E-AD7F-A660B307B04A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88BF47AF-A2E8-462E-AD7F-A660B307B04A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88BF47AF-A2E8-462E-AD7F-A660B307B04A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88BF47AF-A2E8-462E-AD7F-A660B307B04A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF54CFA2-5D39-4ECD-B3AC-85BBAF9FC6FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF54CFA2-5D39-4ECD-B3AC-85BBAF9FC6FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF54CFA2-5D39-4ECD-B3AC-85BBAF9FC6FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF54CFA2-5D39-4ECD-B3AC-85BBAF9FC6FA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2C8803DB-CF85-4489-B45F-7EABE86A6E2E}
+	EndGlobalSection
+EndGlobal

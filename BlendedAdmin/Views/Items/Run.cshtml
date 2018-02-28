@@ -1,0 +1,19 @@
+﻿@inject BlendedAdmin.Services.IUrlServicecs urlService
+@model BlendedAdmin.Models.Items.ItemRunModel
+
+@{ViewData["Title"] = "Edit"; }
+
+@{ViewData["Title"] = "Edit"; }
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">@Model.EditModel.Name</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        @Html.Partial("_LogsButton")
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="Items" asp-action="Edit">
+            <span data-feather="edit"></span>
+            Edit View
+        </a>
+    </div>
+</div>
+
+@Html.Partial("_Run", Model)

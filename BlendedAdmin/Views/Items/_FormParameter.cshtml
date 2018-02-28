@@ -1,0 +1,15 @@
+@inject BlendedAdmin.Services.IUrlServicecs urlServicecs
+@model BlendedAdmin.Models.Items.ParameterModel
+
+    <label class="">@(Model.Label ?? Model.Name)</label>
+    @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.TextBox ||
+            Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
+    {
+        <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" />
+    }
+    @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Select ||
+                Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
+    {
+        <select name="@Model.Name" value="@Model.Value" class="form-control form-control-sm" @(@Model.ReadOnly ? "form-control-plaintext" : "")>
+        </select>
+    }

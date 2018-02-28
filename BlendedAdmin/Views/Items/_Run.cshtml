@@ -1,0 +1,27 @@
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+@model BlendedAdmin.Models.Items.ItemRunModel
+
+
+@Html.Partial("_Logs", Model)
+
+<div asp-validation-summary="All" class="text-danger"></div>
+
+@if (Model != null && Model.RunResult != null && Model.RunResult.Views != null)
+{
+    @foreach (object view in Model.RunResult.Views)
+    {
+        if (view is BlendedAdmin.Models.Items.TableViewModel)
+        {
+            @Html.Partial("_TableView", view)
+        }
+        if (view is BlendedAdmin.Models.Items.JsonViewModel)
+        {
+            @Html.Partial("_JsonView", view)
+        }
+        if (view is BlendedAdmin.Models.Items.FormViewModel)
+        {
+            @Html.Partial("_FormView", view)
+        }
+        <br />
+    }
+}

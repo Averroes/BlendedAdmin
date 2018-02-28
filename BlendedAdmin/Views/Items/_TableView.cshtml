@@ -1,0 +1,56 @@
+@model BlendedAdmin.Models.Items.TableViewModel
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+@inject IJsonHelper jsonHelper;
+@using BlendedJS;
+
+@if (string.IsNullOrEmpty(Model.Title) == false)
+{
+    <h6>@Model.Title</h6>
+}
+@{ 
+//var order = urlService.GetQueryString("_o");
+//var direction = urlService.GetQueryString("_d");
+//var page = 1;// urlService.GetQueryString("_p").ToIntOrDefault(1);
+
+}
+
+<div class="table-responsive">
+    <table class="table table-striped table-sm">
+        <thead>
+            <tr>
+                @foreach (var column in Model.Columns)
+                {
+                    <th  class="border-top-0" nowrap><a box-order="@column">@column</a></th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Rows)
+            {
+                <tr>
+                    @foreach (var column in Model.Columns)
+                    {
+                        <td nowrap>
+                            @row.GetValueOrDefault2(column).ToJsonOrString()
+                        </td>
+                    }
+                </tr>
+            }
+            <tr></tr>
+        </tbody>
+    </table>
+</div>
+
+    @*@if (count > 0)
+    {
+    <div class="pagination-row">
+        <span class="pagination-info pull-left">Total results: @count</span>
+        <ul box-pager="@count" class="pagination pagination-sm"></ul>
+    </div>
+    }
+    else
+    {
+    <div>No results.</div>
+    }*@
+
+

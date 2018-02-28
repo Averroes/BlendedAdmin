@@ -1,0 +1,156 @@
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+@model BlendedAdmin.Models.Items.ItemEditModel
+
+
+@{ViewData["Title"] = "Edit"; }
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Item</h1>
+    <div class="btn-toolbar mb-2 mb-md-0">
+        @Html.Partial("_LogsButton")
+        <a class="btn btn-sm btn-outline-secondary" asp-controller="Items" asp-action="Run">
+            <span data-feather="edit"></span>
+            Run view
+        </a>
+    </div>
+</div>
+
+<form id="editForm" action="@urlService.GetUrl()" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" name="model.Id" asp-for="Id" />
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="Name">Name</label>
+            <input class="form-control form-control-sm" id="name" name="model.Name" asp-for="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="category">Category</label>
+            <input class="form-control form-control-sm" id="category" name="model.Category" asp-for="Category">
+            <span asp-validation-for="Category" class="text-danger"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="code">Code</label>
+        <textarea class="form-control" id="code" name="model.Code"  asp-for="Code" rows="5" style="width:100%"></textarea>
+        <span asp-validation-for="Code" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button id="runCode" type="submit" class="btn btn btn-outline-secondary">
+            Run Code
+        </button>
+        <button type="submit" class="btn btn-outline-primary" style="margin-left:20px;">
+            Save
+        </button>
+    </div>
+</form>
+<br />
+<div id="subView" class="browser-container invisible">
+    <div class="browser-header">
+        <div class="float-left" style="width:15%;">
+            <span class="browser-dot" style="background:#ED594A;"></span>
+            <span class="browser-dot" style="background:#FDD800;"></span>
+            <span class="browser-dot" style="background:#5AC05A;"></span>
+        </div>
+        <div class="float-left" style="width: 75%;">
+            <input type="text" class="browser-address invisible" value="http://www.w3schools.com">
+        </div>
+        <div class="float-left" style="width: 10%;">
+            <div style="float:right">
+                <span class="browser-bar"></span>
+                <span class="browser-bar"></span>
+                <span class="browser-bar"></span>
+            </div>
+        </div>
+    </div>
+    <div class="browser-content">
+    </div>
+</div>
+<br />
+<br />
+
+@section Scripts {
+    <link href="~/lib/codemirror/codemirror.bundle.css" rel="stylesheet" />
+    <script src="~/lib/codemirror/codemirror.bundle.js"></script>
+    <script>
+        var editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            extraKeys: { "Ctrl-Space": "autocomplete" },
+            lineNumbers: true,
+            mode: "text/javascript"
+        });
+
+        var widthStorage = window.location.href + ".width";
+        var heightStorage = window.location.href + ".height";
+        $(editor.getWrapperElement()).resizable({
+            resize: function () {
+                var height = $(this).height();
+                editor.setSize(width, height);
+                if (typeof (Storage) !== "undefined") {
+                    localStorage.setItem(heightStorage, height);
+                }
+            }
+        });
+
+        if (typeof (Storage) !== "undefined") {
+            var width = $(editor.getWrapperElement()).width();
+            var height = parseInt(localStorage.getItem(heightStorage));
+            if (width && height) {
+                editor.setSize(width, height);
+            }
+        }
+
+        editor.on("change", function (editor) {
+            editor.save();
+        });
+    </script>
+    <script>
+        (function ($) {
+        $.fn.loadView = function (settings) {
+            var container = this;
+            container.addClass('browser-loading');
+            $.ajax({
+                type: "POST",
+                url: settings.redirectUrl ? settings.redirectUrl : (settings.url + '&_httpMethod=get'),
+                data: settings.redirectPostForm ? settings.redirectPostForm.serialize() : (settings.postForm ? settings.postForm.serialize() : ''),
+                success: function (data) {
+                    container.removeClass('browser-loading');
+                    container.html(data);
+                    container.find('a').not('[href^="#"]').click(function (event) {
+                        event.preventDefault();
+                        settings.redirectUrl = $(this).attr('href').replace('_httpMethod=post', '_httpMethod=get');
+                        container.loadView(settings);
+                    });
+                    container.find('form').submit(function (event) {
+                        event.preventDefault();
+                        if ($(this).attr('method') == 'get') {
+                            settings.redirectUrl = settings.url + '&' + $(this).serialize() + '&_httpMethod=get';
+                            settings.redirectPostForm = null;
+                        }
+                        else {
+                            settings.redirectUrl = settings.url + '&_httpMethod=post';
+                            if (settings.postForm)
+                                settings.redirectPostForm = $([settings.postForm[0], this]);
+                            else
+                                settings.redirectPostForm = $(this);
+                        }
+                        container.loadView(settings);
+                    });
+                    if (settings.onLoad)
+                        settings.onLoad();
+                },
+            });
+        }
+        }(jQuery));
+        $('#runCode').click(function (event) {
+            event.preventDefault();
+            $('#subView').removeClass('invisible');
+            $('#subView .browser-content').loadView({
+                url: '@urlService.GetBaseUrlWithEnvironment()/items/0?_renderAs=subView',
+                postForm: $('#editForm'),
+                onLoad: function () {
+                    $('#subView').addClass('subView');
+                }
+            });
+        });
+    </script>
+}

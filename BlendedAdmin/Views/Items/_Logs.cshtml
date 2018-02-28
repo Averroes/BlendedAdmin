@@ -1,0 +1,35 @@
+﻿@using BlendedAdmin.Js;
+@inject BlendedAdmin.Services.IUrlServicecs urlServicecs
+@inject IJsonHelper jsonHelper
+@model BlendedAdmin.Models.Items.ItemRunModel
+
+<div id="logs" class="logs">
+    <div style="padding-bottom: 5px;"><span class="inline-block line-number"></span>--Logs-- 
+    </div>
+    @if (Model != null && Model.RunResult != null && Model.RunResult.Logs != null)
+    {
+        @foreach (var log in Model.RunResult.Logs)
+        {
+            string logId = Guid.NewGuid().ToString();
+            <div>
+                <span class="line-collapsable" data-toggle="collapse" data-target="#@logId">
+                    <span class="d-inline-block line-number">@log.Line</span>@log.Arg1
+                    <i class="fa fa-angle-down"></i>
+                </span>
+            </div>
+            if (log.Arg2 != null)
+            {
+                <pre id="@logId" class="collapse">@jsonHelper.Serialize(log.Arg2, new Newtonsoft.Json.JsonSerializerSettings() { Formatting = Newtonsoft.Json.Formatting.Indented })</pre>
+            }
+        }
+    }
+</div>
+<script>
+    function showLogs(isVisible) {
+                if (isVisible)
+            document.getElementById('logs').style.display = 'block';
+        else
+            document.getElementById('logs').style.display = 'none';
+    }
+    showLogs(document.getElementById("showLogs").checked);
+</script>

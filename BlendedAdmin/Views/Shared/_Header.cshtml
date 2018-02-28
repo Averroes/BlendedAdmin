@@ -1,0 +1,26 @@
+﻿@inject BlendedAdmin.Services.IUrlServicecs urlService
+@inject BlendedAdmin.Services.IEnvironmentService environmentService
+
+<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0" asp-controller="Home" asp-action="Index">Company name</a>
+    @*<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">*@
+    <ul class="nav nav-pills px-6">
+        
+        <li class="nav-item dropdown">
+            <div class="btn-group" style="margin-right: 5px;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Default
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="right:0; left:auto;">
+                    <button class="dropdown-item" type="button">Action</button>
+                    <button class="dropdown-item" type="button">Another action</button>
+                    <button class="dropdown-item" type="button">Something else here</button>
+                </div>
+            </div>
+        </li>
+
+        @*<li class="nav-item text-nowrap">
+                <a class="nav-link" href="#">Sign out</a>
+            </li>*@
+    </ul>
+</nav>

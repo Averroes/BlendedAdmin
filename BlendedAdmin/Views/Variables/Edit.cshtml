@@ -1,0 +1,41 @@
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+@model BlendedAdmin.Models.Variables.VariableModel
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Variable</h1>
+    <div>
+        <a asp-controller="Variables" asp-action="Index"><i class="fa fa-reply"></i>Go to the list</a>
+    </div>
+</div>
+
+<form id="editForm" action="@urlService.GetUrl()" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    @for (int i = 0; i < Model.Values.Count; i++)
+    {
+        <div class="form-group">
+            @if (Model.Values.Count > 1)
+            {
+                <label><span style="color: @Model.Values[i].Color">@(Model.Values[i].Environment ?? "Default") value</span></label>
+            }
+            else
+            {
+                <label>Value</label>
+            }
+            <textarea asp-for="Values[i].Value" class="form-control" rows="1"></textarea>
+            <span asp-validation-for="Values[i].Value" class="text-danger"></span>
+            <input asp-for="Values[i].Environment" type="hidden" />
+            <input asp-for="Values[i].EnvironmentId" type="hidden" />
+            <input asp-for="Values[i].Color" type="hidden" />
+        </div>
+    }
+    <div class="form-group">
+        <a class="btn btn-default" asp-controller="Variables" asp-action="Index">Go back</a>
+        <button type="submit" class="btn btn-default">Save</button>
+    </div>
+</form>
