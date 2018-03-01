@@ -71,7 +71,7 @@ namespace BlendedAdmin
             {
                 routes.MapRoute(
                     name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    template: "{environment=Default}/{controller=Home}/{action=Index}/{id?}");
             });
 
             using (ApplicationDbContext dbContext = serviceProvide.GetService<ApplicationDbContext>())
