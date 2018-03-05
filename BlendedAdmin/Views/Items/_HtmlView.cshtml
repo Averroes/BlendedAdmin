@@ -1,0 +1,6 @@
+@model BlendedAdmin.Models.Items.HtmlViewModel
+@if (string.IsNullOrEmpty(Model.Title) == false)
+{
+    <h6>@Model.Title</h6>
+}
+@Html.Raw(Model.Html)
