@@ -33,6 +33,7 @@ namespace BlendedAdmin.Models.Items
         Input,
         Select,
         DropDown,
+        CheckBox,
         None
     }
 

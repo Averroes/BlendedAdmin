@@ -138,6 +138,10 @@
                     if (settings.onLoad)
                         settings.onLoad();
                 },
+                error: function (data) {
+                    container.removeClass('browser-loading');
+                    container.html(data.responseText);
+                }
             });
         }
         }(jQuery));

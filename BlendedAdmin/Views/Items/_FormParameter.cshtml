@@ -1,15 +1,24 @@
 @inject BlendedAdmin.Services.IUrlServicecs urlServicecs
 @model BlendedAdmin.Models.Items.ParameterModel
 
-    <label class="">@(Model.Label ?? Model.Name)</label>
     @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.TextBox ||
-            Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
+        Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
     {
+        <label class="">@(Model.Label ?? Model.Name)</label>
         <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" />
     }
     @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Select ||
-                Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
+        Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
     {
+        <label class="">@(Model.Label ?? Model.Name)</label>
         <select name="@Model.Name" value="@Model.Value" class="form-control form-control-sm" @(@Model.ReadOnly ? "form-control-plaintext" : "")>
         </select>
+    }
+    @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.CheckBox)
+    {
+        var id = Guid.NewGuid().ToString();
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="@id">
+            <label class="form-check-label" for="@id">@Model.Name</label>
+        </div>
     }
