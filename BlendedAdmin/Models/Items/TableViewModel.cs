@@ -1,4 +1,5 @@
 ﻿using BlendedAdmin.Js;
+using BlendedAdmin.Services;
 using BlendedJS;
 using System;
 using System.Collections;
@@ -13,7 +14,10 @@ namespace BlendedAdmin.Models.Items
         public List<string> Columns { get; set; }
         public List<IDictionary<string, object>> Rows { get; set; }
         public int PageSize { get; set; }
+        public int PageCount { get; set; }
         public int Page { get; set; }
+        public int StartPage { get; internal set; }
+        public int EndPage { get; internal set; }
 
         public TableViewModel()
         {
@@ -22,14 +26,45 @@ namespace BlendedAdmin.Models.Items
 
     public class TableViewModelAssembler
     {
+        private IUrlServicecs _urlService;
+
+        public TableViewModelAssembler(IUrlServicecs urlService)
+        {
+            _urlService = urlService;
+        }
+
         public TableViewModel ToModel(TableView tableView)
         {
+            var rows = GetRows(tableView);
             TableViewModel model = new TableViewModel();
-            model.Rows = GetRows(tableView);
+            model.Rows = rows;
             model.Columns = GetColumns(tableView);
-            model.Page = tableView.GetValueOrDefault2("page").ToIntOrDefault(1);
-            model.PageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(100);
+            model.Page = tableView.GetValueOrDefault2("page").ToIntOrDefault() ??
+                        _urlService.GetQueryString("p").ToIntOrDefault(1);
+            model.PageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(50);
+            model.PageCount = tableView.GetValueOrDefault2("pageCount").ToIntOrDefault() ??
+                              (int)Math.Ceiling((double)model.Rows.Count / model.PageSize);
+            model.Rows = rows.Skip((model.Page - 1) * model.PageSize).Take(model.PageSize).ToList();
             model.Title = tableView.GetValueOrDefault2("title").ToStringOrDefault();
+
+            var startPage = model.Page - 5;
+            var endPage = model.Page + 4;
+            if (startPage <= 0)
+            {
+                endPage -= (startPage - 1);
+                startPage = 1;
+            }
+            if (endPage > model.Page)
+            {
+                endPage = model.PageCount;
+                if (endPage > 10)
+                {
+                    startPage = endPage - 9;
+                }
+            }
+            model.StartPage = startPage;
+            model.EndPage = endPage;
+
             return model;
         }
 

@@ -20,15 +20,18 @@ namespace BlendedAdmin.Js
         private IHttpContextAccessor _httpContextAccessor;
         private IVariablesService _variablesService;
         private IEnvironmentService _environmentService;
+        private IUrlServicecs _urlServicecs;
 
         public JsService(
             IHttpContextAccessor httpContextAccessor, 
             IVariablesService variablesService,
-            IEnvironmentService environmentService)
+            IEnvironmentService environmentService,
+            IUrlServicecs urlServicecs)
         {
             _httpContextAccessor = httpContextAccessor;
             _variablesService = variablesService;
             _environmentService = environmentService;
+            _urlServicecs = urlServicecs;
         }
 
         public async Task<JsRunResult> Run(string code)
@@ -63,7 +66,7 @@ namespace BlendedAdmin.Js
                 foreach (var view in (Array)jsResult.Value)
                 {
                     if (view is TableView)
-                        runResults.Views.Add(new TableViewModelAssembler().ToModel((TableView)view));
+                        runResults.Views.Add(new TableViewModelAssembler(_urlServicecs).ToModel((TableView)view));
                     if (view is FormView)
                         runResults.Views.Add(new FormViewModelAssembler().ToModel((FormView)view));
                     if (view is JsonView)
@@ -75,7 +78,7 @@ namespace BlendedAdmin.Js
             else if (jsResult.Value is View)
             {
                 if (jsResult.Value is TableView)
-                    runResults.Views.Add(new TableViewModelAssembler().ToModel((TableView)jsResult.Value));
+                    runResults.Views.Add(new TableViewModelAssembler(_urlServicecs).ToModel((TableView)jsResult.Value));
                 if (jsResult.Value is FormView)
                     runResults.Views.Add(new FormViewModelAssembler().ToModel((FormView)jsResult.Value));
                 if (jsResult.Value is JsonView)
