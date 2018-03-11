@@ -149,7 +149,7 @@
             event.preventDefault();
             $('#subView').removeClass('invisible');
             $('#subView .browser-content').loadView({
-                url: '@urlService.GetBaseUrlWithEnvironment()/items/0?_renderAs=subView',
+                url: '@urlService.GetBasePath()/@urlService.GetEnvironment()/items/0?_renderAs=subView',
                 postForm: $('#editForm'),
                 onLoad: function () {
                     $('#subView').addClass('subView');

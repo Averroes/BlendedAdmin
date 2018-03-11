@@ -11,8 +11,8 @@ namespace BlendedAdmin.Services
 {
     public interface IUrlServicecs
     {
-        string GetBaseUrlWithPath();
         string GetUrl();
+        string GetBasePath();
         string GetUrlWithQueryString(dynamic queryString);
         bool HasQueryString(string name);
         bool HasQueryString(string name, string value);
@@ -20,7 +20,6 @@ namespace BlendedAdmin.Services
         int GetItemId();
         string GetEnvironment();
         string GetUrlWithEnvironment(string environment);
-        string GetBaseUrlWithEnvironment();
     }
 
     public class UrlServicecs : IUrlServicecs
@@ -33,28 +32,20 @@ namespace BlendedAdmin.Services
             _actionContextAccessor = actionContextAccessor;
         }
 
-        public string GetBaseUrl()
-        {
-            var request = _httpContextAccessor.HttpContext.Request;
-            string baseUrl = string.Concat(request.Scheme, "://", request.Host, request.PathBase);
-            return baseUrl;
-        }
-
-        public string GetBaseUrlWithPath()
-        {
-            var request = _httpContextAccessor.HttpContext.Request;
-            string baseUrl = string.Concat(GetBaseUrl(), request.Path);
-            return baseUrl;
-        }
-
         public string GetUrl()
         {
             var request = _httpContextAccessor.HttpContext.Request;
-            string url = GetBaseUrlWithPath() + request.QueryString;
+            string url = request.Path + request.QueryString;
             return url;
         }
 
-        public string GetUrlWithQueryString(dynamic queryString)
+        public string GetBasePath()
+        {
+            var request = _httpContextAccessor.HttpContext.Request;
+            return request.PathBase;
+        }
+
+            public string GetUrlWithQueryString(dynamic queryString)
         {
             var request = _httpContextAccessor.HttpContext.Request;
             var query = QueryHelpers.ParseQuery(request.QueryString.Value);
@@ -69,7 +60,7 @@ namespace BlendedAdmin.Services
                 if (value != null)
                     items.Add(new KeyValuePair<string, string>(key, value));
             }
-            var url = GetBaseUrlWithPath() + new QueryBuilder(items).ToQueryString();
+            var url = request.Path  + new QueryBuilder(items).ToQueryString();
             return url;
         }
 
@@ -136,15 +127,8 @@ namespace BlendedAdmin.Services
                 }
                 path = new PathString("/" + string.Join("/", segments));
             }
-            var absoluteUri = string.Concat(GetBaseUrl(),
-                                    path,
-                                    request.QueryString.ToUriComponent());
+            var absoluteUri = path + request.QueryString.ToUriComponent();
             return absoluteUri; 
-        }
-
-        public string GetBaseUrlWithEnvironment()
-        {
-            return string.Concat(GetBaseUrl(), "/", GetEnvironment());
         }
     }
 }

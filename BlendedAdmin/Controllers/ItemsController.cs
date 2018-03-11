@@ -40,10 +40,10 @@ namespace BlendedAdmin.Controllers
             ItemEditModel model = new ItemEditModel();
             model.Code = @"function main(arg)
 {
-
+  	var htmlView = new HtmlView('<div>hello!</div>'); 
+	return [htmlView];
 }
-main(arg);
-";
+main(arg);";
             return View("Edit", model);
         }
 
