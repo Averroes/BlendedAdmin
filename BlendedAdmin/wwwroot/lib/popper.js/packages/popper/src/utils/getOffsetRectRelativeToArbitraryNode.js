@@ -2,11 +2,11 @@ import getStyleComputedProperty from './getStyleComputedProperty';
 import includeScroll from './includeScroll';
 import getScrollParent from './getScrollParent';
 import getBoundingClientRect from './getBoundingClientRect';
-import runIsIE10 from './isIE10';
+import runIsIE from './isIE';
 import getClientRect from './getClientRect';
 
-export default function getOffsetRectRelativeToArbitraryNode(children, parent) {
-  const isIE10 = runIsIE10();
+export default function getOffsetRectRelativeToArbitraryNode(children, parent, fixedPosition = false) {
+  const isIE10 = runIsIE(10);
   const isHTML = parent.nodeName === 'HTML';
   const childrenRect = getBoundingClientRect(children);
   const parentRect = getBoundingClientRect(parent);
@@ -16,6 +16,11 @@ export default function getOffsetRectRelativeToArbitraryNode(children, parent) {
   const borderTopWidth = parseFloat(styles.borderTopWidth, 10);
   const borderLeftWidth = parseFloat(styles.borderLeftWidth, 10);
 
+  // In cases where the parent is fixed, we must ignore negative scroll in offset calc
+  if(fixedPosition && parent.nodeName === 'HTML') {
+    parentRect.top = Math.max(parentRect.top, 0);
+    parentRect.left = Math.max(parentRect.left, 0);
+  }
   let offsets = getClientRect({
     top: childrenRect.top - parentRect.top - borderTopWidth,
     left: childrenRect.left - parentRect.left - borderLeftWidth,
@@ -44,7 +49,7 @@ export default function getOffsetRectRelativeToArbitraryNode(children, parent) {
   }
 
   if (
-    isIE10
+    isIE10 && !fixedPosition
       ? parent.contains(scrollParent)
       : parent === scrollParent && scrollParent.nodeName !== 'BODY'
   ) {

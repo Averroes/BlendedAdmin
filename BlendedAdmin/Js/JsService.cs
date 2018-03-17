@@ -39,16 +39,21 @@ namespace BlendedAdmin.Js
             JsRunResult runResults = new JsRunResult();
             BlendedJSEngine engine = new BlendedJSEngine();
             var httpContext = _httpContextAccessor.HttpContext;
-            Dictionary<string,object> arg = new Dictionary<string,object>();
-            arg["variables"] = await this._variablesService.GetVariables();
+            var arg = new BlendedJS.Object();
+            arg["variables"] = (await this._variablesService.GetVariables()).ToJsObject();
             arg["environment"] = (await this._environmentService.GetCurrentEnvironment()).Name;
             arg["queryString"] = httpContext.Request.Query
-                .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault());
+                .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault())
+                .ToJsObject();
             try
             {
                 arg["form"] = httpContext.Request.Form
-                    .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault());
-            } catch { }
+                    .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault())
+                    .ToJsObject();
+            } catch
+            {
+                arg["form"] = new BlendedJS.Object();
+            }
             if (httpContext.Request.Query.ContainsKey("_httpMethod"))
                 arg["method"] = httpContext.Request.Query["_httpMethod"].FirstOrDefault().ToLower();
             else
@@ -59,8 +64,9 @@ namespace BlendedAdmin.Js
             engine.Jint.SetValue("HtmlView", TypeReference.CreateTypeReference(engine.Jint, typeof(HtmlView)));
             engine.Jint.SetValue("arg", arg);
             var jsResult = engine.ExecuteScript(code);
-            runResults.Logs = jsResult.Console;
+            runResults.Logs = jsResult.Logs;
             runResults.Exception = jsResult.Exception;
+            runResults.LastExecutedLine = jsResult.LastExecutedLine;
             if (jsResult.Value is Array)
             {
                 foreach (var view in (Array)jsResult.Value)

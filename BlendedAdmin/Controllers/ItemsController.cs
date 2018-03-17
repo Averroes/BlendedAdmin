@@ -135,7 +135,7 @@ main(arg);";
             {
                 m.RunResult = await _jsService.Run(editModel.Code);
                 if (m.RunResult.Exception != null)
-                    this.ModelState.AddModelError("", m.RunResult.Exception.Message);
+                    this.ModelState.AddModelError("", "Error, Line " + m.RunResult.LastExecutedLine + " :" + m.RunResult.Exception.Message);
             }
             catch (Exception ex)
             {

@@ -20,11 +20,12 @@ namespace BlendedAdmin.Models.Items
 
     public class ParameterModel
     {
-        public string Name { get; internal set; }
-        public string Label { get; internal set; }
-        public string Value { get; internal set; }
-        public bool ReadOnly { get; internal set; }
-        public ParmeterTypeModel Type { get; internal set; }
+        public string Name { get; set; }
+        public string Label { get; set; }
+        public string Value { get; set; }
+        public bool ReadOnly { get; set; }
+        public ParmeterTypeModel Type { get; set; }
+        public string Error { get; set; }
     }
 
     public enum ParmeterTypeModel
@@ -81,6 +82,7 @@ namespace BlendedAdmin.Models.Items
                 Label = parameter.GetValueOrDefault2("label").ToStringOrDefault(),
                 Value = parameter.GetValueOrDefault2("value").ToStringOrDefault(),
                 ReadOnly = parameter.GetValueOrDefault2("readOnly").ToBoolOrDefault(false),
+                Error = parameter.GetValueOrDefault2("error").ToStringOrDefault(),
                 Type = parameterType,
                 //Options = optionsList
             };

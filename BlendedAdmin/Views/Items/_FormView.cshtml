@@ -5,6 +5,14 @@
 {
     <h6>@Model.Title</h6>
 }
+<div class="text-danger validation-summary-errors" data-valmsg-summary="true">
+    <ul>
+        @foreach (var parameter in Model.Parameters.SelectMany(x => x).Where(x => x != null && string.IsNullOrWhiteSpace(x.Error) == false))
+        {
+            <li>@parameter.Error</li>
+        }
+    </ul>
+</div>
 <form class="form-horizontal" method="@(Model.Method)" action="@urlService.GetUrl()">
     @foreach (var row in Model.Parameters)
     {

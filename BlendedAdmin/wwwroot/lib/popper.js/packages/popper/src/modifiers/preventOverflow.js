@@ -23,7 +23,8 @@ export default function preventOverflow(data, options) {
     data.instance.popper,
     data.instance.reference,
     options.padding,
-    boundariesElement
+    boundariesElement,
+    data.positionFixed
   );
   options.boundaries = boundaries;
 

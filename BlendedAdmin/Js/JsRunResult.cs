@@ -14,6 +14,7 @@ namespace BlendedAdmin.Js
         public List<object> Views { get; set; }
         public List<Log> Logs { get; set; }
         public Exception Exception { get; set; }
+        public int LastExecutedLine { get; internal set; }
     }
 
 }

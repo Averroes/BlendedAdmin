@@ -25,5 +25,46 @@ namespace BlendedAdmin.Js
                 this["controls"] = optionsModel.GetValueOrDefault2("controls", new object[0]);
             }
         }
+
+        public object[] getAllControls()
+        {
+            List<object> controls = new List<object>();
+            object[] rows = this.GetValueOrDefault2("controls", new object[0]) as object[];
+            foreach (var row in rows)
+            {
+                if (row is object[])
+                    controls.AddRange((object[])row);
+                
+                else
+                    controls.Add(row);
+            }
+            return controls.ToArray();
+        }
+
+        public object getControlByName(object name)
+        {
+            foreach (var control in getAllControls())
+            {
+                if (control.GetProperty("name").ToStringOrDefault() == name.ToStringOrDefault())
+                    return control;
+            }
+            return null;
+        }
+
+        public object isValid()
+        {
+            foreach (var control in getAllControls())
+            {
+                if (string.IsNullOrWhiteSpace(control.GetProperty("error").ToStringOrDefault()) == false)
+                    return false;
+                if (control.GetProperty("required").ToBoolOrDefault(false) &&
+                    string.IsNullOrWhiteSpace(control.GetProperty("value").ToStringOrDefault()))
+                {
+                    control.SetProperty("error", control.GetProperty("name") + " is required.");
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
