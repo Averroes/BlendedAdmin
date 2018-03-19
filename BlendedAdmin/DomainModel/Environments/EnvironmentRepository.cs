@@ -59,7 +59,11 @@ namespace BlendedAdmin.DomainModel.Environments
 
         public async Task<int> GetNextIndex()
         {
-            return (await _dbContext.Environments.MaxAsync(x => x.Index)) + 1;
+            var environments =  await _dbContext.Environments.ToListAsync();
+            if (environments.Count == 0)
+                return 0;
+            else
+                return environments.Max(x => x.Index) + 1;
         }
     }
 }
