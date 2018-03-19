@@ -4,7 +4,7 @@
 @model BlendedAdmin.Models.Items.ItemRunModel
 
 <div id="logs" class="logs">
-    <div style="padding-bottom: 5px;"><span class="inline-block line-number"></span>--Logs-- 
+    <div class="border-bottom mb-1 pb-1"><span class="inline-block line-number"></span>Logs 
     </div>
     @if (Model != null && Model.RunResult != null && Model.RunResult.Logs != null)
     {
@@ -14,7 +14,7 @@
             <div>
                 <span class="line-collapsable" data-toggle="collapse" data-target="#@logId">
                     <span class="d-inline-block line-number">@log.Line</span>@log.Arg1
-                    <i class="fa fa-angle-down"></i>
+                    @*<i class="fa fa-angle-down"></i>*@
                 </span>
             </div>
             if (log.Arg2 != null)

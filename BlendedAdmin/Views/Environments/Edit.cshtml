@@ -1,6 +1,8 @@
 @inject BlendedAdmin.Services.IUrlServicecs urlService
 @model BlendedAdmin.Models.Environments.EnvironmentModel
 
+@{ViewData["Title"] = Model.Id > 0 ? (Model.Name + "- Environments") : "New - Environments";}
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Environment</h1>
 </div>
@@ -19,7 +21,7 @@
         <span asp-validation-for="Color" class="text-danger"></span>
     </div>
     <div class="form-group">
-        <a  class="btn btn-outline-secondary" asp-controller="Environments" asp-action="Index">Cancel</a>
+        <a class="btn btn-outline-secondary" asp-controller="Environments" asp-action="Index">Cancel</a>
         <button type="submit" class="btn btn-outline-primary">Save</button>
     </div>
 </form>

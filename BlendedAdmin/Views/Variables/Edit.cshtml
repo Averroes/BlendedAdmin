@@ -1,6 +1,8 @@
 @inject BlendedAdmin.Services.IUrlServicecs urlService
 @model BlendedAdmin.Models.Variables.VariableModel
 
+@{ViewData["Title"] = Model.Id > 0 ? (Model.Name + "- Variables") : "New - Variables";}
+
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Variable</h1>
     <div>
