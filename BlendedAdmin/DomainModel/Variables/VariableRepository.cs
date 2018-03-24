@@ -1,4 +1,5 @@
 ﻿using BlendedAdmin.Data;
+using BlendedAdmin.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -19,14 +20,18 @@ namespace BlendedAdmin.DomainModel.Variables
     public class VariableRepository : IVariableRepository
     {
         private ApplicationDbContext _dbContext;
-        public VariableRepository(ApplicationDbContext dbContext)
+        private ITenantService _tenantService;
+
+        public VariableRepository(ApplicationDbContext dbContext, ITenantService tenantService)
         {
             _dbContext = dbContext;
+            _tenantService = tenantService;
         }
 
         public async Task<Variable> GetById(int id)
         {
             return await _dbContext.Variables
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .Include(x => x.Values)
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
@@ -34,6 +39,7 @@ namespace BlendedAdmin.DomainModel.Variables
         public async Task<Variable> GetByName(string name)
         {
             return await _dbContext.Variables
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .Include(x => x.Values)
                 .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
@@ -41,6 +47,7 @@ namespace BlendedAdmin.DomainModel.Variables
         public async Task<List<Variable>> GetAll()
         {
             return await _dbContext.Variables
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .Include(x => x.Values)
                 .OrderBy(x => x.Name)
                 .ToListAsync();

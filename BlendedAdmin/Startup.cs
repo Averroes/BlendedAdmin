@@ -17,6 +17,7 @@ using BlendedAdmin.DomainModel.Environments;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using BlendedAdmin.Js;
+using BlendedAdmin.DomainModel.Users;
 
 namespace BlendedAdmin
 {
@@ -41,6 +42,7 @@ namespace BlendedAdmin
                 options.UseSqlite("Data Source=Database.db;");
             });
             services.AddScoped<IDomainContext, DomainContext>();
+            services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IVariableRepository, VariableRepository>();
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
@@ -48,6 +50,7 @@ namespace BlendedAdmin
             services.AddTransient<ISiteMenuService, SiteMenuService>();
             services.AddTransient<IUrlServicecs, UrlServicecs>();
             services.AddTransient<IVariablesService, VariablesService>();
+            services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<IJsService, JsService>();
         }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlendedAdmin.Models;
+using BlendedAdmin.Services;
 
 namespace BlendedAdmin.DomainModel.Items
 {
@@ -21,26 +22,33 @@ namespace BlendedAdmin.DomainModel.Items
     public class ItemRepository : IItemRepository
     {
         private ApplicationDbContext _dbContext;
-        public ItemRepository(ApplicationDbContext dbContext)
+        private ITenantService _tenantService;
+
+        public ItemRepository(ApplicationDbContext dbContext, ITenantService tenantService)
         {
             _dbContext = dbContext;
+            _tenantService = tenantService;
         }
 
         public async Task<Item> Get(int id)
         {
             return await _dbContext.Items
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public Task<Item> GetByName(string name)
         {
             return _dbContext.Items
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .FirstOrDefaultAsync(x => string.Equals(x.Name, name, StringComparison.CurrentCultureIgnoreCase));
         }
 
         public Task<List<Item>> GetAll()
         {
-            return _dbContext.Items.ToListAsync();
+            return _dbContext.Items
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
+                .ToListAsync();
         }
 
         public void Save(Item item)
@@ -66,6 +74,7 @@ namespace BlendedAdmin.DomainModel.Items
         public Task<List<string>> GetAllCategories()
         {
             return _dbContext.Items
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .Select(x => x.Category)
                 .Where(x => string.IsNullOrEmpty(x) == false)
                 .Distinct().ToListAsync();

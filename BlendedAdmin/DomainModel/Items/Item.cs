@@ -11,5 +11,6 @@ namespace BlendedAdmin.DomainModel.Items
         public string Name { get; set; }
         public string Code { get; set; }
         public string Category { get; set; }
+        public string TenantId { get; set; }
     }
 }

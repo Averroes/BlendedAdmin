@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlendedAdmin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("1_ItemsMigration")]
+    [Migration("00000000000003_ItemsMigration")]
     public class ItemsModelMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,12 +17,19 @@ namespace BlendedAdmin.Data.Migrations
                     Name = table.Column<string>(nullable: false),
                     Category = table.Column<string>(nullable: true),
                     Code = table.Column<string>(nullable: true),
+                    TenantId = table.Column<string>(maxLength: 256, nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Items", x => x.Id);
                 }
             );
+
+            migrationBuilder.CreateIndex(
+                name: "Items_TenantIdName_Index",
+                table: "Items",
+                unique: true,
+                columns: new string[] { "TenantId", "Name" });
         }
     }
 }

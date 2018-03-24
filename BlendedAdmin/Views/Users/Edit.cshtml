@@ -1,0 +1,27 @@
+@inject BlendedAdmin.Services.IUrlServicecs urlService
+@model BlendedAdmin.Models.Users.UserModel
+
+@{ViewData["Title"] = string.IsNullOrEmpty(Model.Id) == false ? (Model.Name + "- Users") : "New - Users";}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">User</h1>
+</div>
+
+<form id="editForm" action="@urlService.GetUrl()" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <input type="hidden" asp-for="Id" />
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input asp-for="Name" class="form-control" placeholder="" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Name">Email</label>
+        <input asp-for="Email" class="form-control" placeholder="" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <a class="btn btn-outline-secondary" asp-controller="Users" asp-action="Index">Cancel</a>
+        <button type="submit" class="btn btn-outline-primary">Save</button>
+    </div>
+</form>

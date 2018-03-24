@@ -10,6 +10,7 @@ namespace BlendedAdmin.DomainModel.Environments
         public string Name { get; set; }
         public string Color { get; set; }
         public int Index { get; set; }
+        public string TenantId { get; set; }
 
         public IList<VariableEnvironment> Variables { get; set; }
     }

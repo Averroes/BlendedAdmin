@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace BlendedAdmin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("2_EnvironmentsMigration")]
+    [Migration("00000000000004_EnvironmentsMigration")]
     public class EnvironmentsModelMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -16,15 +16,20 @@ namespace BlendedAdmin.Data.Migrations
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Color = table.Column<string>(nullable: true),
-                    Index = table.Column<int>(nullable: false)
+                    Index = table.Column<int>(nullable: false),
+                    TenantId = table.Column<string>(maxLength: 256, nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Environments", x => x.Id);
-                    table.UniqueConstraint("UK_Environments_Name", x => x.Name);
-                    table.UniqueConstraint("UK_Environments_Index", x => x.Index);
                 }
             );
+
+            migrationBuilder.CreateIndex(
+                name: "Environments_TenantIdName_Index",
+                table: "Environments",
+                unique: true,
+                columns: new string[] { "TenantId", "Name" });
         }
     }
 }

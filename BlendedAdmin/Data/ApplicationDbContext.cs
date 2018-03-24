@@ -2,11 +2,18 @@
 using Microsoft.EntityFrameworkCore;
 using BlendedAdmin.DomainModel.Items;
 using BlendedAdmin.DomainModel.Variables;
+using System;
+using Microsoft.EntityFrameworkCore.Metadata;
+using BlendedAdmin.Models;
+using BlendedAdmin.DomainModel.Users;
+using BlendedAdmin.Services;
+using System.Linq;
 
 namespace BlendedAdmin.Data
 {
-    public class ApplicationDbContext : IdentityDbContext
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
     {
+
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
             : base(options)
         {
@@ -27,8 +34,38 @@ namespace BlendedAdmin.Data
         {
             base.OnModelCreating(builder);
 
+            builder
+                .HasAnnotation("ProductVersion", "1.0.0-rc3")
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            //ItemsModelSnapshot
+            builder.Entity("BlendedAdmin.DomainModel.Users.ApplicationUser", b =>
+            {
+                b.Property<string>("Id");
+                b.Property<int>("AccessFailedCount");
+                b.Property<string>("ConcurrencyStamp")
+                    .IsConcurrencyToken();
+                b.Property<string>("Email")
+                    .HasAnnotation("MaxLength", 256);
+                b.Property<bool>("EmailConfirmed");
+                b.Property<bool>("LockoutEnabled");
+                b.Property<DateTimeOffset?>("LockoutEnd");
+                b.Property<string>("NormalizedEmail")
+                    .HasAnnotation("MaxLength", 256);
+                b.Property<string>("NormalizedUserName")
+                    .HasAnnotation("MaxLength", 256);
+                b.Property<string>("PasswordHash");
+                b.Property<string>("PhoneNumber");
+                b.Property<bool>("PhoneNumberConfirmed");
+                b.Property<string>("SecurityStamp");
+                b.Property<bool>("TwoFactorEnabled");
+                b.Property<string>("UserName")
+                    .HasAnnotation("MaxLength", 256);
+                b.Property<string>("TenantId")
+                    .HasAnnotation("MaxLength", 256);
+                b.HasKey("Id");
+                b.ToTable("AspNetUsers");
+            });
+
             builder.Entity<Item>()
                 .ToTable("Items").HasKey(x => x.Id);
 
@@ -47,11 +84,7 @@ namespace BlendedAdmin.Data
                 .HasOne(x => x.Variable);
             builder.Entity<VariableEnvironment>()
                 .HasOne(x => x.Environment);
-            
-
-            // Customize the ASP.NET Identity model and override the defaults if needed.
-            // For example, you can rename the ASP.NET Identity table names and more.
-            // Add your customizations after calling base.OnModelCreating(builder);
+           
         }
 
         public DbSet<Item> Items { get; set; }

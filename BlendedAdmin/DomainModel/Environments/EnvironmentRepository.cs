@@ -1,4 +1,5 @@
 ﻿using BlendedAdmin.Data;
+using BlendedAdmin.Services;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,34 +11,37 @@ namespace BlendedAdmin.DomainModel.Environments
     public interface IEnvironmentRepository
     {
         Task<List<Environments.Environment>> GetAll();
-        void Delete(Environments.Environment environment);
-        void Save(Environments.Environment environment);
         Task<Environment> Get(int environmentId);
         Task<Environments.Environment> GetByName(string name);
+        void Delete(Environments.Environment environment);
+        void Save(Environments.Environment environment);
         Task<int> GetNextIndex();
     }
 
     public class EnvironmentRepository : IEnvironmentRepository
     {
         private ApplicationDbContext _dbContext;
-        public EnvironmentRepository(ApplicationDbContext dbContext)
+        private ITenantService _tenantService;
+
+        public EnvironmentRepository(ApplicationDbContext dbContext, ITenantService tenantService)
         {
             _dbContext = dbContext;
+            _tenantService = tenantService;
         }
 
         public async Task<Environments.Environment> Get(int id)
         {
-            return await _dbContext.Environments.FirstOrDefaultAsync(x => x.Id == id);
+            return await _dbContext.Environments.Where(x => x.TenantId == _tenantService.GetCurrentTenantId()).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<Environments.Environment> GetByName(string name)
         {
-            return await _dbContext.Environments.FirstOrDefaultAsync(x => x.Name == name);
+            return await _dbContext.Environments.Where(x => x.TenantId == _tenantService.GetCurrentTenantId()).FirstOrDefaultAsync(x => x.Name == name);
         }
 
         public async Task<List<Environments.Environment>> GetAll()
         {
-            return await _dbContext.Environments.OrderBy(x => x.Index).ToListAsync();
+            return await _dbContext.Environments.Where(x => x.TenantId == _tenantService.GetCurrentTenantId()).OrderBy(x => x.Index).ToListAsync();
         }
 
         public void Delete(Environments.Environment environment)
@@ -59,7 +63,7 @@ namespace BlendedAdmin.DomainModel.Environments
 
         public async Task<int> GetNextIndex()
         {
-            var environments =  await _dbContext.Environments.ToListAsync();
+            var environments =  await GetAll();
             if (environments.Count == 0)
                 return 0;
             else

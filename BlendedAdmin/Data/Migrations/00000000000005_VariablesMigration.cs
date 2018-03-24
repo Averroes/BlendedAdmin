@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace BlendedAdmin.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("3_VariablesModelMigration")]
+    [Migration("00000000000005_VariablesMigration")]
     public class VariablesModelMigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,11 +21,11 @@ namespace BlendedAdmin.Data.Migrations
                     Id = table.Column<int>(nullable: false),
                     Name = table.Column<string>(nullable: false),
                     Value = table.Column<string>(nullable: true),
+                    TenantId = table.Column<string>(maxLength: 256, nullable: true),
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Variables", x => x.Id);
-                    table.UniqueConstraint("UK_Variables_Name", x => x.Name);
                 }
             );
 
@@ -43,10 +43,14 @@ namespace BlendedAdmin.Data.Migrations
                     table.PrimaryKey("PK_VariablesEnvironments", x => x.Id);
                     table.ForeignKey("FK_VariablesEnvironments_EnvironmentId", x => x.EnvironmentId, "Environments", "Id", onDelete: ReferentialAction.Cascade);
                     table.ForeignKey("FK_VariablesEnvironments_VariableId", x => x.VariableId, "Variables", "Id", onDelete: ReferentialAction.Cascade);
-                    //table.UniqueConstraint("UK_VariablesEnvironments_EnvVar", x => x.EnvironmentId);
-                    //table.UniqueConstraint("UK_VariablesEnvironments_EnvVar", x => x.VariableId);
                 }
             );
+
+            migrationBuilder.CreateIndex(
+                name: "Variables_TenantIdName_Index",
+                table: "Variables",
+                unique: true,
+                columns: new string[] { "TenantId", "Name" });
         }
     }
 }

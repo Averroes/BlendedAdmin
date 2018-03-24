@@ -14,6 +14,7 @@ namespace BlendedAdmin.DomainModel.Variables
         public string Name { get; set; }
         public string Value { get; set; }
         public IList<VariableEnvironment> Values { get; set; }
+        public string TenantId { get; set; }
     }
 
     public class VariableEnvironment
