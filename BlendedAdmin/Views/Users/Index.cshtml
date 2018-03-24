@@ -1,6 +1,6 @@
-@model List<BlendedAdmin.Models.Users.UserModel>
+@model List<BlendedAdmin.Models.Users.UserEditModel>
 
-@{ViewData["Title"] = "Environments";}
+@{ViewData["Title"] = "Users";}
 
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">User</h1>
@@ -25,12 +25,13 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (BlendedAdmin.Models.Users.UserModel user in Model)
+                @foreach (var user in Model)
                 {
                     <tr>
                         <td><a asp-action="Edit" asp-route-id="@user.Id">@user.Name</a></td>
                         <td>@user.Email</td>
                         <td>
+                            <a asp-action="ChangePassword" asp-route-id="@user.Id" class="text-secondary"><span class="fa"></span>Change Password</a>
                             <a asp-action="Edit" asp-route-id="@user.Id" class="text-secondary"><span class="fa fa-pencil-square-o"></span>Edit</a>
                             <a asp-action="Delete" asp-route-id="@user.Id" class="text-secondary"><span class="fa fa-trash-o"></span>Delete</a>
                         </td>

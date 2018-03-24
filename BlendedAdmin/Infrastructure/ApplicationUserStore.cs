@@ -16,11 +16,11 @@ namespace BlendedAdmin.Infrastructure
     {
         public string TenantId { get; set; }
 
-        public ApplicationUserStore(DbContext context) : base(context)
+        public ApplicationUserStore(ApplicationDbContext context) : base(context)
         {
         }
 
-        public ApplicationUserStore(DbContext context, IdentityErrorDescriber describer = null) : base(context, describer)
+        public ApplicationUserStore(ApplicationDbContext context, IdentityErrorDescriber describer = null) : base(context, describer)
         {
         }
 

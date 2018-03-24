@@ -63,7 +63,7 @@ namespace BlendedAdmin.Data
                 b.Property<string>("TenantId")
                     .HasAnnotation("MaxLength", 256);
                 b.HasKey("Id");
-                b.ToTable("AspNetUsers");
+                b.ToTable("Users");
             });
 
             builder.Entity<Item>()

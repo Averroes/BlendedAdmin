@@ -10,7 +10,8 @@ namespace BlendedAdmin.DomainModel.Users
 {
     public interface IUserRepository
     {
-        Task<List<ApplicationUser>> GetAll(string tenantId);
+        Task<ApplicationUser> Get(string id);
+        Task<List<ApplicationUser>> GetAll();
     }
 
     public class UserRepository : IUserRepository
@@ -24,9 +25,18 @@ namespace BlendedAdmin.DomainModel.Users
             _tenantService = tenantService;
         }
 
-        public async Task<List<ApplicationUser>> GetAll(string tenantId)
+        public async Task<ApplicationUser> Get(string id)
         {
-            return await _dbContext.Users.Where(x => x.TenantId == tenantId).ToListAsync();
+            return await _dbContext.Users
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
+                .FirstAsync(x => x.Id == id);
+        }
+
+        public async Task<List<ApplicationUser>> GetAll()
+        {
+            return await _dbContext.Users
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
+                .ToListAsync();
         }
     }
 }

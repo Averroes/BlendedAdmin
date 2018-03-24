@@ -18,6 +18,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using BlendedAdmin.Js;
 using BlendedAdmin.DomainModel.Users;
+using Microsoft.AspNetCore.Identity;
+using BlendedAdmin.Infrastructure;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace BlendedAdmin
 {
@@ -41,6 +44,7 @@ namespace BlendedAdmin
             services.AddDbContext<ApplicationDbContext>(options => {
                 options.UseSqlite("Data Source=Database.db;");
             });
+            services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IItemRepository, ItemRepository>();
@@ -52,6 +56,29 @@ namespace BlendedAdmin
             services.AddTransient<IVariablesService, VariablesService>();
             services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<IJsService, JsService>();
+            services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+            {
+                options.Password.RequireDigit = false;
+                options.Password.RequiredLength = 5;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireLowercase = false;
+            })
+                .AddEntityFrameworkStores<ApplicationDbContext>()
+                .AddDefaultTokenProviders();
+            services.ConfigureApplicationCookie(options =>
+            {
+                options.LoginPath = "/{environment}/Users/Login";
+                options.LogoutPath = "/{environment}/Users/LogOff";
+                options.AccessDeniedPath = "/{environment}/Users/AccessDenied";
+            });
+
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.LoginPath = "/{environment}/Users/Login";
+                    options.LogoutPath = "/{environment}/Users/LogOff";
+                    options.AccessDeniedPath = "/{environment}/Users/AccessDenied";
+                });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -5,10 +5,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlendedAdmin.Models.Users
 {
-    public class UserModel
+    public class UserCreateModel
     {
-        public string Id { get; set; }
+        [Required]
         public string Name { get; set; }
-        public string Email { get; internal set; }
+        [Required]
+        [EmailAddress]
+        public string Email { get; set; }
+        [Required]
+        public string Password { get; set; }
     }
 }
