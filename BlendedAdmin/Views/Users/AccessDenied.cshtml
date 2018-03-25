@@ -1,0 +1,8 @@
+﻿@{ ViewData["Title"] = "Access Denied"; }
+@inject BlendedAdmin.Services.IUrlServicecs urlServicecs
+
+<header>
+    <h1 class="text-danger">Access Denied.</h1>
+    <p class="text-danger">You do not have access to this resource.</p>
+    <p class="text-danger">Resource path: @urlServicecs.GetQueryString("ReturnUrl")</p>
+</header>

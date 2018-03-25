@@ -56,6 +56,7 @@ namespace BlendedAdmin
             services.AddTransient<IVariablesService, VariablesService>();
             services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<IJsService, JsService>();
+            services.AddTransient<IEmailService, EmailService>();
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.Password.RequireDigit = false;
@@ -68,16 +69,16 @@ namespace BlendedAdmin
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/{environment}/Users/Login";
-                options.LogoutPath = "/{environment}/Users/LogOff";
-                options.AccessDeniedPath = "/{environment}/Users/AccessDenied";
+                options.LoginPath = "/{environment}/login";
+                options.LogoutPath = "/{environment}/logoff";
+                options.AccessDeniedPath = "/{environment}accessdenied";
             });
 
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
-                    options.LoginPath = "/{environment}/Users/Login";
-                    options.LogoutPath = "/{environment}/Users/LogOff";
-                    options.AccessDeniedPath = "/{environment}/Users/AccessDenied";
+                    options.LoginPath = "/{environment}/login";
+                    options.LogoutPath = "/{environment}/logoff";
+                    options.AccessDeniedPath = "/{environment}accessdenied";
                 });
         }
 

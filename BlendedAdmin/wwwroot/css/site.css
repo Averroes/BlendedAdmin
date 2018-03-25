@@ -214,6 +214,9 @@
     cursor: pointer;
 }
 
-.logs .fa {
-    margin-left: 5px;
+.bar {
+    width: 25px;
+    height: 2px;
+    background-color: rgba(255,255,255,.5);
+    margin: 4px
 }

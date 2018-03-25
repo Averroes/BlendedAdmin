@@ -5,7 +5,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BlendedAdmin.Models.Users
 {
-    public class UserCreateModel
+    public class CreateModel
     {
         [Required]
         public string Name { get; set; }

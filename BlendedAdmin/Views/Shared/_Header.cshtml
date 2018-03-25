@@ -1,10 +1,15 @@
 ﻿@inject BlendedAdmin.Services.IUrlServicecs urlService
 @inject BlendedAdmin.Services.IEnvironmentService environmentService
+@inject Microsoft.AspNetCore.Identity.SignInManager<BlendedAdmin.DomainModel.Users.ApplicationUser> signInManager
+@inject Microsoft.AspNetCore.Authorization.IAuthorizationService authorizationService
 
 @{ var currentEnvironment = await environmentService.GetCurrentEnvironment();}
 @{var environments = await environmentService.GetAll();}
+
 <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-3 col-sm-3 col-md-2 mr-0" asp-controller="Home" asp-action="Index">Blended Admin</a>
+    <div class="col-3 col-sm-3 col-md-2 mr-0">
+        <a class="navbar-brand" asp-controller="Home" asp-action="Index">Blended Admin</a>
+    </div>
     @*<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">*@
     <ul class="nav nav-pills px-6">
         <li class="nav-item dropdown">
@@ -14,27 +19,43 @@
                     <span style="color:@currentEnvironment.Color">@currentEnvironment.Name</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="right:0; left:auto;">
-                    @if (environments.Count > 0)
+                @if (environments.Count > 0)
+                {
+                    @foreach (var environment in environments)
                     {
-                        @foreach (var environment in environments)
-                        {
-                            <a class="dropdown-item" href="@urlService.GetUrlWithEnvironment(environment.Name)" style="color:@environment.Color">@environment.Name</a>
-                        }
+                        <a class="dropdown-item" href="@urlService.GetUrlWithEnvironment(environment.Name)" style="color:@environment.Color">@environment.Name</a>
                     }
-                    else
-                    {
-                        <div class="dropdown-item"><a href="#">Default</a></div>
-                    }
-                        <div class="dropdown-divider"></div>
-                        <h6 class="dropdown-header">Configuration</h6>
-                        <a class="dropdown-item" asp-controller="Variables" asp-action="Index">Variables</a>
-                        <a class="dropdown-item" asp-controller="Environments" asp-action="Index">Environments</a>
+                }
+                else
+                {
+                    <div class="dropdown-item"><a href="#">Default</a></div>
+                }
+                <div class="dropdown-divider"></div>
+                <h6 class="dropdown-header">Configuration</h6>
+                <a class="dropdown-item" asp-controller="Variables" asp-action="Index">Variables</a>
+                <a class="dropdown-item" asp-controller="Environments" asp-action="Index">Environments</a>
                 </div>
             </div>
         </li>
-
+        @if (signInManager.IsSignedIn(User))
+        {
+        <li class="nav-item dropdown">
+            <div class="btn-group" style="margin-right: 5px;">
+                <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span>Account</span>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" style="right:0; left:auto;">
+                    <a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a>
+                    <a class="dropdown-item" asp-controller="Users" asp-action="Logout">Logout</a>
+                </div>
+            </div>
+        </li>
+        }
         @*<li class="nav-item text-nowrap">
-                <a class="nav-link" href="#">Sign out</a>
-            </li>*@
+            <a class="nav-link" href="#">Sign out</a>
+        </li>*@
     </ul>
+    @*<button id="navbarToggler" class="navbar-toggler p-1" type="button" aria-expanded="false" aria-label="Toggle navigation">
+            <div class="d-inline-block"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
+        </button>*@
 </nav>

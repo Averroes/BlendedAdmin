@@ -6,35 +6,35 @@ namespace BlendedAdmin.Models.Users
 {
     public class UserModelAssembler
     {
-        public UserEditModel ToModel(ApplicationUser applicationUser)
+        public EditModel ToModel(ApplicationUser applicationUser)
         {
-            UserEditModel model = new UserEditModel();
+            EditModel model = new EditModel();
             model.Id = applicationUser.Id;
             model.Name = applicationUser.UserName;
             model.Email = applicationUser.Email;
             return model;
         }
 
-        public UserChangePassowrdModel ToChangePasswordModel(ApplicationUser applicationUser)
+        public ChangePassowrdModel ToChangePasswordModel(ApplicationUser applicationUser)
         {
-            UserChangePassowrdModel model = new UserChangePassowrdModel();
+            ChangePassowrdModel model = new ChangePassowrdModel();
             model.Id = applicationUser.Id;
             model.Name = applicationUser.UserName;
             return model;
         }
 
-        public List<UserEditModel> ToModel(List<ApplicationUser> users)
+        public List<EditModel> ToModel(List<ApplicationUser> users)
         {
             return users.Select(x => ToModel(x)).ToList();
         }
 
-        public void Apply(ApplicationUser user, UserCreateModel model)
+        public void Apply(ApplicationUser user, CreateModel model)
         {
             user.UserName = model.Name;
             user.Email = model.Email;
         }
 
-        public void Apply(ApplicationUser user, UserEditModel model)
+        public void Apply(ApplicationUser user, EditModel model)
         {
             user.UserName = model.Name;
             user.Email = model.Email;
