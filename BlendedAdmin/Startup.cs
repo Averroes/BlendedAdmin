@@ -80,6 +80,8 @@ namespace BlendedAdmin
                     options.LogoutPath = "/{environment}/logoff";
                     options.AccessDeniedPath = "/{environment}accessdenied";
                 });
+            services.AddOptions();
+            services.Configure<BlendedSettings>(Configuration);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

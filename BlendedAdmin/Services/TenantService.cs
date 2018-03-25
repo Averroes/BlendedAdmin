@@ -1,4 +1,7 @@
 ﻿using BlendedAdmin.DomainModel;
+using BlendedAdmin.Infrastructure;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,15 +16,26 @@ namespace BlendedAdmin.Services
 
     public class TenantService : ITenantService
     {
-        private IUrlServicecs _urlService;
+        private IHttpContextAccessor _httpContextAccessor;
+        private IOptions<BlendedSettings> _settings;
 
-        public TenantService(IUrlServicecs urlService)
+        public TenantService(IHttpContextAccessor httpContextAccessor, IOptions<BlendedSettings> settings)
         {
-            this._urlService = urlService;
+            this._httpContextAccessor = httpContextAccessor;
+            this._settings = settings;
         }
 
         public string GetCurrentTenantId()
         {
+            //if (_settings.Value.Tenants == false)
+            //    return null;
+
+            var request = _httpContextAccessor.HttpContext.Request;
+            if (string.IsNullOrWhiteSpace(request.Host.Host) == false)
+            {
+                var subDomains = request.Host.Host.Split('.');
+                return subDomains[0].Trim().ToLower();
+            }
             return null;
         }
     }
