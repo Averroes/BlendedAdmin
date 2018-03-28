@@ -66,9 +66,14 @@ namespace BlendedAdmin.DomainModel.Variables
         public void Save(Variable variable)
         {
             if (variable.Id > 0)
+            {
                 _dbContext.Update(variable);
+            }
             else
+            {
+                variable.TenantId = _tenantService.GetCurrentTenantId();
                 _dbContext.Add(variable);
+            }
         }
     }
 }

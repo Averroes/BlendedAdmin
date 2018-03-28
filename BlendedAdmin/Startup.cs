@@ -21,6 +21,7 @@ using BlendedAdmin.DomainModel.Users;
 using Microsoft.AspNetCore.Identity;
 using BlendedAdmin.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using BlendedJS;
 
 namespace BlendedAdmin
 {
@@ -42,7 +43,14 @@ namespace BlendedAdmin
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
-                options.UseSqlite("Data Source=Database.db;");
+                var database = Configuration.GetConnectionString("Database");
+                var provider = Configuration.GetConnectionString("Provider");
+                if (provider.SafeEquals("Sqlite"))
+                    options.UseSqlite(database);
+                if (provider.SafeEquals("SqlServer"))
+                    options.UseSqlServer(database);
+                if (provider.SafeEquals("MySQL"))
+                    options.UseMySQL(database);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();
@@ -81,7 +89,7 @@ namespace BlendedAdmin
                     options.AccessDeniedPath = "/{environment}accessdenied";
                 });
             services.AddOptions();
-            services.Configure<BlendedSettings>(Configuration);
+            services.Configure<BlendedSettings>(Configuration.GetSection("BlendedSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

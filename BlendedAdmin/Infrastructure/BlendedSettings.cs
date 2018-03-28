@@ -7,6 +7,6 @@ namespace BlendedAdmin.Infrastructure
 {
     public class BlendedSettings
     {
-        public bool Tenants { get; set; }
+        public bool MultiTenants { get; set; }
     }
 }

@@ -27,14 +27,14 @@ namespace BlendedAdmin.Services
 
         public string GetCurrentTenantId()
         {
-            //if (_settings.Value.Tenants == false)
-            //    return null;
-
-            var request = _httpContextAccessor.HttpContext.Request;
-            if (string.IsNullOrWhiteSpace(request.Host.Host) == false)
+            if (_settings.Value.MultiTenants)
             {
-                var subDomains = request.Host.Host.Split('.');
-                return subDomains[0].Trim().ToLower();
+                var request = _httpContextAccessor.HttpContext.Request;
+                if (string.IsNullOrWhiteSpace(request.Host.Host) == false)
+                {
+                    var subDomains = request.Host.Host.Split('.');
+                    return subDomains[0].Trim().ToLower();
+                }
             }
             return null;
         }

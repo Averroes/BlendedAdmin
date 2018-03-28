@@ -56,9 +56,14 @@ namespace BlendedAdmin.DomainModel.Environments
         public void Save(Environments.Environment environment)
         {
             if (environment.Id > 0)
+            {
                 _dbContext.Update(environment);
+            }
             else
+            {
+                environment.TenantId = _tenantService.GetCurrentTenantId();
                 _dbContext.Add(environment);
+            }
         }
 
         public async Task<int> GetNextIndex()

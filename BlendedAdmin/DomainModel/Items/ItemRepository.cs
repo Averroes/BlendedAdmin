@@ -54,9 +54,14 @@ namespace BlendedAdmin.DomainModel.Items
         public void Save(Item item)
         {
             if (item.Id > 0)
+            {
                 _dbContext.Update(item);
+            }
             else
+            {
+                item.TenantId = _tenantService.GetCurrentTenantId();
                 _dbContext.Add(item);
+            }
         }
 
         public void Delete(Item item)
