@@ -50,7 +50,7 @@ namespace BlendedAdmin
                 if (provider.SafeEquals("SqlServer"))
                     options.UseSqlServer(database);
                 if (provider.SafeEquals("MySQL"))
-                    options.UseMySQL(database);
+                    options.UseMySql(database);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();

@@ -18,7 +18,7 @@ namespace BlendedAdmin.Data.Migrations
                 name: "Tenants",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false),
+                    Id = table.Column<string>(nullable: false, maxLength:100),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                 },
                 constraints: table =>
