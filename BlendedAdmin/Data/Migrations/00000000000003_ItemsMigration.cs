@@ -14,10 +14,10 @@ namespace BlendedAdmin.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false),
-                    Name = table.Column<string>(nullable: false),
-                    Category = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false, maxLength: 250),
+                    Category = table.Column<string>(nullable: true, maxLength: 250),
                     Code = table.Column<string>(nullable: true),
-                    TenantId = table.Column<string>(maxLength: 256, nullable: true),
+                    TenantId = table.Column<string>(maxLength: 100, nullable: true),
                 },
                 constraints: table =>
                 {
