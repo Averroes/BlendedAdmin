@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -18,7 +15,9 @@ namespace BlendedAdmin.Data.Migrations
                 name: "Users",
                 columns: table => new
                 {
-                    Id = table.Column<string>(nullable: false, maxLength: 100),
+                    Id = table.Column<string>(nullable: false, maxLength: 100)
+                        .Annotation("MySql:ValueGeneratedOnAdd", true)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 250, nullable: true),

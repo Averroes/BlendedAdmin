@@ -58,7 +58,7 @@ namespace BlendedAdmin.Controllers
         public async Task<IActionResult> Create(CreateModel model)
         {
             if (ModelState.IsValid == false)
-                return View("Edit", model);
+                return View(model);
 
             ApplicationUser entity = new ApplicationUser();
             new UserModelAssembler().Apply(entity, model);

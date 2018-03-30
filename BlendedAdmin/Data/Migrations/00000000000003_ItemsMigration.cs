@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BlendedAdmin.Data.Migrations
@@ -13,7 +14,9 @@ namespace BlendedAdmin.Data.Migrations
                 name: "Items",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false),
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySql:ValueGeneratedOnAdd", true)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     Name = table.Column<string>(nullable: false, maxLength: 250),
                     Category = table.Column<string>(nullable: true, maxLength: 250),
                     Code = table.Column<string>(nullable: true),
