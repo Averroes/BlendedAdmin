@@ -8,20 +8,24 @@ using BlendedAdmin.Models;
 using BlendedAdmin.Models.Home;
 using BlendedAdmin.DomainModel;
 using BlendedAdmin.Models.Items;
+using Microsoft.Extensions.Logging;
 
 namespace BlendedAdmin.Controllers
 {
     public class HomeController : Controller
     {
         private IDomainContext _domainContext;
+        private ILogger<HomeController> _logger;
 
-        public HomeController(IDomainContext domainContext)
+        public HomeController(IDomainContext domainContext, ILogger<HomeController> logger)
         {
             _domainContext = domainContext;
+            _logger = logger;
         }
 
         public async Task<IActionResult> Index()
         {
+            _logger.LogError("some errors");
             var items = await _domainContext.Items.GetAll();
             var model = new ItemModelAssembler().ToModel(items);
             return View(new HomeModel
