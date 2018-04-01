@@ -16,7 +16,6 @@ namespace BlendedAdmin.DomainModel
         IItemRepository Items { get; }
         IVariableRepository Variables { get; set; }
         IEnvironmentRepository Environments { get; set; }
-
         Task SaveAsync();
     }
 

@@ -4,10 +4,7 @@ using BlendedAdmin.DomainModel.Items;
 using BlendedAdmin.DomainModel.Variables;
 using System;
 using Microsoft.EntityFrameworkCore.Metadata;
-using BlendedAdmin.Models;
 using BlendedAdmin.DomainModel.Users;
-using BlendedAdmin.Services;
-using System.Linq;
 
 namespace BlendedAdmin.Data
 {
@@ -84,7 +81,7 @@ namespace BlendedAdmin.Data
                 .HasOne(x => x.Variable);
             builder.Entity<VariableEnvironment>()
                 .HasOne(x => x.Environment);
-           
+
         }
 
         public DbSet<Item> Items { get; set; }

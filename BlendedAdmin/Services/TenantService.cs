@@ -29,8 +29,8 @@ namespace BlendedAdmin.Services
         {
             if (_settings.Value.MultiTenants)
             {
-                var request = _httpContextAccessor.HttpContext.Request;
-                if (string.IsNullOrWhiteSpace(request.Host.Host) == false)
+                var request = _httpContextAccessor?.HttpContext?.Request;
+                if (request != null && string.IsNullOrWhiteSpace(request.Host.Host) == false)
                 {
                     var subDomains = request.Host.Host.Split('.');
                     return subDomains[0].Trim().ToLower();

@@ -22,6 +22,8 @@ using Microsoft.AspNetCore.Identity;
 using BlendedAdmin.Infrastructure;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using BlendedJS;
+using Microsoft.Extensions.Logging;
+using BlendedAdmin.Infrastructure.Logging;
 
 namespace BlendedAdmin
 {
@@ -91,10 +93,12 @@ namespace BlendedAdmin
                 });
             services.AddOptions();
             services.Configure<BlendedSettings>(Configuration.GetSection("BlendedSettings"));
+            services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
+            services.Configure<ElasticLoggerOptions>(Configuration.GetSection("Logging:Elastic"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvide, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IServiceProvider serviceProvide, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             if (env.IsDevelopment())
             {
@@ -108,7 +112,7 @@ namespace BlendedAdmin
             }
 
             app.UseStaticFiles();
-
+            
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
