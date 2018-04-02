@@ -84,7 +84,7 @@ namespace BlendedAdmin
                 options.LogoutPath = "/users/logoff";
                 options.AccessDeniedPath = "/accessdenied";
             });
-
+            services.AddDataProtection();
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddCookie(options => {
             //        options.LoginPath = "/{environment}/login";
