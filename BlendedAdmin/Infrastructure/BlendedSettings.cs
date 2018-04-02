@@ -9,4 +9,12 @@ namespace BlendedAdmin.Infrastructure
     {
         public bool MultiTenants { get; set; }
     }
+
+    public class MailSettings
+    {
+        public string SmtpFrom { get; set; }
+        public string SmtpHost { get; set; }
+        public string SmtpUser { get; set; }
+        public string SmtpPassword { get; set; }
+    }
 }

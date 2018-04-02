@@ -94,6 +94,7 @@ namespace BlendedAdmin
             //    });
             services.AddOptions();
             services.Configure<BlendedSettings>(Configuration.GetSection("BlendedSettings"));
+            services.Configure<MailSettings>(Configuration.GetSection("Mail"));
             services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
             services.Configure<ElasticLoggerOptions>(Configuration.GetSection("Logging:Elastic"));
         }

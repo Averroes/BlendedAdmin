@@ -1,4 +1,7 @@
-﻿using System;
+﻿using BlendedAdmin.Infrastructure;
+using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,18 +17,35 @@ namespace BlendedAdmin.Services
 
     public class EmailService : IEmailService
     {
+        private IOptions<MailSettings> _options;
+        private readonly ILogger<EmailService> _logger;
+
+        public EmailService(IOptions<MailSettings> options, ILogger<EmailService> logger)
+        {
+            _options = options;
+            _logger = logger;
+        }
+
         public Task SendEmailAsync(string email, string title, string body)
         {
-            SmtpClient client = new SmtpClient("");
-            client.UseDefaultCredentials = false;
-            client.Credentials = new NetworkCredential("", "");
+            try
+            {
+                SmtpClient client = new SmtpClient("");
+                client.EnableSsl = true;
+                client.Host = _options.Value.SmtpHost;
+                client.UseDefaultCredentials = false;
+                client.Credentials = new NetworkCredential(_options.Value.SmtpUser, _options.Value.SmtpPassword);
 
-            MailMessage mailMessage = new MailMessage();
-            mailMessage.From = new MailAddress("whoever@me.com");
-            mailMessage.To.Add(email);
-            mailMessage.Subject = title;
-            mailMessage.Body = body;
-            client.Send(mailMessage);
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(_options.Value.SmtpFrom);
+                mailMessage.To.Add(email);
+                mailMessage.Subject = title;
+                mailMessage.Body = body;
+                client.Send(mailMessage);
+            } catch (Exception ex)
+            {
+                _logger.LogError(ex, "Sending email.");
+            }
             return Task.CompletedTask;
         }
     }
