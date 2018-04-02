@@ -80,17 +80,17 @@ namespace BlendedAdmin
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/{environment}/login";
-                options.LogoutPath = "/{environment}/logoff";
-                options.AccessDeniedPath = "/{environment}accessdenied";
+                options.LoginPath = "/users/login";
+                options.LogoutPath = "/users/logoff";
+                options.AccessDeniedPath = "/accessdenied";
             });
 
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
-                    options.LoginPath = "/{environment}/login";
-                    options.LogoutPath = "/{environment}/logoff";
-                    options.AccessDeniedPath = "/{environment}accessdenied";
-                });
+            //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+            //    .AddCookie(options => {
+            //        options.LoginPath = "/{environment}/login";
+            //        options.LogoutPath = "/{environment}/logoff";
+            //        options.AccessDeniedPath = "/{environment}accessdenied";
+            //    });
             services.AddOptions();
             services.Configure<BlendedSettings>(Configuration.GetSection("BlendedSettings"));
             services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
@@ -112,7 +112,9 @@ namespace BlendedAdmin
             }
 
             app.UseStaticFiles();
-            
+
+            app.UseAuthentication();
+
             app.UseMvc(routes =>
             {
                 routes.MapRoute(

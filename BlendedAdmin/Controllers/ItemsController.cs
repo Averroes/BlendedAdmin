@@ -6,9 +6,11 @@ using BlendedAdmin.Models.Items;
 using BlendedAdmin.DomainModel.Items;
 using System.Collections.Generic;
 using BlendedAdmin.Js;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlendedAdmin.Controllers
 {
+    [Authorize]
     public class ItemsController : Controller
     {
         private IDomainContext _domainContext;

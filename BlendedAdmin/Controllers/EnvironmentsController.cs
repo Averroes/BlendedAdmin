@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq;
 using Environment = BlendedAdmin.DomainModel.Environments.Environment;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlendedAdmin.Controllers
 {
+    [Authorize]
     public class EnvironmentsController : Controller
     {
         private IDomainContext _domainContext;

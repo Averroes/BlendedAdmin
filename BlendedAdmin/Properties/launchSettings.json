@@ -12,6 +12,8 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "Logging:Elastic:Url": "https://paas:4ab1a233154b398346e5e56175fce2e6@gloin-eu-west-1.searchly.com/logs/_doc",
+        "Logging:Elastic:LogLevel": "Information",
         "ASPNETCORE_ENVIRONMENT": "Development",
         "BlendedSettings:MultiTenants": "true"
       }

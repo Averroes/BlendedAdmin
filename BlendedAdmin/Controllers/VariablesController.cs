@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using BlendedAdmin.DomainModel.Variables;
 using Environment = BlendedAdmin.DomainModel.Environments;
 using BlendedAdmin.DomainModel;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlendedAdmin.Controllers
 {
+    [Authorize]
     public class VariablesController : Controller
     {
         private IDomainContext _domainContext;

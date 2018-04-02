@@ -9,9 +9,11 @@ using BlendedAdmin.Models.Home;
 using BlendedAdmin.DomainModel;
 using BlendedAdmin.Models.Items;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BlendedAdmin.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
         private IDomainContext _domainContext;

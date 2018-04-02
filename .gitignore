@@ -1,6 +1,3 @@
-.vs
-
-
 BlendedAdmin/bin
 
 BlendedAdmin/obj
@@ -10,6 +7,12 @@ BlendedAdmin.Tests/obj
 
 BlendedAdmin/database.db
 
-.vs/BlendedAdmin
-.vs/config/applicationhost.config
+BlendedAdmin/Database.db
 BlendedAdmin/Database2.db
+
+BlendedAdmin/Logs
+
+.vs/BlendedAdmin
+.vs/BlendedAdmin/v15/.suo
+
+.vs/config

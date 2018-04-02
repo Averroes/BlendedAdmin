@@ -16,6 +16,7 @@ using BlendedAdmin.Services;
 
 namespace BlendedAdmin.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private IDomainContext _domainContext;
@@ -54,6 +55,7 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("{environment}/users/create")]
         public async Task<IActionResult> Create(CreateModel model)
         {
@@ -89,6 +91,7 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("{environment}/users/{id}/edit")]
         public async Task<IActionResult> Edit(string id, EditModel model)
         {
@@ -124,6 +127,7 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         [Route("{environment}/users/{id}/changepassword")]
         public async Task<IActionResult> ChangePassword(string id, ChangePassowrdModel model)
         {
@@ -148,19 +152,18 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpGet]
-        [Route("{environment}/login")]
-        public async Task<IActionResult> LogIn(string returnUrl = null)
+        [Route("users/login")]
+        [AllowAnonymous]
+        public async Task<IActionResult> LogIn()
         {
-            //await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-            await HttpContext.SignOutAsync();
-            //ViewData["ReturnUrl"] = returnUrl;
+            await _signInManager.SignOutAsync();
             return View(new LogInModel());
         }
 
         [HttpPost]
-        [Route("{environment}/login")]
+        [Route("users/login")]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInModel model, string returnUrl = null)
         {
             //ViewData["ReturnUrl"] = returnUrl;
@@ -187,17 +190,17 @@ namespace BlendedAdmin.Controllers
             return View(model);
         }
 
-        [Route("{environment}/logoff")]
+        [Route("users/logoff")]
+        [AllowAnonymous]
         public async Task<IActionResult> LogOff(string returnUrl = null)
         {
-            await HttpContext.SignOutAsync(IdentityConstants.ExternalScheme);
-
-            //ViewData["ReturnUrl"] = returnUrl;
-            return View(new LogInModel());
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Index", "Home");
         }
 
         [HttpGet]
-        [Route("{environment}/accessdenied")]
+        [Route("accessdenied")]
+        [AllowAnonymous]
         public IActionResult AccessDenied()
         {
             return View();
@@ -205,7 +208,7 @@ namespace BlendedAdmin.Controllers
         
         [HttpGet]
         [AllowAnonymous]
-        [Route("{environment}/forgotpassword")]
+        [Route("users/forgotpassword")]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -213,8 +216,8 @@ namespace BlendedAdmin.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
-        [Route("{environment}/forgotpassword")]
+        [ValidateAntiForgeryToken]
+        [Route("users/forgotpassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
@@ -238,7 +241,7 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{environment}/forgotpasswordconfirmation")]
+        [Route("users/forgotpasswordconfirmation")]
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -254,7 +257,7 @@ namespace BlendedAdmin.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        //[ValidateAntiForgeryToken]
+        [ValidateAntiForgeryToken]
         [Route("{environment}/resetpassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
