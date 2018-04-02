@@ -1,14 +1,19 @@
 ﻿using BlendedAdmin.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BlendedAdmin
 {
     public class EnvironmentFilter : ActionFilterAttribute
     {
-        IEnvironmentService _environmentService;
-        public EnvironmentFilter(IEnvironmentService environmentService)
+        private IServiceScopeFactory _serviceScopeFactory;
+        private IEnvironmentService _environmentService;
+        public EnvironmentFilter(
+            //IEnvironmentService environmentService, 
+            IServiceScopeFactory serviceScopeFactory)
         {
-            _environmentService = environmentService;
+            //_environmentService = environmentService;
+            this._serviceScopeFactory = serviceScopeFactory;
         }
 
         protected EnvironmentFilter()
@@ -17,7 +22,13 @@ namespace BlendedAdmin
 
         public async override void OnActionExecuting(ActionExecutingContext context)
         {
-            context.RouteData.Values["environment"] = (await _environmentService.GetCurrentEnvironment()).Name;
+            using (var scope = _serviceScopeFactory.CreateScope())
+            {
+                var environmentService = scope.ServiceProvider.GetRequiredService<IEnvironmentService>();
+                context.RouteData.Values["environment"] = (await environmentService.GetCurrentEnvironment()).Name;
+            }
+
+            //context.RouteData.Values["environment"] = (await _environmentService.GetCurrentEnvironment()).Name;
         }
     }
 }
