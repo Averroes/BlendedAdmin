@@ -52,28 +52,32 @@ namespace BlendedAdmin.Infrastructure.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            var message = new ElasticLogMessage
+            try
             {
-                LogLevel = logLevel.ToString(),
-                State = state.ToString(),
-                Message = formatter(state, exception),
-                Exception = exception?.ToString(),
-                DateTime = DateTime.Now,
-                Category = _category,
-                UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
-                TenantId = _tenantService.GetCurrentTenantId()
-            };
+                var message = new ElasticLogMessage
+                {
+                    LogLevel = logLevel.ToString(),
+                    State = state.ToString(),
+                    Message = formatter(state, exception),
+                    Exception = exception?.ToString(),
+                    DateTime = DateTime.Now,
+                    Category = _category,
+                    UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
+                    TenantId = _tenantService.GetCurrentTenantId()
+                };
 
-            if (_options.Value.LogLevel <= logLevel)
-            {
-                string url = _options.Value.Url;
-                HttpClient httpClient = new HttpClient();
-                var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
-                AddAuthenticationHeader(httpClient, url);
-                httpClient.PostAsync(
-                    url,
-                    content);
+                if (_options.Value.LogLevel <= logLevel)
+                {
+                    string url = _options.Value.Url;
+                    HttpClient httpClient = new HttpClient();
+                    var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
+                    AddAuthenticationHeader(httpClient, url);
+                    httpClient.PostAsync(
+                        url,
+                        content);
+                }
             }
+            catch { }
         }
 
         private void AddAuthenticationHeader(HttpClient client, string url)

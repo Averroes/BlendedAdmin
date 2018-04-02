@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using BlendedAdmin.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace BlendedAdmin.Infrastructure.Logging
 {
@@ -14,7 +15,7 @@ namespace BlendedAdmin.Infrastructure.Logging
         private IHttpContextAccessor _httpContextAccessor;
         private IServiceScopeFactory _serviceScopeFactory;
         private ITenantService _tenantService;
-        private Dictionary<string, ILogger> _loggers = new Dictionary<string, ILogger>();
+        private ConcurrentDictionary<string, ILogger> _loggers = new ConcurrentDictionary<string, ILogger>();
 
         public ElasticLoggerProvider(
             IOptions<ElasticLoggerOptions> options, 

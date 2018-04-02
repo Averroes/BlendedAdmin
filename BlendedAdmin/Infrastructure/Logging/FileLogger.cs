@@ -43,25 +43,29 @@ namespace BlendedAdmin.Infrastructure.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            if (_options.Value.LogLevel <= logLevel)
+            try
             {
-                Directory.CreateDirectory(_filePath);
+                if (_options.Value.LogLevel <= logLevel)
+                {
+                    Directory.CreateDirectory(_filePath);
 
-                DateTime dateTime = DateTime.Now;
-                string fullFileName = Path.Combine(_filePath, $"log-{dateTime.Year:0000}_{dateTime.Month:00}_{dateTime.Day:00}.txt");
-                var logLine = new StringBuilder();
-                logLine.Append(dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff zzz"));
-                logLine.Append(" [");
-                logLine.Append(logLevel.ToString());
-                logLine.Append("] ");
-                logLine.Append(_category);
-                logLine.Append(": ");
-                logLine.Append(_httpContextAccessor.HttpContext?.User?.Identity?.Name);
-                logLine.Append(": ");
-                logLine.AppendLine(formatter(state, exception));
-                File.AppendAllTextAsync(fullFileName, logLine.ToString());
-                RollFiles();
+                    DateTime dateTime = DateTime.Now;
+                    string fullFileName = Path.Combine(_filePath, $"log-{dateTime.Year:0000}_{dateTime.Month:00}_{dateTime.Day:00}.txt");
+                    var logLine = new StringBuilder();
+                    logLine.Append(dateTime.ToString("yyyy-MM-dd HH:mm:ss.fff zzz"));
+                    logLine.Append(" [");
+                    logLine.Append(logLevel.ToString());
+                    logLine.Append("] ");
+                    logLine.Append(_category);
+                    logLine.Append(": ");
+                    logLine.Append(_httpContextAccessor.HttpContext?.User?.Identity?.Name);
+                    logLine.Append(": ");
+                    logLine.AppendLine(formatter(state, exception));
+                    File.AppendAllTextAsync(fullFileName, logLine.ToString());
+                    RollFiles();
+                }
             }
+            catch { }
         }
 
         private void RollFiles()

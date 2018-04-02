@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using BlendedAdmin.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 
 namespace BlendedAdmin.Infrastructure.Logging
 {
@@ -12,7 +13,7 @@ namespace BlendedAdmin.Infrastructure.Logging
     {
         private IOptions<FileLoggerOptions> _options;
         private IHttpContextAccessor _httpContextAccessor;
-        private Dictionary<string, ILogger> _loggers = new Dictionary<string, ILogger>();
+        private ConcurrentDictionary<string, ILogger> _loggers = new ConcurrentDictionary<string, ILogger>();
 
         public FileLoggerProvider(
             IOptions<FileLoggerOptions> options, 
