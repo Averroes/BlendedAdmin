@@ -42,6 +42,8 @@ namespace BlendedAdmin
             services
                 .AddMvc(x => x.Filters.Add(typeof(EnvironmentFilter)))
                 .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
+            services
+                .AddDataProtection(opt => opt.ApplicationDiscriminator = "BlendedAdmin");
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
@@ -84,7 +86,6 @@ namespace BlendedAdmin
                 options.LogoutPath = "/users/logoff";
                 options.AccessDeniedPath = "/accessdenied";
             });
-            services.AddDataProtection();
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             //    .AddCookie(options => {
             //        options.LoginPath = "/{environment}/login";
