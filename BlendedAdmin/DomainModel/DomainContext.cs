@@ -19,7 +19,7 @@ namespace BlendedAdmin.DomainModel
         Task SaveAsync();
     }
 
-    public class DomainContext : IDomainContext
+    public class DomainContext : IDomainContext, IDisposable
     {
         private ApplicationDbContext _dbContext;
         public IUserRepository Users { get; set; }
@@ -39,6 +39,11 @@ namespace BlendedAdmin.DomainModel
         public async Task SaveAsync()
         {
             await this._dbContext.SaveChangesAsync();
+        }
+
+        public void Dispose()
+        {
+            this._dbContext?.Dispose();
         }
     }
 }

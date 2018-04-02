@@ -60,13 +60,13 @@ namespace BlendedAdmin
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IVariableRepository, VariableRepository>();
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
-            services.AddTransient<IEnvironmentService, EnvironmentService>();
-            services.AddTransient<ISiteMenuService, SiteMenuService>();
-            services.AddTransient<IUrlServicecs, UrlServicecs>();
-            services.AddTransient<IVariablesService, VariablesService>();
-            services.AddTransient<ITenantService, TenantService>();
-            services.AddTransient<IJsService, JsService>();
-            services.AddTransient<IEmailService, EmailService>();
+            services.AddScoped<IEnvironmentService, EnvironmentService>();
+            services.AddScoped<ISiteMenuService, SiteMenuService>();
+            services.AddScoped<IUrlServicecs, UrlServicecs>();
+            services.AddScoped<IVariablesService, VariablesService>();
+            services.AddScoped<ITenantService, TenantService>();
+            services.AddScoped<IJsService, JsService>();
+            services.AddScoped<IEmailService, EmailService>();
             services.AddIdentity<ApplicationUser, IdentityRole>(options =>
             {
                 options.User.RequireUniqueEmail = true;
