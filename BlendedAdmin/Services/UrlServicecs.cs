@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace BlendedAdmin.Services
 {
-    public interface IUrlServicecs
+    public interface IUrlService
     {
         string GetUrl();
         string GetBasePath();
@@ -20,13 +20,14 @@ namespace BlendedAdmin.Services
         int GetItemId();
         string GetEnvironment();
         string GetUrlWithEnvironment(string environment);
+        string GetTenant();
     }
 
-    public class UrlServicecs : IUrlServicecs
+    public class UrlService : IUrlService
     {
         private IHttpContextAccessor _httpContextAccessor;
         private IActionContextAccessor _actionContextAccessor;
-        public UrlServicecs(IHttpContextAccessor httpContextAccessor, IActionContextAccessor actionContextAccessor)
+        public UrlService(IHttpContextAccessor httpContextAccessor, IActionContextAccessor actionContextAccessor)
         {
             _httpContextAccessor = httpContextAccessor;
             _actionContextAccessor = actionContextAccessor;
@@ -108,6 +109,17 @@ namespace BlendedAdmin.Services
         {
             string environment = _actionContextAccessor.ActionContext.RouteData.Values.GetValueOrDefault("environment") as string;
             return environment;
+        }
+
+        public string GetTenant()
+        {
+            var request = _httpContextAccessor?.HttpContext?.Request;
+            if (request != null && string.IsNullOrWhiteSpace(request.Host.Host) == false)
+            {
+                var subDomains = request.Host.Host.Split('.');
+                return subDomains[0].Trim().ToLower();
+            }
+            return null;
         }
 
         public string GetUrlWithEnvironment(string environment)

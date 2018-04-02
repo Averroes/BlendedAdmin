@@ -20,7 +20,7 @@ namespace BlendedAdmin.Infrastructure.Logging
         private IOptions<ElasticLoggerOptions> _options;
         private IHttpContextAccessor _httpContextAccessor;
         private IServiceScopeFactory _serviceScopeFactory;
-        private ITenantService _tenantService;
+        private IUrlService _urlService;
 
         private LogLevel _logLevel;
 
@@ -29,13 +29,13 @@ namespace BlendedAdmin.Infrastructure.Logging
             IOptions<ElasticLoggerOptions> options, 
             IHttpContextAccessor httpContextAccessor,
             IServiceScopeFactory serviceScopeFactory,
-            ITenantService tenantService)
+            IUrlService urlService)
         {
             _category = category;
             _options = options;
             _httpContextAccessor = httpContextAccessor;
             _serviceScopeFactory = serviceScopeFactory;
-            _tenantService = tenantService;
+            _urlService = urlService;
 
             _logLevel = options.Value.LogLevel ?? LogLevel.None;
         }
@@ -63,7 +63,7 @@ namespace BlendedAdmin.Infrastructure.Logging
                     DateTime = DateTime.Now,
                     Category = _category,
                     UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
-                    TenantId = _tenantService.GetCurrentTenantId()
+                    TenantId = _urlService.GetTenant()
                 };
 
                 if (_options.Value.LogLevel <= logLevel)

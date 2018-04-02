@@ -14,8 +14,8 @@ namespace BlendedAdmin.Services
     public class SiteMenuService : ISiteMenuService
     {
         private IDomainContext _domainContext;
-        private IUrlServicecs _urlService;
-        public SiteMenuService(IDomainContext context, IUrlServicecs urlService)
+        private IUrlService _urlService;
+        public SiteMenuService(IDomainContext context, IUrlService urlService)
         {
             this._domainContext = context;
             this._urlService = urlService;

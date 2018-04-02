@@ -26,9 +26,9 @@ namespace BlendedAdmin.Models.Items
 
     public class TableViewModelAssembler
     {
-        private IUrlServicecs _urlService;
+        private IUrlService _urlService;
 
-        public TableViewModelAssembler(IUrlServicecs urlService)
+        public TableViewModelAssembler(IUrlService urlService)
         {
             _urlService = urlService;
         }

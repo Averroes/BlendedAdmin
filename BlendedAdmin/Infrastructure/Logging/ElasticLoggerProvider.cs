@@ -14,19 +14,19 @@ namespace BlendedAdmin.Infrastructure.Logging
         private IOptions<ElasticLoggerOptions> _options;
         private IHttpContextAccessor _httpContextAccessor;
         private IServiceScopeFactory _serviceScopeFactory;
-        private ITenantService _tenantService;
+        private IUrlService _urlService;
         private ConcurrentDictionary<string, ILogger> _loggers = new ConcurrentDictionary<string, ILogger>();
 
         public ElasticLoggerProvider(
             IOptions<ElasticLoggerOptions> options, 
             IHttpContextAccessor httpContextAccessor,
             IServiceScopeFactory serviceScopeFactory,
-            ITenantService tenantService)
+            IUrlService urlService)
         {
             this._options = options;
             this._httpContextAccessor = httpContextAccessor;
             this._serviceScopeFactory = serviceScopeFactory;
-            this._tenantService = tenantService;
+            this._urlService = urlService;
         }
 
         public ILogger CreateLogger(string categoryName)
@@ -35,7 +35,7 @@ namespace BlendedAdmin.Infrastructure.Logging
             if (_loggers.TryGetValue(categoryName, out logger))
                 return logger;
 
-            logger = new ElasticLogger(categoryName, _options, _httpContextAccessor, _serviceScopeFactory, _tenantService);
+            logger = new ElasticLogger(categoryName, _options, _httpContextAccessor, _serviceScopeFactory, _urlService);
             _loggers[categoryName] = logger;
             return logger;
         }

@@ -15,9 +15,9 @@ namespace BlendedAdmin.Services
     public class EnvironmentService : IEnvironmentService
     {
         private IDomainContext _domainContext;
-        private IUrlServicecs _urlService;
+        private IUrlService _urlService;
 
-        public EnvironmentService(IDomainContext domainContext, IUrlServicecs urlService)
+        public EnvironmentService(IDomainContext domainContext, IUrlService urlService)
         {
             this._domainContext = domainContext;
             this._urlService = urlService;

@@ -53,6 +53,8 @@ namespace BlendedAdmin
                     options.UseSqlServer(database);
                 if (provider.SafeEquals("MySQL"))
                     options.UseMySql(database);
+                if (provider.SafeEquals("PostgreSQL") || provider.SafeEquals("Postgres"))
+                    options.UseNpgsql(database);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();
@@ -62,7 +64,7 @@ namespace BlendedAdmin
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
             services.AddTransient<IEnvironmentService, EnvironmentService>();
             services.AddTransient<ISiteMenuService, SiteMenuService>();
-            services.AddTransient<IUrlServicecs, UrlServicecs>();
+            services.AddTransient<IUrlService, UrlService>();
             services.AddTransient<IVariablesService, VariablesService>();
             services.AddTransient<ITenantService, TenantService>();
             services.AddTransient<IJsService, JsService>();

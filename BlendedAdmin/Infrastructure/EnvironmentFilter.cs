@@ -7,12 +7,8 @@ namespace BlendedAdmin
     public class EnvironmentFilter : ActionFilterAttribute
     {
         private IServiceScopeFactory _serviceScopeFactory;
-        private IEnvironmentService _environmentService;
-        public EnvironmentFilter(
-            //IEnvironmentService environmentService, 
-            IServiceScopeFactory serviceScopeFactory)
+        public EnvironmentFilter(IServiceScopeFactory serviceScopeFactory)
         {
-            //_environmentService = environmentService;
             this._serviceScopeFactory = serviceScopeFactory;
         }
 
@@ -27,8 +23,6 @@ namespace BlendedAdmin
                 var environmentService = scope.ServiceProvider.GetRequiredService<IEnvironmentService>();
                 context.RouteData.Values["environment"] = (await environmentService.GetCurrentEnvironment()).Name;
             }
-
-            //context.RouteData.Values["environment"] = (await _environmentService.GetCurrentEnvironment()).Name;
         }
     }
 }

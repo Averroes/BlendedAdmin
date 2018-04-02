@@ -20,13 +20,13 @@ namespace BlendedAdmin.Js
         private IHttpContextAccessor _httpContextAccessor;
         private IVariablesService _variablesService;
         private IEnvironmentService _environmentService;
-        private IUrlServicecs _urlServicecs;
+        private IUrlService _urlServicecs;
 
         public JsService(
             IHttpContextAccessor httpContextAccessor, 
             IVariablesService variablesService,
             IEnvironmentService environmentService,
-            IUrlServicecs urlServicecs)
+            IUrlService urlServicecs)
         {
             _httpContextAccessor = httpContextAccessor;
             _variablesService = variablesService;

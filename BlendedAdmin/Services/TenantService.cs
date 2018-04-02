@@ -18,23 +18,23 @@ namespace BlendedAdmin.Services
     {
         private IHttpContextAccessor _httpContextAccessor;
         private IOptions<BlendedSettings> _settings;
+        private IUrlService _urlService;
 
-        public TenantService(IHttpContextAccessor httpContextAccessor, IOptions<BlendedSettings> settings)
+        public TenantService(
+            IHttpContextAccessor httpContextAccessor, 
+            IOptions<BlendedSettings> settings,
+            IUrlService urlService)
         {
-            this._httpContextAccessor = httpContextAccessor;
-            this._settings = settings;
+            _httpContextAccessor = httpContextAccessor;
+            _settings = settings;
+            _urlService = urlService;
         }
 
         public string GetCurrentTenantId()
         {
             if (_settings.Value.MultiTenants)
             {
-                var request = _httpContextAccessor?.HttpContext?.Request;
-                if (request != null && string.IsNullOrWhiteSpace(request.Host.Host) == false)
-                {
-                    var subDomains = request.Host.Host.Split('.');
-                    return subDomains[0].Trim().ToLower();
-                }
+                return _urlService.GetTenant();
             }
             return null;
         }
