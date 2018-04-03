@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace BlendedAdmin.Infrastructure.Logging
+namespace BlendedAdmin.Infrastructure
 {
     public class ElasticLoggerOptions
     {

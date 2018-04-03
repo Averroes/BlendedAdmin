@@ -17,10 +17,10 @@ namespace BlendedAdmin.Services
 
     public class EmailService : IEmailService
     {
-        private IOptions<MailSettings> _options;
+        private IOptions<MailOptions> _options;
         private readonly ILogger<EmailService> _logger;
 
-        public EmailService(IOptions<MailSettings> options, ILogger<EmailService> logger)
+        public EmailService(IOptions<MailOptions> options, ILogger<EmailService> logger)
         {
             _options = options;
             _logger = logger;

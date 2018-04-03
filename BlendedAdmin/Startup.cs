@@ -24,6 +24,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using BlendedJS;
 using Microsoft.Extensions.Logging;
 using BlendedAdmin.Infrastructure.Logging;
+using Microsoft.AspNetCore.Rewrite;
 
 namespace BlendedAdmin
 {
@@ -93,8 +94,9 @@ namespace BlendedAdmin
             //        options.AccessDeniedPath = "/{environment}accessdenied";
             //    });
             services.AddOptions();
-            services.Configure<BlendedSettings>(Configuration.GetSection("BlendedSettings"));
-            services.Configure<MailSettings>(Configuration.GetSection("Mail"));
+            services.Configure<BlendedOptions>(Configuration.GetSection("BlendedSettings"));
+            services.Configure<MailOptions>(Configuration.GetSection("Mail"));
+            services.Configure<SecurityOptions>(Configuration.GetSection("Security"));
             services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
             services.Configure<ElasticLoggerOptions>(Configuration.GetSection("Logging:Elastic"));
         }
@@ -102,6 +104,12 @@ namespace BlendedAdmin
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IServiceProvider serviceProvide, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
+            var securityOptions = Configuration.GetSection("Security").Get<SecurityOptions>();
+            if (securityOptions.EnforceHttps)
+            {
+                app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
+            }
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
