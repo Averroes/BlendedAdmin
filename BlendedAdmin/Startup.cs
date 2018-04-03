@@ -46,16 +46,17 @@ namespace BlendedAdmin
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
-                var database = Configuration.GetConnectionString("Database");
+                var database = Configuration.GetSection("Database").Get<DatabaseOptions>();
+
                 var provider = Configuration.GetConnectionString("Provider");
-                if (provider.SafeEquals("Sqlite"))
-                    options.UseSqlite(database);
-                if (provider.SafeEquals("SqlServer"))
-                    options.UseSqlServer(database);
-                if (provider.SafeEquals("MySQL"))
-                    options.UseMySql(database);
-                if (provider.SafeEquals("PostgreSQL") || provider.SafeEquals("Postgres"))
-                    options.UseNpgsql(database);
+                if (database.ConnectionProvider.SafeEquals("Sqlite"))
+                    options.UseSqlite(database.ConnectionString);
+                if (database.ConnectionProvider.SafeEquals("SqlServer"))
+                    options.UseSqlServer(database.ConnectionString);
+                if (database.ConnectionProvider.SafeEquals("MySQL"))
+                    options.UseMySql(database.ConnectionString);
+                if (database.ConnectionProvider.SafeEquals("PostgreSQL") || provider.SafeEquals("Postgres"))
+                    options.UseNpgsql(database.ConnectionString);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();
@@ -94,7 +95,7 @@ namespace BlendedAdmin
             //        options.AccessDeniedPath = "/{environment}accessdenied";
             //    });
             services.AddOptions();
-            services.Configure<BlendedOptions>(Configuration.GetSection("BlendedSettings"));
+            services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
             services.Configure<MailOptions>(Configuration.GetSection("Mail"));
             services.Configure<SecurityOptions>(Configuration.GetSection("Security"));
             services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
