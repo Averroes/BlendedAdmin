@@ -47,15 +47,13 @@ namespace BlendedAdmin
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
                 var database = Configuration.GetSection("Database").Get<DatabaseOptions>();
-
-                var provider = Configuration.GetConnectionString("Provider");
                 if (database.ConnectionProvider.SafeEquals("Sqlite"))
                     options.UseSqlite(database.ConnectionString);
                 if (database.ConnectionProvider.SafeEquals("SqlServer"))
                     options.UseSqlServer(database.ConnectionString);
                 if (database.ConnectionProvider.SafeEquals("MySQL"))
                     options.UseMySql(database.ConnectionString);
-                if (database.ConnectionProvider.SafeEquals("PostgreSQL") || provider.SafeEquals("Postgres"))
+                if (database.ConnectionProvider.SafeEquals("PostgreSQL") || database.ConnectionProvider.SafeEquals("Postgres"))
                     options.UseNpgsql(database.ConnectionString);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
