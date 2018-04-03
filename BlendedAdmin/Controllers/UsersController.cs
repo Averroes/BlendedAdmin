@@ -152,7 +152,7 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpGet]
-        [Route("users/login")]
+        [Route("user/login")]
         [AllowAnonymous]
         public async Task<IActionResult> LogIn()
         {
@@ -161,7 +161,7 @@ namespace BlendedAdmin.Controllers
         }
 
         [HttpPost]
-        [Route("users/login")]
+        [Route("user/login")]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInModel model, string returnUrl = null)
@@ -190,7 +190,7 @@ namespace BlendedAdmin.Controllers
             return View(model);
         }
 
-        [Route("users/logoff")]
+        [Route("user/logoff")]
         [AllowAnonymous]
         public async Task<IActionResult> LogOff(string returnUrl = null)
         {
@@ -208,7 +208,7 @@ namespace BlendedAdmin.Controllers
         
         [HttpGet]
         [AllowAnonymous]
-        [Route("users/forgotpassword")]
+        [Route("user/forgotpassword")]
         public IActionResult ForgotPassword()
         {
             return View();
@@ -217,7 +217,7 @@ namespace BlendedAdmin.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        [Route("users/forgotpassword")]
+        [Route("user/forgotpassword")]
         public async Task<IActionResult> ForgotPassword(ForgotPasswordModel model)
         {
             if (ModelState.IsValid)
@@ -241,7 +241,7 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("users/forgotpasswordconfirmation")]
+        [Route("user/forgotpasswordconfirmation")]
         public IActionResult ForgotPasswordConfirmation()
         {
             return View();
@@ -249,7 +249,7 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{environment}/resetpassword")]
+        [Route("user/resetpassword")]
         public IActionResult ResetPassword(string code = null)
         {
             return code == null ? View("Error") : View();
@@ -258,7 +258,7 @@ namespace BlendedAdmin.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        [Route("{environment}/resetpassword")]
+        [Route("user/resetpassword")]
         public async Task<IActionResult> ResetPassword(ResetPasswordModel model)
         {
             if (!ModelState.IsValid)
@@ -282,10 +282,39 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("{environment}/resetpasswordconfirmation")]
+        [Route("user/resetpasswordconfirmation")]
         public IActionResult ResetPasswordConfirmation()
         {
             return View();
+        }
+
+        [HttpGet]
+        [Route("{environment}/user/changepassword")]
+        public async Task<IActionResult> ChangeMyPassword()
+        {
+            var entity = await _userManager.GetUserAsync(HttpContext.User);
+            if (entity == null)
+            {
+                this.ModelState.AddModelError("", "Sorry, we cannot find the user.");
+                return View(new ApplicationUser());
+            }
+            var model = new ChangeMyPassowrdModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        //[ValidateAntiForgeryToken]
+        [Route("{environment}/user/changepassword")]
+        public async Task<IActionResult> ChangeMyPassword(string id, ChangeMyPassowrdModel model)
+        {
+            if (ModelState.IsValid == false)
+                return View(model);
+
+            var entity =  await _userManager.GetUserAsync(HttpContext.User);
+            var results = await _userManager.ChangePasswordAsync(entity, model.CurrentPassword, model.NewPassword);
+            results.Errors.ToList().ForEach(x => ModelState.AddModelError(string.Empty, x.Description));
+            model.Succeeded = results.Succeeded;
+            return View(model);
         }
 
         private IActionResult RedirectToLocal(string returnUrl)

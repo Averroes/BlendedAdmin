@@ -82,8 +82,8 @@ namespace BlendedAdmin
                 .AddDefaultTokenProviders();
             services.ConfigureApplicationCookie(options =>
             {
-                options.LoginPath = "/users/login";
-                options.LogoutPath = "/users/logoff";
+                options.LoginPath = "/user/login";
+                options.LogoutPath = "/user/logoff";
                 options.AccessDeniedPath = "/accessdenied";
             });
             //services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)

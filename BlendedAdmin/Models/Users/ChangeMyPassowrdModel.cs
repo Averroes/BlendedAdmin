@@ -2,12 +2,11 @@
 
 namespace BlendedAdmin.Models.Users
 {
-    public class ChangePassowrdModel
+    public class ChangeMyPassowrdModel
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
         [Required]
-        public string Password { get; set; }
+        public string CurrentPassword { get; set; }
+        public string NewPassword { get; set; }
         public bool Succeeded { get; internal set; }
     }
 }
