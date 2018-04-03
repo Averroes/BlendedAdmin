@@ -105,9 +105,13 @@ namespace BlendedAdmin
         public void Configure(IApplicationBuilder app, IServiceProvider serviceProvide, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             var securityOptions = Configuration.GetSection("Security").Get<SecurityOptions>();
-            if (securityOptions.EnforceHttps)
+            if (securityOptions != null && securityOptions.EnforceHttps)
             {
-                app.UseRewriter(new RewriteOptions().AddRedirectToHttps());
+                var options = new RewriteOptions()
+                    .AddRedirectToProxiedHttps();
+                    //.AddRedirect("(.*)/$", "$1");  // remove trailing slash
+
+                app.UseRewriter(options);
             }
 
             if (env.IsDevelopment())
