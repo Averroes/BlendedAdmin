@@ -38,8 +38,8 @@ namespace BlendedAdmin
 
         public async override void OnActionExecuting(ActionExecutingContext context)
         {
-            if (_hostingOptions?.Value?.MultiTenants == false)
-                return;
+            //if (_hostingOptions?.Value?.MultiTenants == false)
+            //    return;
 
             string tenantId = _urlService.GetTenant();
             if (tenantId == "x")
