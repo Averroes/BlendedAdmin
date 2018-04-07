@@ -6,6 +6,5 @@ namespace BlendedAdmin.Infrastructure
     {
         public string ConnectionString { get; set; }
         public string ConnectionProvider { get; set; }
-        public bool MultiTenants { get; set; }
     }
 }

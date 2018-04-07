@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using BlendedAdmin.Infrastructure;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,10 +30,16 @@ namespace BlendedAdmin.Services
     {
         private IHttpContextAccessor _httpContextAccessor;
         private IActionContextAccessor _actionContextAccessor;
-        public UrlService(IHttpContextAccessor httpContextAccessor, IActionContextAccessor actionContextAccessor)
+        private IOptions<HostingOptions> _settings;
+
+        public UrlService(
+            IHttpContextAccessor httpContextAccessor, 
+            IActionContextAccessor actionContextAccessor,
+            IOptions<HostingOptions> settings)
         {
             _httpContextAccessor = httpContextAccessor;
             _actionContextAccessor = actionContextAccessor;
+            _settings = settings;
         }
 
         public string GetUrl()
@@ -146,7 +154,14 @@ namespace BlendedAdmin.Services
 
         public string GetUrlWithTenant(string tenant)
         {
-            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + tenant + "." + _httpContextAccessor.HttpContext.Request.Host.ToUriComponent();
+            if (string.IsNullOrEmpty(_settings?.Value?.TenantUrl) == false)
+            {
+                return string.Format(_settings.Value.TenantUrl, tenant);
+            }
+            else
+            {
+                return _httpContextAccessor.HttpContext.Request.Scheme + "://" + tenant + "." + _httpContextAccessor.HttpContext.Request.Host.ToUriComponent();
+            }
         }
     }
 }

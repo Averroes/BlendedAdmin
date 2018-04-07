@@ -17,12 +17,12 @@ namespace BlendedAdmin.Services
     public class TenantService : ITenantService
     {
         private IHttpContextAccessor _httpContextAccessor;
-        private IOptions<DatabaseOptions> _settings;
+        private IOptions<HostingOptions> _settings;
         private IUrlService _urlService;
 
         public TenantService(
             IHttpContextAccessor httpContextAccessor, 
-            IOptions<DatabaseOptions> settings,
+            IOptions<HostingOptions> settings,
             IUrlService urlService)
         {
             _httpContextAccessor = httpContextAccessor;

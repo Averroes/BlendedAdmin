@@ -96,6 +96,7 @@ namespace BlendedAdmin
             //    });
             services.AddOptions();
             services.Configure<DatabaseOptions>(Configuration.GetSection("Database"));
+            services.Configure<HostingOptions>(Configuration.GetSection("Hosting"));
             services.Configure<MailOptions>(Configuration.GetSection("Mail"));
             services.Configure<SecurityOptions>(Configuration.GetSection("Security"));
             services.Configure<FileLoggerOptions>(Configuration.GetSection("Logging:File"));
