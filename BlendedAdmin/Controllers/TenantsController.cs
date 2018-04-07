@@ -46,7 +46,7 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("register")]
+        [Route("tenants/register")]
         public IActionResult Register()
         {
             return View(new RegisterModel());
@@ -55,7 +55,7 @@ namespace BlendedAdmin.Controllers
         [HttpPost]
         [AllowAnonymous]
         //[ValidateAntiForgeryToken]
-        [Route("register")]
+        [Route("tenants/register")]
         public async Task<IActionResult> Register(RegisterModel model)
         {
             if (ModelState.IsValid == false)
@@ -91,11 +91,10 @@ namespace BlendedAdmin.Controllers
 
         [HttpGet]
         [AllowAnonymous]
-        [Route("registrationconfirmation")]
+        [Route("tenants/registrationconfirmation")]
         public IActionResult RegistrationConfirmation()
         {
             return View();
         }
-        
     }
 }

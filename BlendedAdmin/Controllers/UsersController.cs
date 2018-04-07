@@ -35,7 +35,7 @@ namespace BlendedAdmin.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
             _emailService = emailService;
-            _logger = loggerFactory.CreateLogger<UsersController>();
+            _logger = loggerFactory.CreateLogger<UsersController>();           
         }
 
         [HttpGet]

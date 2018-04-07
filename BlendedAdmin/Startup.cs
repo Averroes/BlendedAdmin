@@ -20,10 +20,8 @@ using BlendedAdmin.Js;
 using BlendedAdmin.DomainModel.Users;
 using Microsoft.AspNetCore.Identity;
 using BlendedAdmin.Infrastructure;
-using Microsoft.AspNetCore.Authentication.Cookies;
 using BlendedJS;
 using Microsoft.Extensions.Logging;
-using BlendedAdmin.Infrastructure.Logging;
 using Microsoft.AspNetCore.Rewrite;
 using BlendedAdmin.DomainModel.Tenants;
 
@@ -41,21 +39,29 @@ namespace BlendedAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            HostingOptions hostingOptions = Configuration.GetSection("HostingOptions").Get<HostingOptions>();
+            DatabaseOptions databaseOptions = Configuration.GetSection("Database").Get<DatabaseOptions>();
+
+            services.AddMemoryCache();
             services
-                .AddMvc(x => x.Filters.Add(typeof(EnvironmentFilter)))
+                .AddMvc(x => 
+                {
+                    x.Filters.Add<EnvironmentFilter>();
+                    if (hostingOptions != null && hostingOptions.MultiTenants)
+                        x.Filters.Add<ValidateTenantFilter>();
+                })
                 .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
-                var database = Configuration.GetSection("Database").Get<DatabaseOptions>();
-                if (database.ConnectionProvider.SafeEquals("Sqlite"))
-                    options.UseSqlite(database.ConnectionString);
-                if (database.ConnectionProvider.SafeEquals("SqlServer"))
-                    options.UseSqlServer(database.ConnectionString);
-                if (database.ConnectionProvider.SafeEquals("MySQL"))
-                    options.UseMySql(database.ConnectionString);
-                if (database.ConnectionProvider.SafeEquals("PostgreSQL") || database.ConnectionProvider.SafeEquals("Postgres"))
-                    options.UseNpgsql(database.ConnectionString);
+                if (databaseOptions.ConnectionProvider.SafeEquals("Sqlite"))
+                    options.UseSqlite(databaseOptions.ConnectionString);
+                if (databaseOptions.ConnectionProvider.SafeEquals("SqlServer"))
+                    options.UseSqlServer(databaseOptions.ConnectionString);
+                if (databaseOptions.ConnectionProvider.SafeEquals("MySQL"))
+                    options.UseMySql(databaseOptions.ConnectionString);
+                if (databaseOptions.ConnectionProvider.SafeEquals("PostgreSQL") || databaseOptions.ConnectionProvider.SafeEquals("Postgres"))
+                    options.UseNpgsql(databaseOptions.ConnectionString);
             });
             services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
             services.AddScoped<IDomainContext, DomainContext>();

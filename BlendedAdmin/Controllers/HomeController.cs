@@ -27,7 +27,6 @@ namespace BlendedAdmin.Controllers
 
         public async Task<IActionResult> Index()
         {
-            _logger.LogError("some errors");
             var items = await _domainContext.Items.GetAll();
             var model = new ItemModelAssembler().ToModel(items);
             return View(new HomeModel
@@ -49,6 +48,8 @@ namespace BlendedAdmin.Controllers
             return View();
         }
 
+        [AllowAnonymous]
+        [Route("home/error")]
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
