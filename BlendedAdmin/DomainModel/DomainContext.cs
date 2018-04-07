@@ -9,10 +9,11 @@ using BlendedAdmin.DomainModel.Environments;
 using BlendedAdmin.DomainModel.Users;
 using BlendedAdmin.DomainModel.Tenants;
 using Microsoft.EntityFrameworkCore.Storage;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlendedAdmin.DomainModel
 {
-    public interface IDomainContext
+    public interface IDomainContext : IDisposable
     {
         IUserRepository Users { get; }
         IItemRepository Items { get; }
@@ -23,7 +24,7 @@ namespace BlendedAdmin.DomainModel
         Task<IDbContextTransaction> BeginTransaction();
     }
 
-    public class DomainContext : IDomainContext, IDisposable
+    public class DomainContext : IDomainContext
     {
         private ApplicationDbContext _dbContext;
 
