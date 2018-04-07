@@ -44,11 +44,12 @@ namespace BlendedAdmin
             string tenantId = _urlService.GetTenant();
             if (tenantId == "x")
                 return;
+
             string tenantCacheKey = "tenant_" + tenantId;
             Tenant tenant = null;
-            if (!_memoryCache.TryGetValue(tenantCacheKey, out tenant))
-            {
-                tenant = await GetTenant(tenantId);
+            //if (!_memoryCache.TryGetValue(tenantCacheKey, out tenant))
+            //{
+            tenant = await GetTenant(tenantId);
                 if (tenant == null)
                 {
                     _logger.LogInformation("Tenant does not exists: " + tenantId);
@@ -61,7 +62,7 @@ namespace BlendedAdmin
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(60));
 
                 _memoryCache.Set(tenantCacheKey, tenant, cacheOptions);
-            }
+            //}
         }
 
         public async Task<Tenant> GetTenant(string tenantId)

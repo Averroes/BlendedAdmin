@@ -12,6 +12,7 @@
       "commandName": "IISExpress",
       "launchBrowser": true,
       "environmentVariables": {
+        "Hosting:MultiTenants": "true",
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
