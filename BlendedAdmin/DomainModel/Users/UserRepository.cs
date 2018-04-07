@@ -12,6 +12,7 @@ namespace BlendedAdmin.DomainModel.Users
     {
         Task<ApplicationUser> Get(string id);
         Task<List<ApplicationUser>> GetAll();
+        void Save(ApplicationUser user, string tenantId);
     }
 
     public class UserRepository : IUserRepository
@@ -37,6 +38,12 @@ namespace BlendedAdmin.DomainModel.Users
             return await _dbContext.Users
                 .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
                 .ToListAsync();
+        }
+
+        public void Save(ApplicationUser user, string tenantId)
+        {
+            user.TenantId = tenantId;
+            _dbContext.Users.Add(user);
         }
     }
 }

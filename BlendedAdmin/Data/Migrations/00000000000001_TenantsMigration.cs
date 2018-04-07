@@ -16,6 +16,7 @@ namespace BlendedAdmin.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<string>(nullable: false, maxLength:100),
+                    Status = table.Column<string>(nullable: false, maxLength: 100),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                 },
                 constraints: table =>

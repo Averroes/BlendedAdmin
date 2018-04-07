@@ -1,0 +1,31 @@
+@inject BlendedAdmin.Services.IUrlService urlService
+@model BlendedAdmin.Models.Tenants.RegisterModel
+
+@{ViewData["Title"] = "Registration";}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Registration</h1>
+</div>
+
+<form id="editForm" action="@urlService.GetUrl()" method="post">
+    <div asp-validation-summary="All" class="text-danger"></div>
+    <div class="form-group">
+        <label for="Name">Name</label>
+        <input asp-for="Name" class="form-control" />
+        <small id="emailHelp" class="form-text text-muted">The url will be https://<b>{Name}</b>.blendedadmin.com</small>
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Name">Email</label>
+        <input asp-for="Email" class="form-control" />
+        <span asp-validation-for="Email" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label for="Name">Password</label>
+        <input asp-for="Password" class="form-control" type="password"/>
+        <span asp-validation-for="Password" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-outline-primary">Register</button>
+    </div>
+</form>

@@ -43,14 +43,11 @@
             <div class="btn-group" style="margin-right: 5px;">
                 <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user" color="#384047"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                    <span>Account</span>
+                    <span class="d-none d-sm-none d-md-inline d-lg-inline d-xl-inline">Account</span>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" style="right:0; left:auto;">
-                    <h6 class="dropdown-header">Configuration</h6>
-                    <a class="dropdown-item" asp-controller="Users" asp-action="Index">Users</a>
-                    <div class="dropdown-divider"></div>
-                    <h6 class="dropdown-header">Account</h6>
                     <a class="dropdown-item" asp-controller="Users" asp-action="ChangeMyPassword">Change Password</a>
+                    <div class="dropdown-divider"></div>
                     <a class="dropdown-item" asp-controller="Users" asp-action="Logoff">Log off</a>
                 </div>
             </div>

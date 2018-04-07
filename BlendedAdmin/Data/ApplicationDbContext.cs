@@ -5,6 +5,7 @@ using BlendedAdmin.DomainModel.Variables;
 using System;
 using Microsoft.EntityFrameworkCore.Metadata;
 using BlendedAdmin.DomainModel.Users;
+using BlendedAdmin.DomainModel.Tenants;
 
 namespace BlendedAdmin.Data
 {
@@ -82,11 +83,15 @@ namespace BlendedAdmin.Data
             builder.Entity<VariableEnvironment>()
                 .HasOne(x => x.Environment);
 
+            builder.Entity<Tenant>()
+                .ToTable("Tenants").HasKey(x => x.Id);
+
         }
 
         public DbSet<Item> Items { get; set; }
         public DbSet<BlendedAdmin.DomainModel.Environments.Environment> Environments { get; set; }
         public DbSet<Variable> Variables { get; set; }
         public DbSet<VariableEnvironment> VariablesEnvironments { get; set; }
+        public DbSet<Tenant> Tenants { get; set; }
     }
 }

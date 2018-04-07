@@ -21,6 +21,7 @@ namespace BlendedAdmin.Services
         string GetEnvironment();
         string GetUrlWithEnvironment(string environment);
         string GetTenant();
+        string GetUrlWithTenant(string tenant);
     }
 
     public class UrlService : IUrlService
@@ -141,6 +142,11 @@ namespace BlendedAdmin.Services
             }
             var absoluteUri = path + request.QueryString.ToUriComponent();
             return absoluteUri; 
+        }
+
+        public string GetUrlWithTenant(string tenant)
+        {
+            return _httpContextAccessor.HttpContext.Request.Scheme + "://" + tenant + "." + _httpContextAccessor.HttpContext.Request.Host.ToUriComponent();
         }
     }
 }

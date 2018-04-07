@@ -25,6 +25,7 @@ using BlendedJS;
 using Microsoft.Extensions.Logging;
 using BlendedAdmin.Infrastructure.Logging;
 using Microsoft.AspNetCore.Rewrite;
+using BlendedAdmin.DomainModel.Tenants;
 
 namespace BlendedAdmin
 {
@@ -62,6 +63,7 @@ namespace BlendedAdmin
             services.AddScoped<IItemRepository, ItemRepository>();
             services.AddScoped<IVariableRepository, VariableRepository>();
             services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
+            services.AddScoped<ITenantRepository, TenantRepository>();
             services.AddTransient<IEnvironmentService, EnvironmentService>();
             services.AddTransient<ISiteMenuService, SiteMenuService>();
             services.AddTransient<IUrlService, UrlService>();

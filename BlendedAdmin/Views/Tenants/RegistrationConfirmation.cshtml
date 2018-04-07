@@ -1,0 +1,21 @@
+@inject BlendedAdmin.Services.IUrlService urlService
+@model BlendedAdmin.Models.Tenants.RegisterModel
+
+@inject BlendedAdmin.Services.IUrlService urlService
+@{ViewData["Title"] = "Registration Confirmation";}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+    <h1 class="h2">Registration Confirmation</h1>
+</div>
+
+<p>
+    Thank you for registering.
+</p>
+@{ var tenant = urlService.GetQueryString("tenant");}
+@if (string.IsNullOrEmpty(tenant) == false)
+{
+    var url = @urlService.GetUrlWithTenant(tenant);
+<p>
+    <a href="@url">The url is @url. Click here to log in.</a>
+</p>
+}
