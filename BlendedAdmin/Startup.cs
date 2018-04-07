@@ -39,7 +39,7 @@ namespace BlendedAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            HostingOptions hostingOptions = Configuration.GetSection("HostingOptions").Get<HostingOptions>();
+            HostingOptions hostingOptions = Configuration.GetSection("Hosting").Get<HostingOptions>();
             DatabaseOptions databaseOptions = Configuration.GetSection("Database").Get<DatabaseOptions>();
 
             services.AddMemoryCache();
