@@ -17,17 +17,20 @@ namespace BlendedAdmin
     public class ValidateTenantFilter : ActionFilterAttribute
     {
         private IServiceScopeFactory _serviceScopeFactory;
+        private IOptions<HostingOptions> _hostingOptions;
         private IMemoryCache _memoryCache;
         private IUrlService _urlService;
         private ILogger<ValidateTenantFilter> _logger { get; }
 
         public ValidateTenantFilter(
             IServiceScopeFactory serviceScopeFactory,
+            IOptions<HostingOptions> hostingOptions,
             IMemoryCache memoryCache,
             IUrlService urlService,
             ILogger<ValidateTenantFilter> logger)
         {
             _serviceScopeFactory = serviceScopeFactory;
+            _hostingOptions = hostingOptions;
             _memoryCache = memoryCache;
             _urlService = urlService;
             _logger = logger;
@@ -35,6 +38,9 @@ namespace BlendedAdmin
 
         public async override void OnActionExecuting(ActionExecutingContext context)
         {
+            if (_hostingOptions?.Value?.MultiTenants == false)
+                return;
+
             string tenantId = _urlService.GetTenant();
             if (tenantId == "x")
                 return;

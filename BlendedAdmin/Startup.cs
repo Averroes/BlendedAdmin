@@ -39,21 +39,18 @@ namespace BlendedAdmin
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            HostingOptions hostingOptions = Configuration.GetSection("Hosting").Get<HostingOptions>();
-            DatabaseOptions databaseOptions = Configuration.GetSection("Database").Get<DatabaseOptions>();
-
             services.AddMemoryCache();
             services
                 .AddMvc(x => 
                 {
                     x.Filters.Add<EnvironmentFilter>();
-                    if (hostingOptions != null && hostingOptions.MultiTenants)
-                        x.Filters.Add<ValidateTenantFilter>();
+                    x.Filters.Add<ValidateTenantFilter>();
                 })
                 .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IActionContextAccessor, ActionContextAccessor>();
             services.AddDbContext<ApplicationDbContext>(options => {
+                DatabaseOptions databaseOptions = Configuration.GetSection("Database").Get<DatabaseOptions>();
                 if (databaseOptions.ConnectionProvider.SafeEquals("Sqlite"))
                     options.UseSqlite(databaseOptions.ConnectionString);
                 if (databaseOptions.ConnectionProvider.SafeEquals("SqlServer"))
