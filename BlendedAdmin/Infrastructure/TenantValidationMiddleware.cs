@@ -42,11 +42,17 @@ namespace BlendedAdmin
         public async Task InvokeAsync(HttpContext context)
         {
             if (_hostingOptions?.Value?.MultiTenants == false)
+            {
                 await this._next(context);
+                return;
+            }
 
             string tenantId = _urlService.GetTenant();
             if (tenantId == "x")
+            {
                 await this._next(context);
+                return;
+            }
 
             string tenantCacheKey = "tenant_" + tenantId;
             Tenant tenant = null;
