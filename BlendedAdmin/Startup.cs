@@ -60,13 +60,13 @@ namespace BlendedAdmin
                 if (databaseOptions.ConnectionProvider.SafeEquals("PostgreSQL") || databaseOptions.ConnectionProvider.SafeEquals("Postgres"))
                     options.UseNpgsql(databaseOptions.ConnectionString);
             });
-            services.AddScoped<IUserStore<ApplicationUser>, ApplicationUserStore>();
-            services.AddScoped<IDomainContext, DomainContext>();
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IItemRepository, ItemRepository>();
-            services.AddScoped<IVariableRepository, VariableRepository>();
-            services.AddScoped<IEnvironmentRepository, EnvironmentRepository>();
-            services.AddScoped<ITenantRepository, TenantRepository>();
+            services.AddTransient<IUserStore<ApplicationUser>, ApplicationUserStore>();
+            services.AddTransient<IDomainContext, DomainContext>();
+            services.AddTransient<IUserRepository, UserRepository>();
+            services.AddTransient<IItemRepository, ItemRepository>();
+            services.AddTransient<IVariableRepository, VariableRepository>();
+            services.AddTransient<IEnvironmentRepository, EnvironmentRepository>();
+            services.AddTransient<ITenantRepository, TenantRepository>();
             services.AddTransient<IEnvironmentService, EnvironmentService>();
             services.AddTransient<ISiteMenuService, SiteMenuService>();
             services.AddTransient<IUrlService, UrlService>();
@@ -141,18 +141,21 @@ namespace BlendedAdmin
                     template: "{environment=Default}/{controller=Home}/{action=Index}/{id?}");
             });
 
-            using (ApplicationDbContext dbContext = serviceProvide.GetService<ApplicationDbContext>())
+            using (var scope = serviceProvide.CreateScope())
             {
-                dbContext.Database.Migrate();
-                if (dbContext.Users.Any(x => x.NormalizedUserName == "ADMIN") == false)
+                using (ApplicationDbContext dbContext = scope.ServiceProvider.GetService<ApplicationDbContext>())
                 {
-                    ApplicationUser admin = new ApplicationUser();
-                    admin.UserName = "Admin";
-                    admin.NormalizedUserName = "ADMIN";
-                    admin.PasswordHash = serviceProvide.GetService<IPasswordHasher<ApplicationUser>>().HashPassword(admin, "admin");
-                    admin.SecurityStamp = Guid.NewGuid().ToString();
-                    dbContext.Users.Add(admin);
-                    dbContext.SaveChanges();
+                    dbContext.Database.Migrate();
+                    if (dbContext.Users.Any(x => x.NormalizedUserName == "ADMIN") == false)
+                    {
+                        ApplicationUser admin = new ApplicationUser();
+                        admin.UserName = "Admin";
+                        admin.NormalizedUserName = "ADMIN";
+                        admin.PasswordHash = serviceProvide.GetService<IPasswordHasher<ApplicationUser>>().HashPassword(admin, "admin");
+                        admin.SecurityStamp = Guid.NewGuid().ToString();
+                        dbContext.Users.Add(admin);
+                        dbContext.SaveChanges();
+                    }
                 }
             }
         }
