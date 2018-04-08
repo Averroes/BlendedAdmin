@@ -17,7 +17,8 @@ namespace BlendedAdmin.Data.Migrations
                 {
                     Id = table.Column<string>(nullable: false, maxLength: 100)
                         .Annotation("MySql:ValueGeneratedOnAdd", true)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.SerialColumn),
                     AccessFailedCount = table.Column<int>(nullable: false),
                     ConcurrencyStamp = table.Column<string>(nullable: true),
                     Email = table.Column<string>(maxLength: 250, nullable: true),
