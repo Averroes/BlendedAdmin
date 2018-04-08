@@ -50,7 +50,7 @@ namespace BlendedAdmin.Controllers
                 variable,
                 await _domainContext.Environments.GetAll());
 
-            Validate(variable);
+            await Validate(variable);
             
             if (model == null || ModelState.IsValid == false)
                 return View("Edit", model);
@@ -80,7 +80,7 @@ namespace BlendedAdmin.Controllers
                 await _domainContext.Variables.GetById(model.Id),
                 await _domainContext.Environments.GetAll());
 
-            //Validate(variable);
+            await Validate(variable);
 
             if (model == null || ModelState.IsValid == false)
                 return View("Edit", model);
@@ -99,7 +99,7 @@ namespace BlendedAdmin.Controllers
             return RedirectToAction("Index");
         }
 
-        private async void Validate(Variable variable)
+        private async Task Validate(Variable variable)
         {
             Variable existingVariable = await _domainContext.Variables.GetByName(variable.Name);
             if (existingVariable != null && existingVariable.Id != variable.Id)

@@ -44,7 +44,7 @@ namespace BlendedAdmin.Controllers
             new EnvironmentModelAssembler().Apply(environment, model);
             environment.Index = await _domainContext.Environments.GetNextIndex();
 
-            Validate(environment);
+            await Validate(environment);
 
             if (model == null || ModelState.IsValid == false)
                 return View("Edit", model);
@@ -71,7 +71,7 @@ namespace BlendedAdmin.Controllers
             var environment = await _domainContext.Environments.Get(model.Id);
             new EnvironmentModelAssembler().Apply(environment, model);
 
-            //Validate(variable);
+            await Validate(environment);
 
             if (model == null || ModelState.IsValid == false)
                 return View("Edit", model);
@@ -90,7 +90,7 @@ namespace BlendedAdmin.Controllers
             return RedirectToAction("Index");
         }
 
-        private async void Validate(Environment environment)
+        private async Task Validate(Environment environment)
         {
             Environment existingEnvironment = await _domainContext.Environments.GetByName(environment.Name);
             if (existingEnvironment != null && existingEnvironment.Id != environment.Id)
