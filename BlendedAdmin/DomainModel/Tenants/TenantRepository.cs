@@ -35,6 +35,7 @@ namespace BlendedAdmin.DomainModel.Tenants
 
         public void Save(Tenant item)
         {
+            item.CreatedDate = DateTime.UtcNow;
             _dbContext.Tenants.Add(item);
         }
     }

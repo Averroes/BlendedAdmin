@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 
 namespace BlendedAdmin.DomainModel.Tenants
 {
@@ -8,5 +9,7 @@ namespace BlendedAdmin.DomainModel.Tenants
         {   
         }
         public string Id { get; set; }
+        public DateTime CreatedDate { get; set; }
+        public string Status { get; set; }
     }
 }

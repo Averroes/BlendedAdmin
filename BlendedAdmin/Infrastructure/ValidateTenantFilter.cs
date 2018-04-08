@@ -42,6 +42,7 @@ namespace BlendedAdmin
                 return;
 
             string tenantId = _urlService.GetTenant();
+            _logger.LogError("Tenant Id: " + tenantId);
             if (tenantId == "x")
                 return;
 
@@ -52,12 +53,14 @@ namespace BlendedAdmin
             tenant = await GetTenant(tenantId);
                 if (tenant == null)
                 {
-                    _logger.LogInformation("Tenant does not exists: " + tenantId);
+                    _logger.LogError("Tenant does not exists: " + tenantId);
                     context.Result = new ContentResult { Content = "Page not found.", StatusCode = 404 };
                     return;
                 }
 
-                var cacheOptions = new MemoryCacheEntryOptions()
+            _logger.LogError("Tenant : " + tenant.Id);
+            _logger.LogError("SetCache: " + tenantCacheKey);
+            var cacheOptions = new MemoryCacheEntryOptions()
                     //.SetSlidingExpiration(TimeSpan.FromSeconds(60))
                     .SetAbsoluteExpiration(TimeSpan.FromMinutes(60));
 
