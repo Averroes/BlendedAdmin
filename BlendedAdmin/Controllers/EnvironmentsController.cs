@@ -85,7 +85,7 @@ namespace BlendedAdmin.Controllers
         [Route("{environment}/environments/{id}/delete")]
         public async Task<IActionResult> Delete(int id)
         {
-            await _domainContext.Variables.Delete(id);
+            await _domainContext.Environments.Delete(id);
             await _domainContext.SaveAsync();
             return RedirectToAction("Index");
         }

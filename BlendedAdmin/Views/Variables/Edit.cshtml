@@ -6,6 +6,10 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
     <h1 class="h2">Variable</h1>
     <div>
+        @if (Model.Id > 0)
+        {
+            <a class="btn btn-sm btn-outline-secondary" asp-action="Delete" asp-route-id="@Model.Id" onclick="return confirm('Are you really want to delete this?')">Delete</a>
+        }
     </div>
 </div>
 

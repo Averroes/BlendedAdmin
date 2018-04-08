@@ -14,7 +14,7 @@ namespace BlendedAdmin.DomainModel.Environments
         Task<List<Environments.Environment>> GetAll();
         Task<Environment> Get(int environmentId);
         Task<Environments.Environment> GetByName(string name);
-        void Delete(Environments.Environment environment);
+        Task Delete(int id);
         void Save(Environments.Environment environment);
         Task<int> GetNextIndex();
     }
@@ -45,8 +45,9 @@ namespace BlendedAdmin.DomainModel.Environments
             return await _dbContext.Environments.Where(x => x.TenantId == _tenantService.GetCurrentTenantId()).OrderBy(x => x.Index).ToListAsync();
         }
 
-        public void Delete(Environments.Environment environment)
+        public async Task Delete(int id)
         {
+            Environment environment = await Get(id);
             _dbContext.Entry(environment)
                 .Collection(b => b.Variables)
                 .Load();

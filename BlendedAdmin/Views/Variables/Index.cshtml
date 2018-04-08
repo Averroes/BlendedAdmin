@@ -31,26 +31,22 @@
                         <td>
                             @for (int i = 0; i < variable.Values.Count; i++)
                             {
-
                                 @if (@variable.Values[i].EnvironmentId > 0)
                                 {
-                                    <div>
-                                        <span style="color: @variable.Values[i].Color">@variable.Values[i].Environment</span> <br />
-                                        <span style="color: @variable.Values[i].Color">@variable.Values[i].Value</span>
-                                    </div>
+                                <div>
+                                    <span class="font-weight-bold" style="color: @variable.Values[i].Color">@variable.Values[i].Environment value</span> <br />
+                                    <span style="color: @variable.Values[i].Color">@variable.Values[i].Value</span>
+                                </div>
                                 }
                                 else
                                 {
                                     if (string.IsNullOrEmpty(@variable.Values[i].Value) == false)
                                     {
+                                        <span class="font-weight-bold">Default value</span> <br />
                                         <span>@variable.Values[i].Value</span>
                                     }
                                 }
                             }
-                        </td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@variable.Id" class="text-secondary">Edit</a>
-                            <a asp-action="Delete" asp-route-id="@variable.Id" class="text-secondary">Delete</a>
                         </td>
                     </tr>
                 }

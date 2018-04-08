@@ -30,10 +30,6 @@
                     <tr>
                         <td><a asp-action="Edit" asp-route-id="@environment.Id">@environment.Name</a></td>
                         <td>@environment.Color</td>
-                        <td>
-                            <a asp-action="Edit" asp-route-id="@environment.Id" class="text-secondary"><span class="fa fa-pencil-square-o"></span>Edit</a>
-                            <a asp-action="Delete" asp-route-id="@environment.Id" class="text-secondary"><span class="fa fa-trash-o"></span>Delete</a>
-                        </td>
                     </tr>
                 }
             </tbody>
