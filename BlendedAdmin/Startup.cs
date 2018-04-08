@@ -44,7 +44,7 @@ namespace BlendedAdmin
                 .AddMvc(x => 
                 {
                     x.Filters.Add<EnvironmentFilter>();
-                    x.Filters.Add<ValidateTenantFilter>();
+                    //x.Filters.Add<ValidateTenantFilter>();
                 })
                 .AddJsonOptions(x => x.SerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver());
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -129,6 +129,8 @@ namespace BlendedAdmin
             {
                 app.UseExceptionHandler("/Home/Error");
             }
+
+            app.UseTenantValidation();
 
             app.UseStaticFiles();
 
