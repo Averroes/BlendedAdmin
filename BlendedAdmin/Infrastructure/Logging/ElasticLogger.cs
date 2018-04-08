@@ -54,27 +54,25 @@ namespace BlendedAdmin.Infrastructure.Logging
         {
             try
             {
-                var message = new ElasticLogMessage
-                {
-                    LogLevel = logLevel.ToString(),
-                    State = state.ToString(),
-                    Message = formatter(state, exception),
-                    Exception = exception?.ToString(),
-                    DateTime = DateTime.Now,
-                    Category = _category,
-                    UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
-                    TenantId = _urlService.GetTenant()
-                };
-
                 if (_options.Value.LogLevel <= logLevel)
                 {
+                    var message = new ElasticLogMessage
+                    {
+                        LogLevel = logLevel.ToString(),
+                        State = state.ToString(),
+                        Message = formatter(state, exception),
+                        Exception = exception?.ToString(),
+                        DateTime = DateTime.Now,
+                        Category = _category,
+                        UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
+                        TenantId = _urlService.GetTenant()
+                    };
+
                     string url = _options.Value.Url;
                     HttpClient httpClient = new HttpClient();
                     var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
                     AddAuthenticationHeader(httpClient, url);
-                    httpClient.PostAsync(
-                        url,
-                        content);
+                    var x = httpClient.PostAsync(url,content).Result;
                 }
             }
             catch { }

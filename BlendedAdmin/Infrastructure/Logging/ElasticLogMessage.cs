@@ -11,8 +11,8 @@ namespace BlendedAdmin.Infrastructure.Logging
         public string Message { get; set; }
         public string TenantId { get; set; }
         public string UserId { get; set; }
-        public DateTime DateTime { get; internal set; }
-        public string Category { get; internal set; }
+        public DateTime DateTime { get; set; }
+        public string Category { get; set; }
     }
 
 }
