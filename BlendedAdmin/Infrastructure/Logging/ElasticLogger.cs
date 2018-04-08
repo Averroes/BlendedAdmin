@@ -11,6 +11,7 @@ using System.Text;
 using System.Net.Http;
 using Newtonsoft.Json;
 using System.Net.Http.Headers;
+using System.Diagnostics;
 
 namespace BlendedAdmin.Infrastructure.Logging
 {
@@ -65,9 +66,10 @@ namespace BlendedAdmin.Infrastructure.Logging
                         DateTime = DateTime.Now,
                         Category = _category,
                         UserId = _httpContextAccessor.HttpContext?.User?.Identity?.Name,
-                        TenantId = _urlService.GetTenant()
+                        TenantId = _urlService.GetTenant(),
+                        ActivityId = Activity.Current?.Id?.ToString(),
+                        TraceIdentifier = _httpContextAccessor.HttpContext?.TraceIdentifier?.ToString()
                     };
-
                     string url = _options.Value.Url;
                     HttpClient httpClient = new HttpClient();
                     var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");

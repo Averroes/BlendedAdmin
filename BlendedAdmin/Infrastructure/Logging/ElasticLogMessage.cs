@@ -13,6 +13,8 @@ namespace BlendedAdmin.Infrastructure.Logging
         public string UserId { get; set; }
         public DateTime DateTime { get; set; }
         public string Category { get; set; }
+        public string TraceIdentifier { get; internal set; }
+        public string ActivityId { get; internal set; }
     }
 
 }
