@@ -20,7 +20,7 @@ namespace BlendedAdmin
         private IOptions<HostingOptions> _hostingOptions;
         private IMemoryCache _memoryCache;
         private IUrlService _urlService;
-        private ILogger<ValidateTenantFilter> _logger { get; }
+        private ILogger<TenantValidationMiddleware> _logger { get; }
 
         public TenantValidationMiddleware(
             RequestDelegate next,
@@ -28,7 +28,7 @@ namespace BlendedAdmin
             IOptions<HostingOptions> hostingOptions,
             IMemoryCache memoryCache,
             IUrlService urlService,
-            ILogger<ValidateTenantFilter> logger)
+            ILogger<TenantValidationMiddleware> logger)
         {
             _next = next;
 
@@ -45,7 +45,6 @@ namespace BlendedAdmin
                 await this._next(context);
 
             string tenantId = _urlService.GetTenant();
-            _logger.LogError("Tenant Id: " + tenantId);
             if (tenantId == "x")
                 await this._next(context);
 
@@ -56,14 +55,11 @@ namespace BlendedAdmin
                 tenant = await GetTenant(tenantId);
                 if (tenant == null)
                 {
-                    _logger.LogError("Tenant does not exists: " + tenantId);
                     context.Response.StatusCode = 404;
                     await context.Response.WriteAsync("Page not found");
                     return;
                 }
 
-                _logger.LogError("Tenant : " + tenant.Id);
-                _logger.LogError("SetCache: " + tenantCacheKey);
                 var cacheOptions = new MemoryCacheEntryOptions()
                         //.SetSlidingExpiration(TimeSpan.FromSeconds(60))
                         .SetAbsoluteExpiration(TimeSpan.FromMinutes(60));
@@ -86,8 +82,7 @@ namespace BlendedAdmin
 
     public static class TenantValidationMiddlewareExtensions
     {
-        public static IApplicationBuilder UseTenantValidation(
-            this IApplicationBuilder builder)
+        public static IApplicationBuilder UseTenantValidation(this IApplicationBuilder builder)
         {
             return builder.UseMiddleware<TenantValidationMiddleware>();
         }
