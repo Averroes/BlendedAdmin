@@ -144,14 +144,16 @@ namespace BlendedAdmin
             using (ApplicationDbContext dbContext = serviceProvide.GetService<ApplicationDbContext>())
             {
                 dbContext.Database.Migrate();
-
-                ApplicationUser admin = new ApplicationUser();
-                admin.UserName = "Admin";
-                admin.NormalizedUserName = "ADMIN";
-                admin.PasswordHash = serviceProvide.GetService<IPasswordHasher<ApplicationUser>>().HashPassword(admin, "admin");
-                admin.SecurityStamp = Guid.NewGuid().ToString();
-                dbContext.Users.Add(admin);
-                dbContext.SaveChanges();
+                if (dbContext.Users.Any(x => x.NormalizedUserName == "ADMIN") == false)
+                {
+                    ApplicationUser admin = new ApplicationUser();
+                    admin.UserName = "Admin";
+                    admin.NormalizedUserName = "ADMIN";
+                    admin.PasswordHash = serviceProvide.GetService<IPasswordHasher<ApplicationUser>>().HashPassword(admin, "admin");
+                    admin.SecurityStamp = Guid.NewGuid().ToString();
+                    dbContext.Users.Add(admin);
+                    dbContext.SaveChanges();
+                }
             }
         }
     }
