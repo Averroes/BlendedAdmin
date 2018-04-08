@@ -9,7 +9,7 @@ namespace BlendedAdmin.DomainModel.Tenants
         {   
         }
         public string Id { get; set; }
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public string Status { get; set; }
     }
 }
