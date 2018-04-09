@@ -89,11 +89,6 @@ namespace BlendedAdmin.Models.Items
                     foreach (var column in ((IDictionary)rows[0]).Keys)
                         columns.Add(column?.ToString());
                 }
-                if (rows[0] is IDictionary<string, object>)
-                {
-                    foreach (var column in ((IDictionary<string, object>)rows[0]).Keys)
-                        columns.Add(column?.ToString());
-                }
             }
             return columns;
         }

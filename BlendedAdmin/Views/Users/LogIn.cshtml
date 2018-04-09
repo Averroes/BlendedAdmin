@@ -10,7 +10,7 @@
 <form action="@urlService.GetUrl()" method="post">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="form-group">
-        <label for="Name">Name (Email)</label>
+        <label for="Name">Name or Email</label>
         <input asp-for="Name" class="form-control" />
         <span asp-validation-for="Name" class="text-danger"></span>
     </div>

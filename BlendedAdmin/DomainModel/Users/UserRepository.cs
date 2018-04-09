@@ -13,6 +13,7 @@ namespace BlendedAdmin.DomainModel.Users
         Task<ApplicationUser> Get(string id);
         Task<List<ApplicationUser>> GetAll();
         void Save(ApplicationUser user, string tenantId);
+        Task<ApplicationUser> GetByNameOrMail(string nameOrMail);
     }
 
     public class UserRepository : IUserRepository
@@ -30,7 +31,15 @@ namespace BlendedAdmin.DomainModel.Users
         {
             return await _dbContext.Users
                 .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
-                .FirstAsync(x => x.Id == id);
+                .FirstOrDefaultAsync(x => x.Id == id);
+        }
+
+
+        public async Task<ApplicationUser> GetByNameOrMail(string nameOrMail)
+        {
+            return await _dbContext.Users
+                .Where(x => x.TenantId == _tenantService.GetCurrentTenantId())
+                .FirstOrDefaultAsync(x => x.NormalizedUserName == nameOrMail.ToUpper() || x.NormalizedEmail == nameOrMail.ToUpper());
         }
 
         public async Task<List<ApplicationUser>> GetAll()

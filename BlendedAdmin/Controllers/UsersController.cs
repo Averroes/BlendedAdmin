@@ -166,10 +166,18 @@ namespace BlendedAdmin.Controllers
         //[ValidateAntiForgeryToken]
         public async Task<IActionResult> LogIn(LogInModel model, string returnUrl = null)
         {
+            
             //ViewData["ReturnUrl"] = returnUrl;
             if (ModelState.IsValid)
             {
-                var result = await _signInManager.PasswordSignInAsync(model.Name, model.Password, model.RememberMe, lockoutOnFailure: false);
+                var user = await _domainContext.Users.GetByNameOrMail(model.Name);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "Invalid login attempt.");
+                    return View(model);
+                }
+
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, model.Password, model.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
                     _logger.LogInformation(1, "User logged in.");
