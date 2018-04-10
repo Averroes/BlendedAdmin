@@ -13,11 +13,10 @@ namespace BlendedAdmin.Models.Items
         public string Title { get; set; }
         public List<string> Columns { get; set; }
         public List<IDictionary<string, object>> Rows { get; set; }
-        public int PageSize { get; set; }
-        public int PageCount { get; set; }
+        
         public int Page { get; set; }
-        public int StartPage { get; internal set; }
-        public int EndPage { get; internal set; }
+        public bool NextPage { get; internal set; }
+        public bool PrevioustPage { get; internal set; }
 
         public TableViewModel()
         {
@@ -35,81 +34,96 @@ namespace BlendedAdmin.Models.Items
 
         public TableViewModel ToModel(TableView tableView)
         {
-            var rows = GetRows(tableView);
             TableViewModel model = new TableViewModel();
-            model.Rows = rows;
-            model.Columns = GetColumns(tableView);
+            model.Title = tableView.GetValueOrDefault2("title").ToStringOrDefault();
             model.Page = tableView.GetValueOrDefault2("page").ToIntOrDefault() ??
                         _urlService.GetQueryString("p").ToIntOrDefault(1);
-            model.PageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(50);
-            model.PageCount = tableView.GetValueOrDefault2("pageCount").ToIntOrDefault() ??
-                              (int)Math.Ceiling((double)model.Rows.Count / model.PageSize);
-            model.Rows = rows.Skip((model.Page - 1) * model.PageSize).Take(model.PageSize).ToList();
-            model.Title = tableView.GetValueOrDefault2("title").ToStringOrDefault();
 
-            var startPage = model.Page - 5;
-            var endPage = model.Page + 4;
-            if (startPage <= 0)
+            int pageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(50);
+            int? pageCount = tableView.GetValueOrDefault2("pageCount").ToIntOrDefault();
+            int? count = tableView.GetValueOrDefault2("count").ToIntOrDefault();
+            bool? previoustPage = tableView.GetValueOrDefault2("previoustPage").ToBoolOrDefault();
+            bool? nextPage = tableView.GetValueOrDefault2("nextPage").ToBoolOrDefault();
+            
+            if (previoustPage.HasValue)
             {
-                endPage -= (startPage - 1);
-                startPage = 1;
+                model.PrevioustPage = previoustPage.Value;
             }
-            if (endPage > model.Page)
+            else
             {
-                endPage = model.PageCount;
-                if (endPage > 10)
-                {
-                    startPage = endPage - 9;
-                }
+                model.PrevioustPage = model.Page > 1;
             }
-            model.StartPage = startPage;
-            model.EndPage = endPage;
 
+            if (nextPage.HasValue)
+            {
+                model.NextPage = nextPage.Value;
+            }
+            else
+            {
+                if (pageCount.HasValue)
+                    model.NextPage = pageCount.Value > model.Page;
+                else if (count.HasValue)
+                    model.NextPage = (int)Math.Ceiling((double)count / pageSize) > model.Page;
+                else
+                    model.NextPage = true;
+            }
+
+            var data = GetData(tableView);
+            model.Columns = data.Item1;
+            model.Rows = data.Item2.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+            
             return model;
         }
 
-        public List<IDictionary<string, object>> GetRows(TableView tableView)
+        public (List<string>,List<IDictionary<string, object>>) GetData(TableView tableView)
         {
-            var rows = tableView.GetValueOrDefault2("rows") as object[];
-            if (rows != null)
-            {
-                return rows.Select(x => x as IDictionary<string, object>).Where(x => x != null).ToList();
-            }
-            return new List<IDictionary<string, object>>();
-        }
+            List<IDictionary<string, object>> rows = new List<IDictionary<string, object>>();
+            Dictionary<string, object> columns = new Dictionary<string, object>();
+            object rowsObject = tableView.GetValueOrDefault("rows");
 
-        public List<string> GetColumns(TableView tableView)
-        {
-            var columns = new List<string>();
-            var rows = tableView.GetValueOrDefault("rows") as object[];
-            if (rows != null && rows.Length > 0)
+            if (rowsObject == null)
+                return (columns.Keys.ToList(), rows);
+
+            if (rowsObject is object[])
             {
-                if (rows[0] is IDictionary)
+                object[] rowsArray = (object[])rowsObject;
+
+                foreach (object row in rowsArray)
                 {
-                    foreach (var column in ((IDictionary)rows[0]).Keys)
-                        columns.Add(column?.ToString());
+                    if (row is IDictionary<string, object>)
+                    {
+                        IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
+                        rows.Add(rowDictionary);
+                        foreach (var key in rowDictionary.Keys)
+                            columns.TryAdd(key, null);
+                    }
+                    else if (row is IDictionary)
+                    {
+                        IDictionary<string, object> rowDictionary = ((IDictionary)row)
+                            .Cast<DictionaryEntry>()
+                            .ToDictionary(x => x.Key.ToString(), x => x.Value);
+                        rows.Add(rowDictionary);
+                        foreach (var key in rowDictionary.Keys)
+                            columns.TryAdd(key, null);
+                    }
+                    else
+                    {
+                        IDictionary<string, object> rowDictionary = new Dictionary<string, object>();
+                        rowDictionary[""] = row;
+                        rows.Add(rowDictionary);
+                        columns.TryAdd("", null);
+                    }
                 }
             }
-            return columns;
+            else
+            {
+                IDictionary<string, object> rowDictionary = new Dictionary<string, object>();
+                rowDictionary[""] = rowsObject;
+                rows.Add(rowDictionary);
+                columns.TryAdd("", null);
+            }
+
+            return (columns.Keys.ToList(), rows);
         }
-
-
-        //public IEnumerable<IDictionary<string, object>> GetRows2(string orderBy, string direction, int page)
-        //{
-        //    if (page <= 0)
-        //        page = 1;
-
-        //    var rows = Rows.OfType<IDictionary<string, object>>().Cast<IDictionary<string, object>>();
-        //    //if (string.IsNullOrEmpty(orderBy) == false)
-        //    //{
-        //    //    if (direction == "desc")
-        //    //        rows = rows.OrderByDescending(x => x.GetValueOrDefault(orderBy));
-        //    //    else
-        //    //        rows = rows.OrderBy(x => x.GetValueOrDefault(orderBy));
-        //    //}
-
-        //    rows = rows.Skip((page - 1) * PageSize).Take(PageSize);
-        //    return rows.ToArray();
-        //}
     }
 }

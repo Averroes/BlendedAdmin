@@ -34,25 +34,27 @@
         </tbody>
     </table>
 </div>
-@if (Model.PageCount > 1)
+@if (Model.PrevioustPage || Model.NextPage)
 {
 <ul class="pagination pagination-sm mt-2">
-    <li class="page-item">
-        <a class="page-link" href="#">
-            <span aria-hidden="true">&laquo;</span>
-            <span class="sr-only">Previous</span>
-        </a>
-    </li>
-    @for (int page = Model.StartPage; page <= Model.EndPage; page++)
+    @if (Model.PrevioustPage)
     {
-    <li class="page-item @(page == Model.Page ? "active":"")"><a class="page-link" href="@urlService.GetUrlWithQueryString(new { p = page.ToString() })">@(page)</a></li>
+        <li class="page-item">
+            <a class="page-link" href="@urlService.GetUrlWithQueryString(new { p = (Model.Page - 1).ToString()})">
+                <span aria-hidden="true">&laquo;</span>
+                <span>Previous</span>
+            </a>
+        </li>
     }
-    <li class="page-item">
-        <a class="page-link" href="#" aria-label="Next">
-            <span aria-hidden="true">&raquo;</span>
-            <span class="sr-only">Next</span>
-        </a>
-    </li>
+    @if (Model.NextPage)
+    {
+        <li class="page-item">
+            <a class="page-link" href="@urlService.GetUrlWithQueryString(new { p = (Model.Page + 1).ToString()})" aria-label="Next">
+                <span>Next</span>
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+    }
 </ul>
 }
 

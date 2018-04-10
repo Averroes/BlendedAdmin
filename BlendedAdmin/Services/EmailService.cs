@@ -41,6 +41,7 @@ namespace BlendedAdmin.Services
                 mailMessage.To.Add(email);
                 mailMessage.Subject = title;
                 mailMessage.Body = body;
+                mailMessage.IsBodyHtml = true;
                 client.Send(mailMessage);
             } catch (Exception ex)
             {
