@@ -35,6 +35,8 @@ namespace BlendedAdmin.Models.Items
         Select,
         DropDown,
         CheckBox,
+        Date,
+        DateTime,
         None
     }
 
