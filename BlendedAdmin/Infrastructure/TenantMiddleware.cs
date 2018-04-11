@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace BlendedAdmin
 {
-    public class TenantValidationMiddleware
+    public class TenantMiddleware
     {
         private readonly RequestDelegate _next;
 
@@ -20,15 +20,15 @@ namespace BlendedAdmin
         private IOptions<HostingOptions> _hostingOptions;
         private IMemoryCache _memoryCache;
         private IUrlService _urlService;
-        private ILogger<TenantValidationMiddleware> _logger { get; }
+        private ILogger<TenantMiddleware> _logger { get; }
 
-        public TenantValidationMiddleware(
+        public TenantMiddleware(
             RequestDelegate next,
             IServiceScopeFactory serviceScopeFactory,
             IOptions<HostingOptions> hostingOptions,
             IMemoryCache memoryCache,
             IUrlService urlService,
-            ILogger<TenantValidationMiddleware> logger)
+            ILogger<TenantMiddleware> logger)
         {
             _next = next;
 
@@ -48,10 +48,28 @@ namespace BlendedAdmin
             }
 
             string tenantId = _urlService.GetTenant();
-            if (tenantId == "x")
+            if (tenantId == "register")
             {
-                await this._next(context);
-                return;
+                if (context.Request.Path == "/tenants/register" ||
+                    context.Request.Path == "/tenants/registrationconfirmation")
+                {
+                    await this._next(context);
+                    return;
+                } 
+                else
+                {
+                    context.Response.Redirect("/tenants/register");
+                    return;
+                }
+            }
+            else
+            {
+                if (context.Request.Path == "/tenants/register" ||
+                    context.Request.Path == "/tenants/registrationconfirmation")
+                {
+                    context.Response.Redirect("/");
+                    return;
+                }
             }
 
             string tenantCacheKey = "tenant_" + tenantId;
@@ -86,11 +104,11 @@ namespace BlendedAdmin
         }
     }
 
-    public static class TenantValidationMiddlewareExtensions
+    public static class TenantMiddlewareExtensions
     {
-        public static IApplicationBuilder UseTenantValidation(this IApplicationBuilder builder)
+        public static IApplicationBuilder UseTenant(this IApplicationBuilder builder)
         {
-            return builder.UseMiddleware<TenantValidationMiddleware>();
+            return builder.UseMiddleware<TenantMiddleware>();
         }
     }
 }

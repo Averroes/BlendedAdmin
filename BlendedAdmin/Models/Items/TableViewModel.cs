@@ -90,7 +90,14 @@ namespace BlendedAdmin.Models.Items
 
                 foreach (object row in rowsArray)
                 {
-                    if (row is IDictionary<string, object>)
+                    if (row is HtmlView)
+                    {
+                        IDictionary<string, object> rowDictionary = new Dictionary<string, object>();
+                        rowDictionary[""] = row;
+                        rows.Add(rowDictionary);
+                        columns.TryAdd("", null);
+                    }
+                    else if(row is IDictionary<string, object>)
                     {
                         IDictionary<string, object> rowDictionary = (IDictionary<string, object>)row;
                         rows.Add(rowDictionary);

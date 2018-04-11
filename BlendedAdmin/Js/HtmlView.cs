@@ -1,6 +1,4 @@
-﻿//using System.Collections.Generic;
-
-namespace BlendedAdmin.Js
+﻿namespace BlendedAdmin.Js
 {
     public class HtmlView : View
     {

@@ -25,7 +25,15 @@
                     @foreach (var column in Model.Columns)
                     {
                         <td nowrap>
-                            @row.GetValueOrDefault2(column).ToJsonOrString()
+                            @{object value = row.GetValueOrDefault2(column);}
+                            @if (value is BlendedAdmin.Js.HtmlView)
+                            {
+                                @Html.Raw(((BlendedAdmin.Js.HtmlView)value).GetValueOrDefault2("html", ""))
+                            }
+                            else
+                            {
+                                @row.GetValueOrDefault2(column).ToJsonOrString()
+                            }
                         </td>
                     }
                 </tr>

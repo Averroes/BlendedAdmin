@@ -130,7 +130,7 @@ namespace BlendedAdmin
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseTenantValidation();
+            app.UseTenant();
 
             app.UseStaticFiles();
 
