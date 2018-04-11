@@ -130,9 +130,9 @@ namespace BlendedAdmin
                 app.UseExceptionHandler("/Home/Error");
             }
 
-            app.UseTenant();
-
             app.UseStaticFiles();
+
+            app.UseTenant();
 
             app.UseAuthentication();
 
