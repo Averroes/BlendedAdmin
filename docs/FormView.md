@@ -22,6 +22,7 @@ main(arg);
 
 ### Method
 - Get (by default)
+ ```javascript
 Value of the control is sent to the server in query string and can be accessed via *arg.queryString.{name}*
 function main(arg)
 {
@@ -36,6 +37,7 @@ main(arg);
 ![Image of Yaktocat](images/FormView_Method_Get.PNG)
 
 - Post
+ ```javascript
 Value of the control is sent to the server in body and can be accessed via *arg.form.{name}*
 function main(arg)
 {
