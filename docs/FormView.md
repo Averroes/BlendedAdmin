@@ -36,6 +36,7 @@ function main(arg)
 }
 main(arg);
 ```
+![Image of Yaktocat](images/FormView_Layout.PNG)
 
 ### Method
 - Get (by default)
