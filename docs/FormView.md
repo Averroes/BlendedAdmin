@@ -1,6 +1,6 @@
 ## FormView
 
-- Controls
+### Controls
  ```javascript
 function main(arg)
 {
@@ -19,3 +19,32 @@ function main(arg)
 main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Controls.PNG)
+
+### Method
+- Get (by default)
+Value of the control is sent to the server in query string and can be accessed via *arg.queryString.{name}*
+function main(arg)
+{
+  	var formView = new FormView({
+      	  method: 'get',
+      	  controls: [{name:'TextBox', label:'Text Box', type:'input', value:arg.queryString.TextBox}]
+        });
+	return [formView];
+}
+main(arg);
+```
+![Image of Yaktocat](images/FormView_Method_Get.PNG)
+
+- Post
+Value of the control is sent to the server in body and can be accessed via *arg.form.{name}*
+function main(arg)
+{
+  	var formView = new FormView({
+      	  method: 'post',
+      	  controls: [{name:'TextBox', label:'Text Box', type:'input', value:arg.form.TextBox}]
+        });
+	return [formView];
+}
+main(arg);
+```
+![Image of Yaktocat](images/FormView_Method_Post.PNG)
