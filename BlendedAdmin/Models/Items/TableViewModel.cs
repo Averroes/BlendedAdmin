@@ -36,22 +36,22 @@ namespace BlendedAdmin.Models.Items
         {
             TableViewModel model = new TableViewModel();
             model.Title = tableView.GetValueOrDefault2("title").ToStringOrDefault();
-            model.Page = tableView.GetValueOrDefault2("page").ToIntOrDefault() ??
-                        _urlService.GetQueryString("p").ToIntOrDefault(1);
-
-            int pageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(50);
-            int? pageCount = tableView.GetValueOrDefault2("pageCount").ToIntOrDefault();
-            int? count = tableView.GetValueOrDefault2("count").ToIntOrDefault();
+            
+            int? page = tableView.GetValueOrDefault2("page").ToIntOrDefault() ?? _urlService.GetQueryString("p").ToIntOrDefault();
+            int pageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(100);
             bool? previoustPage = tableView.GetValueOrDefault2("previoustPage").ToBoolOrDefault();
             bool? nextPage = tableView.GetValueOrDefault2("nextPage").ToBoolOrDefault();
-            
+            var data = GetData(tableView);
+
+            model.Page = page.ToIntOrDefault(1);
+
             if (previoustPage.HasValue)
             {
                 model.PrevioustPage = previoustPage.Value;
             }
             else
             {
-                model.PrevioustPage = model.Page > 1;
+                model.PrevioustPage = page.HasValue && page.Value > 1;
             }
 
             if (nextPage.HasValue)
@@ -60,17 +60,11 @@ namespace BlendedAdmin.Models.Items
             }
             else
             {
-                if (pageCount.HasValue)
-                    model.NextPage = pageCount.Value > model.Page;
-                else if (count.HasValue)
-                    model.NextPage = (int)Math.Ceiling((double)count / pageSize) > model.Page;
-                else
-                    model.NextPage = true;
+                model.NextPage = true;
             }
-
-            var data = GetData(tableView);
+     
             model.Columns = data.Item1;
-            model.Rows = data.Item2.Skip((model.Page - 1) * pageSize).Take(pageSize).ToList();
+            model.Rows = data.Item2.Take(pageSize).ToList();
             
             return model;
         }

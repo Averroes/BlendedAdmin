@@ -27,6 +27,7 @@ namespace BlendedAdmin.Models.Items
         public ParmeterTypeModel? Type { get; set; }
         public string Error { get; set; }
         public string Description { get; internal set; }
+        public List<ParameterOptionModel> Options { get; internal set; }
     }
 
     public enum ParmeterTypeModel
@@ -39,6 +40,12 @@ namespace BlendedAdmin.Models.Items
         Date,
         DateTime,
         None
+    }
+
+    public class ParameterOptionModel
+    {
+        public string Text { get; set; }
+        public string Value { get; set; }
     }
 
     public class FormViewModelAssembler
@@ -74,11 +81,52 @@ namespace BlendedAdmin.Models.Items
             
             string type = parameter.GetValueOrDefault2("type").ToStringOrDefault();
             ParmeterTypeModel parameterType = Enum.TryParse(type, true, out parameterType) ? parameterType : ParmeterTypeModel.TextBox;
-            //IEnumerable options = model.GetValueOrDefault("options", null) as IEnumerable ?? new object[] { };
-            //List<Option> optionsList = options.Cast<ExpandoObject>().Select(x =>
-            //{
-            //return new Option(x.FirstOrDefault().Value.ToStringOrDefault(), x.FirstOrDefault().Value.ToStringOrDefault());
-            //}).ToList();
+
+            List<ParameterOptionModel> options = new List<ParameterOptionModel>();
+            object optionsObject = parameter.GetValueOrDefault2("options", new object[0]);
+            if (optionsObject is object[])
+            {
+                foreach(var option in (object[])optionsObject)
+                {
+                    if (option is IDictionary<string, object>)
+                    {
+                        options.Add(new ParameterOptionModel
+                        {
+                            Value = option.GetProperty("value").ToStringOrDefault(),
+                            Text = option.GetProperty("text").ToStringOrDefault(),
+                        });
+                    }
+                    else if (option is object[])
+                    {
+                        object[] optionList = (object[])option;
+                        if (optionList.Length == 1)
+                        {
+                            options.Add(new ParameterOptionModel
+                            {
+                                Value = optionList[0].ToStringOrDefault(),
+                                Text = optionList[0].ToStringOrDefault(),
+                            });
+                        }
+                        if (optionList.Length > 1)
+                        {
+                            options.Add(new ParameterOptionModel
+                            {
+                                Value = optionList[0].ToStringOrDefault(),
+                                Text = optionList[1].ToStringOrDefault(),
+                            });
+                        }
+                    }
+                    else
+                    {
+                        options.Add(new ParameterOptionModel
+                        {
+                            Value = option.ToStringOrDefault(),
+                            Text = option.ToStringOrDefault(),
+                        });
+                    }
+                }
+            }
+
             return new ParameterModel
             {
                 Name = parameter.GetValueOrDefault2("name").ToStringOrDefault(),
@@ -88,7 +136,7 @@ namespace BlendedAdmin.Models.Items
                 Error = parameter.GetValueOrDefault2("error").ToStringOrDefault(),
                 Description = parameter.GetValueOrDefault2("description").ToStringOrDefault(),
                 Type = parameterType,
-                //Options = optionsList
+                Options = options
             };
         }
 
