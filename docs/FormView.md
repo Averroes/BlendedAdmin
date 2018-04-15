@@ -29,7 +29,7 @@ function main(arg)
       	controls: [
           {name:'Row1'},
           [{name:'Row2_1'},{name:'Row2_2'},{name:'Row2_3'}],
-	  [{name:'Row3'}, null]
+          [{name:'Row3'}, null]
         ]
       });
 	return [formView];
