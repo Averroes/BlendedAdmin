@@ -92,8 +92,6 @@ main(arg);
 ```javascript
 function main(arg)
 {
-function main(arg)
-{
   	var formView = new FormView({
       	  method: 'post',
       	  controls: [{name:'TextBox', value:arg.queryString.TextBox}]
@@ -110,8 +108,6 @@ function main(arg)
 		}
     	}
 	return [formView];
-}
-main(arg);
 }
 main(arg);
 ```
