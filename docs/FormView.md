@@ -69,8 +69,8 @@ main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Method_Post.PNG)
 
-### Validation
-## Required
+## Validation
+### Required
 ```javascript
 function main(arg)
 {
