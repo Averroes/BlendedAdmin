@@ -87,3 +87,33 @@ function main(arg)
 main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Validation_Required.PNG)
+
+```javascript
+function main(arg)
+{
+function main(arg)
+{
+  	var formView = new FormView({
+      	  method: 'post',
+      	  controls: [{name:'TextBox', value:arg.queryString.TextBox}]
+        });
+    
+  	if (arg.method == 'post')
+    	{
+   		if (!arg.queryString.TextBox)
+    		formView.getControlByName('TextBox').error = 'The field is required by custom validation';
+      
+		if (formView.isValid())
+		{
+		  // do the action    
+		}
+    	}
+	return [formView];
+}
+main(arg);
+}
+main(arg);
+```
+![Image of Yaktocat](images/FormView_Validation_Custom.PNG)
+
+
