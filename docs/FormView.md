@@ -20,7 +20,7 @@ function main(arg)
 main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Controls.PNG)
-- Layout
+### Layout
 Each element of the controls array is a row.
  ```javascript
 function main(arg)
@@ -38,8 +38,8 @@ main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Layout.PNG)
 
-### Method
-- Get (by default)
+## Method
+### Get (by default)
 Value of the control is sent to the server in query string and can be accessed via *arg.queryString.{name}*
 ```javascript
 function main(arg)
@@ -54,7 +54,7 @@ main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Method_Get.PNG)
 
-- Post
+### Post
 Value of the control is sent to the server in body and can be accessed via *arg.form.{name}*
  ```javascript
 function main(arg)
