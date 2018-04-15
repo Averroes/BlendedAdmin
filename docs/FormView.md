@@ -1,7 +1,7 @@
-## FormView
+# FormView
 
-### Controls
-- List of control
+## Controls
+### List of control
  ```javascript
 function main(arg)
 {
