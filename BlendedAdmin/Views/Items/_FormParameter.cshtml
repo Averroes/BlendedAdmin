@@ -2,17 +2,27 @@
 @model BlendedAdmin.Models.Items.ParameterModel
 
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.TextBox ||
-  Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
+Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
 {
     <label class="">@(Model.Label ?? Model.Name)</label>
     <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" />
+    @if (Model.Description != null)
+    {
+        <small class="form-text text-muted">@Model.Description</small>
+    }
     <span class="text-danger field-validation-error" data-valmsg-for="@Model.Name" data-valmsg-replace="true">@Model.Error</span>
 }
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Select ||
-  Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
+Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
 {
     <label class="">@(Model.Label ?? Model.Name)</label>
-    <select name="@Model.Name" value="@Model.Value" class="form-control form-control-sm" @(@Model.ReadOnly ? "form-control-plaintext" : "")></select>
+    <select name="@Model.Name" value="@Model.Value" class="form-control form-control-sm" @(@Model.ReadOnly ? "form-control-plaintext" : "")>
+        <option></option>
+    </select>
+    @if (Model.Description != null)
+    {
+        <small class="form-text text-muted">@Model.Description</small>
+    }
     <span class="text-danger field-validation-error" data-valmsg-for="@Model.Name" data-valmsg-replace="true">@Model.Error</span>
 }
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.CheckBox)
@@ -21,24 +31,30 @@
     <div class="form-check">
         <input name="@Model.Name" class="form-check-input" type="checkbox" value="" id="@id">
         <label class="form-check-label" for="@id">@Model.Name</label>
+        @if (Model.Description != null)
+        {
+            <small class="form-text text-muted">@Model.Description</small>
+        }
     </div>
     <span class="text-danger field-validation-error" data-valmsg-for="@Model.Name" data-valmsg-replace="true">@Model.Error</span>
 }
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Date)
 {
-    var id = Guid.NewGuid().ToString();
-    <div class="form-check">
-        <input name="@Model.Name" class="form-check-input" type="date" value="" id="@id">
-        <label class="form-check-label" for="@id">@Model.Name</label>
-    </div>
+    <label class="">@(Model.Label ?? Model.Name)</label>
+    <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" type="date" />
+    @if (Model.Description != null)
+    {
+        <small class="form-text text-muted">@Model.Description</small>
+    }
     <span class="text-danger field-validation-error" data-valmsg-for="@Model.Name" data-valmsg-replace="true">@Model.Error</span>
 }
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DateTime)
 {
-    var id = Guid.NewGuid().ToString();
-    <div class="form-check">
-        <input name="@Model.Name" class="form-check-input" type="date" value="" id="@id">
-        <label class="form-check-label" for="@id">@Model.Name</label>
-    </div>
+    <label class="">@(Model.Label ?? Model.Name)</label>
+    <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" type="datetime-local" />
+    @if (Model.Description != null)
+    {
+        <small class="form-text text-muted">@Model.Description</small>
+    }
     <span class="text-danger field-validation-error" data-valmsg-for="@Model.Name" data-valmsg-replace="true">@Model.Error</span>
 }
