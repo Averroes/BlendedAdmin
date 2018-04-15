@@ -68,3 +68,22 @@ function main(arg)
 main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Method_Post.PNG)
+
+### Validation
+## Required
+```javascript
+function main(arg)
+{
+  	var formView = new FormView({
+      	  method: 'post',
+      	  controls: [{name:'TextBox', required:true, value:arg.queryString.TextBox}]
+        });
+  	if (arg.method == 'post' && formView.isValid())
+    	{
+      	   // do the action
+    	}
+	return [formView];
+}
+main(arg);
+```
+
