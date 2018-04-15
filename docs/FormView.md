@@ -1,6 +1,7 @@
 ## FormView
 
 ### Controls
+- List of control
  ```javascript
 function main(arg)
 {
@@ -19,6 +20,22 @@ function main(arg)
 main(arg);
 ```
 ![Image of Yaktocat](images/FormView_Controls.PNG)
+- Layout
+Each element of the controls array is a row.
+ ```javascript
+function main(arg)
+{
+  	var formView = new FormView({
+      	controls: [
+          {name:'Row1'},
+          [{name:'Row2_1'},{name:'Row2_2'},{name:'Row2_3'}],
+	  [{name:'Row3'}, null]
+        ]
+      });
+	return [formView];
+}
+main(arg);
+```
 
 ### Method
 - Get (by default)
