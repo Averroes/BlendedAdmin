@@ -1,0 +1,21 @@
+## FormView
+
+- Controls
+ ```javascript
+function main(arg)
+{
+  	var formView = new FormView({
+      	controls: [
+          {name:'TextBox', label:'Text Box', type:'input'},
+          {name:'CheckBox', label:'Check Box', type:'checkbox'},
+          {name:'Select1', label:'Select 1', type:'select', options:[1,2,3]},
+          {name:'Select1', label:'Select 1', type:'select', options:[{value:1, text:'number 1'},{value:2, text:'number 2'},{value:3, text:'number 3'}]},
+          {name:'Date', label:'Date', type:'date'},
+          {name:'DateTime', label:'Date and time', type:'datetime'},
+        ]
+      });
+	return [formView];
+}
+main(arg);
+```
+![Image of Yaktocat](images/FormView_Controls.PNG)
