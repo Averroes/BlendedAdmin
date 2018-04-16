@@ -37,6 +37,7 @@ By default, the the next page button is always shown. The prevous page button is
  ```javascript
 function main(arg)
 {
+  var currentPage = arg.queryString.p;
   var tableView = new TableView(
   {
     previoustPage: true,
