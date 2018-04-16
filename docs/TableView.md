@@ -49,4 +49,4 @@ function main(arg)
 }
 main(arg);
 ```
-![TableView](images/TableView_Paging.PNG)
+![TableView](images/TableView_Paging.png)
