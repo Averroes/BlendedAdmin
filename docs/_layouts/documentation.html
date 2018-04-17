@@ -1,0 +1,111 @@
+
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>{{ page.title }} - Blended Admin</title>
+
+    <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <!-- Custom styles for this template -->
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+  </head>
+
+  <body>
+    <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
+      <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="Documentation.html">Blended Admin <i><small>Documentation</small></i></a>
+    </nav>
+
+    <div class="container-fluid">
+      <div class="row">
+        <nav class="col-md-2 d-none d-md-block bg-light sidebar">
+          <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "Getting started" %} active {% endif %}" href="GettingStarted.html">
+                  <span data-feather="home"></span>
+                  Getting started
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "Examples" %} active {% endif %}" href="Examples.html">
+                  <span data-feather="file"></span>
+                  Examples
+                </a>
+              </li>
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              Views
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "FormView" %} active {% endif %}" href="FormView.html">
+                  <span data-feather="file-text"></span>
+                  FormView
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "TableView" %} active {% endif %}" href="TableView.html">
+                  <span data-feather="file-text"></span>
+                  TableView
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "HtmlView" %} active {% endif %}" href="HtmlView.html">
+                  <span data-feather="file-text"></span>
+                  HtmlView
+                </a>
+              </li>
+            </ul>
+
+            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+              Clients
+            </h6>
+            <ul class="nav flex-column mb-2">
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "SqlClient" %} active {% endif %}" href="SqlClient.html">
+                  <span data-feather="file-text"></span>
+                  SqlClient
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "HttpClient" %} active {% endif %}" href="HttpClient.html">
+                  <span data-feather="file-text"></span>
+                  HttpClient
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "MongoClient" %} active {% endif %}" href="MongoClient.html">
+                  <span data-feather="file-text"></span>
+                  MongoClient
+                </a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link {% if page.title == "ElasticSearch" %} active {% endif %}" href="ElasticSearch.html">
+                  <span data-feather="file-text"></span>
+                  ElasticSearch
+                </a>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
+
+          {{ content }}
+          
+        </main>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+    
+  </body>
+</html>

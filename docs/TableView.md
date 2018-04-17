@@ -1,3 +1,8 @@
+---
+layout: documentation
+title:  "TableView"
+---
+
 # TableView
 
 ## Rows
