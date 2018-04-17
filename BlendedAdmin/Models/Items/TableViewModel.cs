@@ -38,7 +38,7 @@ namespace BlendedAdmin.Models.Items
             model.Title = tableView.GetValueOrDefault2("title").ToStringOrDefault();
             
             int? page = tableView.GetValueOrDefault2("page").ToIntOrDefault() ?? _urlService.GetQueryString("p").ToIntOrDefault();
-            int pageSize = tableView.GetValueOrDefault2("pageSize").ToIntOrDefault(100);
+            int size = tableView.GetValueOrDefault2("size").ToIntOrDefault(200);
             bool? previoustPage = tableView.GetValueOrDefault2("previoustPage").ToBoolOrDefault();
             bool? nextPage = tableView.GetValueOrDefault2("nextPage").ToBoolOrDefault();
             var data = GetData(tableView);
@@ -64,7 +64,7 @@ namespace BlendedAdmin.Models.Items
             }
      
             model.Columns = data.Item1;
-            model.Rows = data.Item2.Take(pageSize).ToList();
+            model.Rows = data.Item2.Take(size).ToList();
             
             return model;
         }
