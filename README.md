@@ -1,13 +1,3 @@
 # BlendedAdmin
 
-## Contents
-[SqlClient](#sqlclient)  
-[HttpClient](#httpclient)  
-[MongoClient](#mongoclient)  
-
-
-## SqlClient
-
-## HttpClient
-
-## MongoClient
+Documentation: http://doc.blendedadmin.com
