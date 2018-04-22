@@ -1,16 +1,14 @@
 @import "rouge-github";
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,700');
+@import "bootstrap";
 
 body {
   font-size: .875rem;
 }
 
-.feather {
-  width: 16px;
-  height: 16px;
-  vertical-align: text-bottom;
+img {
+  width: 100%;
+  height: auto;
 }
-
 /*
  * Sidebar
  */
