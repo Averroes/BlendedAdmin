@@ -15,23 +15,27 @@ main(arg);
 ```
 
 ```javascript
-function main(arg)
+function main(request)
 {
-  var formView = new FormView({
-    method:'post',
-    controls: [[{name:'firstName', value:arg.form.firstName},{name:'lastName', value:arg.form.firstName}]]
-  });
+  if (request.method == 'get')
+  {
+    var formView = new FormView({
+      method:'post',
+      controls: [[{name:'firstName'},{name:'lastName'}]]
+    });
+    return [formView];
+  }
   
   if (arg.method == 'post')
   {
     var sqlClient = new  SqlClient({provider:'Sqlite',connectionString:'Data Source=chinook.db;'});
     var employees = sqlClient.query(
       'insert into employees(firstName, lastName) values(@firstName,@lastName)',
-      {firstName: arg.form.firstName, lastName: arg.form.lastName}
+      {firstName: request.form.firstName, lastName: request.form.lastName}
     );
+    var htmlView = new HtmlView('<div>Thank you for adding new employee.</div>');
+    return [htmlView];
   }
-
-  return [formView];
 }
 main(arg);
 ```
