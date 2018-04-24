@@ -77,7 +77,10 @@ namespace BlendedAdmin.Infrastructure.Logging
                     var x = httpClient.PostAsync(url,content).Result;
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void AddAuthenticationHeader(HttpClient client, string url)

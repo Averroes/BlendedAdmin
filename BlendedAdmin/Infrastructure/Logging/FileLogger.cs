@@ -65,7 +65,10 @@ namespace BlendedAdmin.Infrastructure.Logging
                     RollFiles();
                 }
             }
-            catch { }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         private void RollFiles()
