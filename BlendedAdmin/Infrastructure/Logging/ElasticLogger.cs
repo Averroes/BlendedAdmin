@@ -74,12 +74,14 @@ namespace BlendedAdmin.Infrastructure.Logging
                     HttpClient httpClient = new HttpClient();
                     var content = new StringContent(JsonConvert.SerializeObject(message), Encoding.UTF8, "application/json");
                     AddAuthenticationHeader(httpClient, url);
-                    var x = httpClient.PostAsync(url,content).Result;
+                    var result  = httpClient.PostAsync(url,content).Result;
+                    if (result.IsSuccessStatusCode == false)
+                        Console.WriteLine("ElasticLogger error " + result.StatusCode + " " + result.ReasonPhrase);
                 }
             }
             catch (Exception ex)
             {
-                Console.WriteLine(ex.Message);
+                Console.WriteLine("ElasticLogger error " + ex.Message);
             }
         }
 
