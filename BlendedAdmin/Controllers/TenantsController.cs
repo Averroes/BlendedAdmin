@@ -16,6 +16,7 @@ using BlendedAdmin.Services;
 using BlendedAdmin.Models.Tenants;
 using BlendedAdmin.DomainModel.Tenants;
 using System.Transactions;
+using System.Text;
 
 namespace BlendedAdmin.Controllers
 {
@@ -28,13 +29,15 @@ namespace BlendedAdmin.Controllers
         private IEmailService _emailService;
         private ILogger<UsersController> _logger;
         private IPasswordHasher<ApplicationUser> _passwordHasher;
+        private readonly IUrlService _urlService;
 
         public TenantsController(IDomainContext domainContext, 
             UserManager<ApplicationUser> userManager, 
             SignInManager<ApplicationUser> signInManager,
             IEmailService emailService,
             ILogger<UsersController> logger,
-            IPasswordHasher<ApplicationUser> passwordHasher)
+            IPasswordHasher<ApplicationUser> passwordHasher,
+            IUrlService urlService)
         {
             _domainContext = domainContext;
             _userManager = userManager;
@@ -42,6 +45,7 @@ namespace BlendedAdmin.Controllers
             _emailService = emailService;
             _logger = logger;
             _passwordHasher = passwordHasher;
+            _urlService = urlService;
         }
 
         [HttpGet]
@@ -85,6 +89,14 @@ namespace BlendedAdmin.Controllers
                 await _domainContext.SaveAsync();
                 scope.Commit();
             }
+
+            StringBuilder body = new StringBuilder();
+            body.Append("Thank you for registration.<br/><br/>");
+            body.AppendFormat("Your url is <a href=\"{0}\">{0}</a>.<br/>", _urlService.GetUrlWithTenant(model.Name));
+            await _emailService.SendEmailAsync(
+                model.Email,
+                "Thank you for registration",
+                body.ToString());
 
             return this.RedirectToAction("RegistrationConfirmation", new { tenant = model.Name});
         }
