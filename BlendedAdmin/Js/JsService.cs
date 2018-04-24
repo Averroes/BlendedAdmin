@@ -15,12 +15,13 @@ namespace BlendedAdmin.Js
         Task<JsRunResult> Run(string code);
     }
 
-    public class JsService : IJsService
+    public class JsService : IJsService, IDisposable
     {
         private IHttpContextAccessor _httpContextAccessor;
         private IVariablesService _variablesService;
         private IEnvironmentService _environmentService;
         private IUrlService _urlServicecs;
+        private BlendedJSEngine _engine;
 
         public JsService(
             IHttpContextAccessor httpContextAccessor, 
@@ -32,12 +33,12 @@ namespace BlendedAdmin.Js
             _variablesService = variablesService;
             _environmentService = environmentService;
             _urlServicecs = urlServicecs;
+            _engine = new BlendedJSEngine();
         }
 
         public async Task<JsRunResult> Run(string code)
         {
             JsRunResult runResults = new JsRunResult();
-            BlendedJSEngine engine = new BlendedJSEngine();
             var httpContext = _httpContextAccessor.HttpContext;
             var arg = new BlendedJS.Object();
             arg["variables"] = (await this._variablesService.GetVariables()).ToJsObject();
@@ -58,12 +59,12 @@ namespace BlendedAdmin.Js
                 arg["method"] = httpContext.Request.Query["_httpMethod"].FirstOrDefault().ToLower();
             else
                 arg["method"] = httpContext.Request.Method.ToLower();
-            engine.Jint.SetValue("FormView", TypeReference.CreateTypeReference(engine.Jint, typeof(FormView)));
-            engine.Jint.SetValue("TableView", TypeReference.CreateTypeReference(engine.Jint, typeof(TableView)));
-            engine.Jint.SetValue("JsonView", TypeReference.CreateTypeReference(engine.Jint, typeof(JsonView)));
-            engine.Jint.SetValue("HtmlView", TypeReference.CreateTypeReference(engine.Jint, typeof(HtmlView)));
-            engine.Jint.SetValue("arg", arg);
-            var jsResult = engine.ExecuteScript(code);
+            _engine.Jint.SetValue("FormView", TypeReference.CreateTypeReference(_engine.Jint, typeof(FormView)));
+            _engine.Jint.SetValue("TableView", TypeReference.CreateTypeReference(_engine.Jint, typeof(TableView)));
+            _engine.Jint.SetValue("JsonView", TypeReference.CreateTypeReference(_engine.Jint, typeof(JsonView)));
+            _engine.Jint.SetValue("HtmlView", TypeReference.CreateTypeReference(_engine.Jint, typeof(HtmlView)));
+            _engine.Jint.SetValue("arg", arg);
+            var jsResult = _engine.ExecuteScript(code);
             runResults.Logs = jsResult.Logs;
             runResults.Exception = jsResult.Exception;
             runResults.LastExecutedLine = jsResult.LastExecutedLine;
@@ -93,6 +94,11 @@ namespace BlendedAdmin.Js
                     runResults.Views.Add(new HtmlViewModelAssembler().ToModel((HtmlView)jsResult.Value));
             }
             return runResults;
+        }
+
+        public void Dispose()
+        {
+            _engine?.Dispose();
         }
     }
 }
