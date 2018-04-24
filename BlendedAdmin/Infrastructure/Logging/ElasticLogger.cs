@@ -32,7 +32,7 @@ namespace BlendedAdmin.Infrastructure.Logging
             IServiceScopeFactory serviceScopeFactory,
             IUrlService urlService)
         {
-            Console.WriteLine("Elastic constructor");
+            Console.WriteLine("Elastic constructor " + options.Value?.LogLevel?.ToString());
 
             _category = category;
             _options = options;
