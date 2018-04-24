@@ -76,12 +76,16 @@ namespace BlendedAdmin.Infrastructure.Logging
                     AddAuthenticationHeader(httpClient, url);
                     var result  = httpClient.PostAsync(url,content).Result;
                     if (result.IsSuccessStatusCode == false)
+                    {
                         Console.WriteLine("ElasticLogger error " + result.StatusCode + " " + result.ReasonPhrase);
+                        throw new Exception("ElasticLogger error " + result.StatusCode + " " + result.ReasonPhrase);
+                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ElasticLogger error " + ex.Message);
+                throw new Exception("ElasticLogger error " + ex.Message);
             }
         }
 
