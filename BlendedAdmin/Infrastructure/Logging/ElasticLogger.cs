@@ -32,6 +32,8 @@ namespace BlendedAdmin.Infrastructure.Logging
             IServiceScopeFactory serviceScopeFactory,
             IUrlService urlService)
         {
+            Console.WriteLine("Elastic constructor");
+
             _category = category;
             _options = options;
             _httpContextAccessor = httpContextAccessor;
@@ -53,6 +55,7 @@ namespace BlendedAdmin.Infrastructure.Logging
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
+            Console.WriteLine("Elastic " + _options.Value.LogLevel);
             try
             {
                 if (_options.Value.LogLevel <= logLevel)
