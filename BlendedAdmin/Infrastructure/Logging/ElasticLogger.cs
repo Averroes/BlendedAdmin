@@ -2,7 +2,6 @@
 using System.Linq;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using System.IO;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using Microsoft.Extensions.Options;
@@ -32,7 +31,7 @@ namespace BlendedAdmin.Infrastructure.Logging
             IServiceScopeFactory serviceScopeFactory,
             IUrlService urlService)
         {
-            Console.WriteLine("Elastic constructor " + options.Value?.LogLevel?.ToString());
+            Console.WriteLine("Elastic constructor " + category + " " + options.Value?.LogLevel?.ToString());
 
             _category = category;
             _options = options;

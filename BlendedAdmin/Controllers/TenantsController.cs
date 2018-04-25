@@ -46,6 +46,7 @@ namespace BlendedAdmin.Controllers
             _logger = logger;
             _passwordHasher = passwordHasher;
             _urlService = urlService;
+            logger.LogError("TenantsController test");
         }
 
         [HttpGet]
