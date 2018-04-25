@@ -31,8 +31,6 @@ namespace BlendedAdmin.Infrastructure.Logging
             IServiceScopeFactory serviceScopeFactory,
             IUrlService urlService)
         {
-            Console.WriteLine("Elastic constructor " + category + " " + options.Value?.LogLevel?.ToString());
-
             _category = category;
             _options = options;
             _httpContextAccessor = httpContextAccessor;
@@ -49,13 +47,11 @@ namespace BlendedAdmin.Infrastructure.Logging
         public bool IsEnabled(LogLevel logLevel)
         {
             bool isEnabled = logLevel >= _logLevel;
-            Console.WriteLine("Elastic IsEnabled " + isEnabled);
             return isEnabled;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            Console.WriteLine("Elastic Log " + _logLevel);
             try
             {
                 if (IsEnabled(logLevel))
@@ -79,16 +75,12 @@ namespace BlendedAdmin.Infrastructure.Logging
                     AddAuthenticationHeader(httpClient, url);
                     var result  = httpClient.PostAsync(url,content).Result;
                     if (result.IsSuccessStatusCode == false)
-                    {
                         Console.WriteLine("ElasticLogger error " + result.StatusCode + " " + result.ReasonPhrase);
-                        throw new Exception("ElasticLogger error " + result.StatusCode + " " + result.ReasonPhrase);
-                    }
                 }
             }
             catch (Exception ex)
             {
                 Console.WriteLine("ElasticLogger error " + ex.Message);
-                throw new Exception("ElasticLogger error " + ex.Message);
             }
         }
 
