@@ -39,7 +39,6 @@ namespace BlendedAdmin.Infrastructure.Logging
             _httpContextAccessor = httpContextAccessor;
             _serviceScopeFactory = serviceScopeFactory;
             _urlService = urlService;
-
             _logLevel = options.Value.LogLevel ?? LogLevel.None;
         }
 
@@ -50,15 +49,17 @@ namespace BlendedAdmin.Infrastructure.Logging
 
         public bool IsEnabled(LogLevel logLevel)
         {
-            return logLevel >= _logLevel;
+            bool isEnabled = logLevel >= _logLevel;
+            Console.WriteLine("Elastic IsEnabled " + isEnabled);
+            return isEnabled;
         }
 
         public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            Console.WriteLine("Elastic " + _options.Value.LogLevel);
+            Console.WriteLine("Elastic Log " + _logLevel);
             try
             {
-                if (_options.Value.LogLevel <= logLevel)
+                if (IsEnabled(logLevel))
                 {
                     var message = new ElasticLogMessage
                     {

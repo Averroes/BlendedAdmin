@@ -8,7 +8,7 @@ using System.Collections.Concurrent;
 
 namespace BlendedAdmin.Infrastructure.Logging
 {
-    [ProviderAlias("MySql")]
+    [ProviderAlias("Elastic")]
     public class ElasticLoggerProvider : ILoggerProvider
     {
         private IOptions<ElasticLoggerOptions> _options;

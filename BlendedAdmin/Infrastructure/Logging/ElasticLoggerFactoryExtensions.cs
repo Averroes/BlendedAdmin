@@ -12,7 +12,7 @@ namespace BlendedAdmin.Infrastructure.Logging
             return builder;
         }
 
-        public static ILoggingBuilder AddBlended(this ILoggingBuilder builder, Action<ElasticLoggerOptions> configure)
+        public static ILoggingBuilder AddElastic(this ILoggingBuilder builder, Action<ElasticLoggerOptions> configure)
         {
             builder.AddElastic();
             builder.Services.Configure(configure);
