@@ -62,9 +62,9 @@ namespace BlendedAdmin.Services
         </style>
     </head>
     <body>
-        <div style=""margin-bottom:20px;"">Hi,</div>
+        <div style=""margin-bottom:20px;"">Hey you,</div>
         <div>{{content}}</div>
-	    <div style=""margin-top:20px;"">Cheers,<br/>Blended Admin</div>
+	<div style=""margin-top:20px;"">Cheers,<br/>Blended Admin</div>
     </body>
 </html>";
     }
