@@ -80,6 +80,7 @@ namespace BlendedAdmin
                 if (tenant == null)
                 {
                     context.Response.StatusCode = 404;
+                    _logger.LogInformation("Tenant not found: " + tenantId);
                     await context.Response.WriteAsync("Page not found");
                     return;
                 }
