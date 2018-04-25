@@ -91,11 +91,11 @@ namespace BlendedAdmin.Controllers
             }
 
             StringBuilder body = new StringBuilder();
-            body.Append("Thank you for registration.<br/><br/>");
-            body.AppendFormat("Your url is <a href=\"{0}\">{0}</a>.<br/>", _urlService.GetUrlWithTenant(model.Name));
+            body.Append("Thank you for registering.<br/><br/>");
+            body.AppendFormat("The url of your console is <a href=\"{0}\">{0}</a>.<br/>", _urlService.GetUrlWithTenant(model.Name));
             await _emailService.SendEmailAsync(
                 model.Email,
-                "Thank you for registration",
+                "Thank you for registering",
                 body.ToString());
 
             return this.RedirectToAction("RegistrationConfirmation", new { tenant = model.Name});
