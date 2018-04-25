@@ -45,7 +45,7 @@ namespace BlendedAdmin.Infrastructure.Logging
         {
             try
             {
-                if (_options.Value.LogLevel <= logLevel)
+                if (IsEnabled(logLevel))
                 {
                     Directory.CreateDirectory(_filePath);
 
