@@ -3,12 +3,15 @@ layout: documentation
 title:  "Documentation"
 ---
 
-# [Blended Admin Home](http://blendedadmin.com)
-
 # Blended Admin Documentation
 
+[Blended Admin Home](http://blendedadmin.com)
+
+
 * [Getting started](GettingStarted.html)
-* [Examples](Examples.html)
+* [Examples]
+  * [Sql]
+    * [Show list of items](Sql_ListOfItems_Example.html)
 * Views
   * [FormView](FormView.html)
   * [TableView](TableView.html)
