@@ -44,11 +44,13 @@ namespace BlendedAdmin.Js
                 arg["variables"] = (await this._variablesService.GetVariables()).ToJsObject();
                 arg["environment"] = (await this._environmentService.GetCurrentEnvironment()).Name;
                 arg["queryString"] = httpContext.Request.Query
+                    .Where(x => x.Key.StartsWith("_") == false)
                     .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault())
                     .ToJsObject();
                 try
                 {
                     arg["form"] = httpContext.Request.Form
+                        .Where(x => x.Key.StartsWith("model.") == false)
                         .ToDictionary(x => x.Key, x => (object)x.Value.FirstOrDefault())
                         .ToJsObject();
                 }
