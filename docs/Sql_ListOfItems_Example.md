@@ -1,6 +1,6 @@
 ---
 layout: documentation
-title:  "Documentation"
+title:  "Sql - List Items"
 ---
 
 # Sql - Show list of items

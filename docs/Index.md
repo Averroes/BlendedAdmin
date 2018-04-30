@@ -5,7 +5,12 @@ title:  "Documentation"
 
 # Blended Admin Documentation
 
-[Blended Admin Home](http://blendedadmin.com)
+
+
+<a href="http://blendedadmin.com/download.html" class="btn btn-secondary my-2">Download</a>
+<a href="http://blendedadmin.com" class="btn btn-secondary my-2">Home page</a>
+<a href="http://register.blendedadmin.com" class="btn btn-secondary my-2">Try it online</a>
+<a href="https://github.com/danielgolabek/BlendedAdmin" class="btn btn-secondary my-2">Source code</a>
 
 
 * [Getting started](GettingStarted.html)
