@@ -1,4 +1,8 @@
 
+---
+layout: documentation
+title:  "TableView"
+---
 
 Elastic
  ```javascript
