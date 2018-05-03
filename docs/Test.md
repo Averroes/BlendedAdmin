@@ -1,7 +1,6 @@
-
 ---
 layout: documentation
-title:  "TableView"
+title:  "Test"
 ---
 
 Elastic
