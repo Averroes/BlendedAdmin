@@ -102,10 +102,10 @@ namespace BlendedAdmin.Models.Items
                             text = optionDict.GetProperty("text").ToStringOrDefault();
                         else
                             if (optionDict.Keys.Count >= 2)
-                                value = optionDict.ToList()[1].Value.ToStringOrDefault();
+                                text = optionDict.ToList()[1].Value.ToStringOrDefault();
                             else
                                 if (optionDict.Keys.Count >= 1)
-                                    value = optionDict.ToList()[0].Value.ToStringOrDefault();
+                                    text = optionDict.ToList()[0].Value.ToStringOrDefault();
 
                         options.Add(new ParameterOptionModel
                         {
