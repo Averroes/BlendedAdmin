@@ -88,12 +88,29 @@ namespace BlendedAdmin.Models.Items
             {
                 foreach(var option in (object[])optionsObject)
                 {
-                    if (option is IDictionary<string, object>)
+                    if (option is IDictionary<string, object> optionDict)
                     {
+                        string value = string.Empty;
+                        if (optionDict.ContainsKey("value"))
+                            value = optionDict.GetProperty("value").ToStringOrDefault();
+                        else
+                            if (optionDict.Keys.Count >= 1)
+                                value = optionDict.ToList()[0].Value.ToStringOrDefault();
+
+                        string text = string.Empty;
+                        if (optionDict.ContainsKey("text"))
+                            text = optionDict.GetProperty("text").ToStringOrDefault();
+                        else
+                            if (optionDict.Keys.Count >= 2)
+                                value = optionDict.ToList()[1].Value.ToStringOrDefault();
+                            else
+                                if (optionDict.Keys.Count >= 1)
+                                    value = optionDict.ToList()[0].Value.ToStringOrDefault();
+
                         options.Add(new ParameterOptionModel
                         {
-                            Value = option.GetProperty("value").ToStringOrDefault(),
-                            Text = option.GetProperty("text").ToStringOrDefault(),
+                            Value = value,
+                            Text = text,
                         });
                     }
                     else if (option is object[])
