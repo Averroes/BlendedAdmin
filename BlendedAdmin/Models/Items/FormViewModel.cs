@@ -90,27 +90,27 @@ namespace BlendedAdmin.Models.Items
                 {
                     if (option is IDictionary<string, object> optionDict)
                     {
-                        string value = string.Empty;
+                        string optionValue = string.Empty;
                         if (optionDict.ContainsKey("value"))
-                            value = optionDict.GetProperty("value").ToStringOrDefault();
+                            optionValue = optionDict.GetProperty("value").ToStringOrDefault();
                         else
                             if (optionDict.Keys.Count >= 1)
-                                value = optionDict.ToList()[0].Value.ToStringOrDefault();
+                            optionValue = optionDict.ToList()[0].Value.ToStringOrDefault();
 
-                        string text = string.Empty;
+                        string optionText = string.Empty;
                         if (optionDict.ContainsKey("text"))
-                            text = optionDict.GetProperty("text").ToStringOrDefault();
+                            optionText = optionDict.GetProperty("text").ToStringOrDefault();
                         else
                             if (optionDict.Keys.Count >= 2)
-                                text = optionDict.ToList()[1].Value.ToStringOrDefault();
+                                optionText = optionDict.ToList()[1].Value.ToStringOrDefault();
                             else
                                 if (optionDict.Keys.Count >= 1)
-                                    text = optionDict.ToList()[0].Value.ToStringOrDefault();
+                                    optionText = optionDict.ToList()[0].Value.ToStringOrDefault();
 
                         options.Add(new ParameterOptionModel
                         {
-                            Value = value,
-                            Text = text,
+                            Value = optionValue,
+                            Text = optionText,
                         });
                     }
                     else if (option is object[])
@@ -144,11 +144,20 @@ namespace BlendedAdmin.Models.Items
                 }
             }
 
+            object value = parameter.GetValueOrDefault2("value");
+            string formattedValue = null;
+            if (parameterType == ParmeterTypeModel.Date)
+                formattedValue = value is DateTime dateValue ? dateValue.ToString("yyyy-MM-dd") : value.ToStringOrDefault();
+            else if (parameterType == ParmeterTypeModel.DateTime)
+                formattedValue = value is DateTime dateValue ? dateValue.ToString("yyyy-MM-ddTHH:mm") : value.ToStringOrDefault();
+            else
+                formattedValue = value.ToStringOrDefault();
+
             return new ParameterModel
             {
                 Name = parameter.GetValueOrDefault2("name").ToStringOrDefault(),
                 Label = parameter.GetValueOrDefault2("label").ToStringOrDefault(),
-                Value = parameter.GetValueOrDefault2("value").ToStringOrDefault(),
+                Value = formattedValue,
                 ReadOnly = parameter.GetValueOrDefault2("readOnly").ToBoolOrDefault(false),
                 Error = parameter.GetValueOrDefault2("error").ToStringOrDefault(),
                 Description = parameter.GetValueOrDefault2("description").ToStringOrDefault(),

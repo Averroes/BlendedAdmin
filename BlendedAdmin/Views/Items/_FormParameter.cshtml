@@ -1,3 +1,4 @@
+@using BlendedJS
 @inject BlendedAdmin.Services.IUrlService urlServicecs
 @model BlendedAdmin.Models.Items.ParameterModel
 
@@ -5,7 +6,11 @@
 Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
 {
     <label class="">@(Model.Label ?? Model.Name)</label>
-    <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" />
+    <input name="@Model.Name" 
+           value="@Model.Value" 
+           class="form-control form-control-sm"
+           @(@Model.ReadOnly ? "readonly" : "")/>
+
     @if (Model.Description != null)
     {
         <small class="form-text text-muted">@Model.Description</small>
@@ -16,10 +21,21 @@ Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Input)
 Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
 {
     <label>@(Model.Label ?? Model.Name)</label>
-    <select name="@Model.Name" value="@Model.Value" class="form-control form-control-sm" @(@Model.ReadOnly ? "form-control-plaintext" : "")>
+    <select 
+            name="@Model.Name" 
+            value="@Model.Value" 
+            class="form-control form-control-sm"
+            @(@Model.ReadOnly ? "disabled" : "")>
     @foreach (var option in Model.Options)
     {
-        <option value="@option.Value">@option.Text</option>
+        if (Model.Value == option.Value)
+        {
+            <option value="@option.Value" selected>@option.Text</option>
+        }
+        else
+        {
+            <option value="@option.Value">@option.Text</option>
+        }
     }
     </select>
     @if (Model.Description != null)
@@ -32,7 +48,12 @@ Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
 {
     var id = Guid.NewGuid().ToString();
     <div class="form-check">
-        <input name="@Model.Name" class="form-check-input" type="checkbox" value="" id="@id">
+        <input id="@id" 
+                name="@Model.Name" 
+                class="form-check-input" 
+                type="checkbox" 
+                @(@Model.Value.ToBoolOrDefault(false) ? "checked" : "") 
+                @(@Model.ReadOnly ? "disabled" : "") >
         <label class="form-check-label" for="@id">@(Model.Label ?? Model.Name)</label>
         @if (Model.Description != null)
         {
@@ -44,7 +65,11 @@ Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.Date)
 {
     <label class="">@(Model.Label ?? Model.Name)</label>
-    <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" type="date" />
+    <input name="@Model.Name" 
+           value="@Model.Value" 
+           class="form-control form-control-sm" 
+           type="date"
+           @(@Model.ReadOnly ? "readonly" : "") />
     @if (Model.Description != null)
     {
         <small class="form-text text-muted">@Model.Description</small>
@@ -54,7 +79,11 @@ Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DropDown)
 @if (Model.Type == BlendedAdmin.Models.Items.ParmeterTypeModel.DateTime)
 {
     <label class="">@(Model.Label ?? Model.Name)</label>
-    <input name="@Model.Name" value="@Model.Value" class="form-control form-control-sm @(@Model.ReadOnly ? "form-control-plaintext" : "")" type="datetime-local" />
+    <input name="@Model.Name" 
+           value="@Model.Value"
+           class="form-control form-control-sm" 
+           type="datetime-local"
+           @(@Model.ReadOnly ? "readonly" : "")/>
     @if (Model.Description != null)
     {
         <small class="form-text text-muted">@Model.Description</small>
