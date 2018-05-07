@@ -7,6 +7,7 @@ using BlendedAdmin.DomainModel.Items;
 using System.Collections.Generic;
 using BlendedAdmin.Js;
 using Microsoft.AspNetCore.Authorization;
+using BlendedJS;
 
 namespace BlendedAdmin.Controllers
 {
@@ -131,13 +132,17 @@ main(arg);";
                 editModel = new ItemEditModelAssembler().ToModel(item);
             }
 
-            ItemRunModel m = new ItemRunModel();
-            m.EditModel = editModel;
+            ItemRunModel model = new ItemRunModel();
+            model.EditModel = editModel;
             try
             {
-                m.RunResult = await _jsService.Run(editModel.Code);
-                if (m.RunResult.Exception != null)
-                    this.ModelState.AddModelError("", "Error, Line " + m.RunResult.LastExecutedLine + " :" + m.RunResult.Exception.Message);
+                model.RunResult = await _jsService.Run(editModel.Code);
+
+                if (model.RunResult.Exception != null)
+                    this.ModelState.AddModelError("", "Error, Line " + model.RunResult.LastExecutedLine + " :" + model.RunResult.Exception.Message);
+
+                foreach (var error in model.RunResult.Errors)
+                    this.ModelState.AddModelError("", error.ToJsonOrString());
             }
             catch (Exception ex)
             {
@@ -145,8 +150,8 @@ main(arg);";
             }
 
             if (settings.RenderAs == "subView")
-                return PartialView("_Run", m);
-            return View(m);
+                return PartialView("_Run", model);
+            return View(model);
         }
 
     }

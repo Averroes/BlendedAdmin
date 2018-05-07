@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BlendedAdmin.Js
 {
-    public class View : BaseObject
+    public class View : JsObject
     {
 
     }

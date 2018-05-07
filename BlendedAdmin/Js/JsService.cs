@@ -40,7 +40,7 @@ namespace BlendedAdmin.Js
             {
                 JsRunResult runResults = new JsRunResult();
                 var httpContext = _httpContextAccessor.HttpContext;
-                var arg = new BlendedJS.Object();
+                var arg = new BlendedJS.JsObject();
                 arg["variables"] = (await this._variablesService.GetVariables()).ToJsObject();
                 arg["environment"] = (await this._environmentService.GetCurrentEnvironment()).Name;
                 arg["queryString"] = httpContext.Request.Query
@@ -56,7 +56,7 @@ namespace BlendedAdmin.Js
                 }
                 catch
                 {
-                    arg["form"] = new BlendedJS.Object();
+                    arg["form"] = new BlendedJS.JsObject();
                 }
                 if (httpContext.Request.Query.ContainsKey("_httpMethod"))
                     arg["method"] = httpContext.Request.Query["_httpMethod"].FirstOrDefault().ToLower();
@@ -67,10 +67,15 @@ namespace BlendedAdmin.Js
                 engine.Jint.SetValue("JsonView", TypeReference.CreateTypeReference(engine.Jint, typeof(JsonView)));
                 engine.Jint.SetValue("HtmlView", TypeReference.CreateTypeReference(engine.Jint, typeof(HtmlView)));
                 engine.Jint.SetValue("arg", arg);
+                engine.Jint.SetValue("errors", new object[0]);
                 var jsResult = engine.ExecuteScript(code);
                 runResults.Logs = jsResult.Logs;
                 runResults.Exception = jsResult.Exception;
                 runResults.LastExecutedLine = jsResult.LastExecutedLine;
+                var errors = engine.Jint.GetValue("errors")?.ToObject();
+                runResults.Errors = errors is object[] ?
+                            ((object[])errors).ToList() :
+                            (new[] { errors }).Where(x => x != null).ToList();
                 if (jsResult.Value is Array)
                 {
                     foreach (var view in (Array)jsResult.Value)
