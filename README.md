@@ -2,7 +2,7 @@
 
 WebSite: http://blendedadmin.com
 
-Documentation: http://doc.blendedadmin.com
+Documentation: http://blendedadmin.com/doc/Index.html
 
 Register and try online: http://register.blendedadmin.com
 
